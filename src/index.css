@@ -24,6 +24,10 @@ body {
   color: black;
 }
 
+.active {
+  background-color: #efb01c;
+}
+
 .container {
   width: 50%;
   margin: auto;
@@ -46,7 +50,7 @@ ul {
 ul a {
   text-decoration: none;
   color:black;
-  margin: 0 15px;
+  padding: 0 15px;
 }
 
 code {
