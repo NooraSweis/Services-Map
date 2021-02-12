@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Search = () => {
+const Map = () => {
     return (
         <div>
-            <h2>Search</h2>
+            <h3 className="map">Map</h3>
         </div>
     );
 }
 
-export default Search;
+export default Map;

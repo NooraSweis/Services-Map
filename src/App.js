@@ -7,8 +7,8 @@ import About from './components/About';
 import Nav from './components/Nav';
 import Profile from './components/Profile';
 import Favorates from './components/Favorates';
-import Search from './components/Search';
 import SignIn from './components/SignIn';
+import Map from './components/Map';
 
 class App extends Component {
   render() {
@@ -16,12 +16,12 @@ class App extends Component {
       <BrowserRouter>
       <div className="App">
         <Nav/>
-        <Route path="/About" component= {About} />
         <Route exact path="/" component= {Home} />
         <Route exact path="/Profile" component= {Profile} />
         <Route exact path="/Favorates" component= {Favorates} />
-        <Route exact path="/Search" component= {Search} />
+        <Route exact path="/Map" component= {Map} />
         <Route exact path="/SignIn" component= {SignIn} />
+        <Route path="/About" component= {About} />
       </div>
       </BrowserRouter>
     );
