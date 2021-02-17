@@ -1,13 +1,9 @@
 import React from 'react';
 
 const Home = () => {
-    return ( <
-        div className = "search" >
-        <
-        input type = "text"
-        placeholder = "Search..." / >
-        <
-        /div>
+    return ( <div>
+             Home Page
+        </div>
     );
 }
 
