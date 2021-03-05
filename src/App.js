@@ -8,6 +8,7 @@ import Map from './components/Map';
 import SignIn from './components/SignIn';
 import About from './components/About';
 import AdminMenu from "./components/AddPlace";
+import AddPlace from './components/AddPlace';
 
 function App() {
 	return (
@@ -19,7 +20,7 @@ function App() {
 			<Route exact path='/Map' component={Map} />
 			<Route exact path='/SignIn' component={SignIn} />
 			<Route exact path='/About' component={About} />
-			
+			<Route exact path='/AddPlace' component={AddPlace} />
 		</BrowserRouter>
 	);
 }
