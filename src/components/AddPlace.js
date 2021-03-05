@@ -9,7 +9,7 @@ const AddPlace = () => {
             <div className="left">
                 <AddPlaceCard />
             </div>
-            <div className="right">
+            <div className="right" id="map">
                 <Map />
             </div>
         </div>

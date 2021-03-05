@@ -3,10 +3,13 @@ import "./style/AddPlace.css";
 
 const AddPlaceCard = () => {
     return (
-        <div>
-            <h3>Add Fixed Place</h3>
-            <div className="split">
-                <p className="left">Name of Place:</p>
+        <div className="card" style={{
+            position: 'absolute', left: '25%', top: '55%',
+            transform: 'translate(-50%, -50%)'
+        }}>
+            <h2>Add Fixed Place</h2>
+            <div className="split" id="horiz">
+                <div className="left" id="placeNameP">Name of Place:</div>
                 <textarea className="right" id="placeNameTxt"></textarea>
             </div>
             <button className="addBtn">Add</button>

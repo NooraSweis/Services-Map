@@ -12,7 +12,7 @@ class Profile extends Component {
         <div className='out'>
             <p className='title'><b>Please log in</b></p>
             <p className='content'>Please log in to the system to allow you show profile and edit it.</p>
-            <button onClick={this.signIn}><b>Sign in</b></button>
+            <button className="signBtn" onClick={this.signIn}><b>Sign in</b></button>
         </div>
     );
     }
