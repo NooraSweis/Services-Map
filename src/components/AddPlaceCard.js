@@ -10,7 +10,7 @@ const AddPlaceCard = () => {
             <h2>Add Fixed Place</h2>
             <div className="split" id="horiz">
                 <div className="left" id="placeNameP">Name of Place:</div>
-                <textarea className="right" id="placeNameTxt"></textarea>
+                <input className="right" id="placeNameTxt"/>
             </div>
             <button className="addBtn">Add</button>
         </div>

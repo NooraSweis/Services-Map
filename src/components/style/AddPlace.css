@@ -2,12 +2,12 @@
   background-color: #e7e6e6;
   border-style: solid;
   border-width: thin;
-  margin-left: 30px;
   height: 40px;
 }
 
 #placeNameP {
   font-size: x-large;
+  width: 250px;
   margin: auto;
 }
 
