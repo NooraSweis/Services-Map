@@ -19,7 +19,7 @@ function App() {
 			<Route exact path='/Map' component={Map} />
 			<Route exact path='/SignIn' component={SignIn} />
 			<Route exact path='/About' component={About} />
-			<Route exact path='/Menu' component={AdminMenu} />
+			
 		</BrowserRouter>
 	);
 }
