@@ -1,44 +1,70 @@
 body {
-    background-image: url("https://i.ibb.co/QXy2jC0/backg.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  background-image: url("https://i.ibb.co/QXy2jC0/backg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .about {
-    border-radius: 64px;
-    margin-left: 25%;
-    margin-right: 20%;
-    margin-top: 8%;
-    width: 40%;
-    text-align: center;
-    background-color: #e0b45be0;
-    padding: 3%;
+  border-radius: 64px;
+  margin-left: 25%;
+  margin-right: 20%;
+  margin-top: 8%;
+  width: 40%;
+  text-align: center;
+  background-color: #e0b45be0;
+  padding: 3%;
 }
 .container {
-    width: 50%;
-    margin: auto;
+  width: 50%;
+  margin: auto;
 }
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .search {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
 }
 
-.search input[type=text] {
-    padding: 6px;
-    width: 500px;
-    height: 30px;
-    border: 3px solid lightsteelblue;
-    margin-top: 30px;
-    margin-right: 16px;
-    font-size: 17px;
+.search input[type="text"] {
+  padding: 6px;
+  width: 500px;
+  height: 30px;
+  border: 3px solid lightsteelblue;
+  margin-top: 30px;
+  margin-right: 16px;
+  font-size: 17px;
+}
+
+button {
+  background-color: #e0b45be0;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.split {
+  display: flex;
+  flex-direction: raw;
+}
+
+.left {
+  width: 50%;
+}
+
+.right {
+  width: 50%;
 }

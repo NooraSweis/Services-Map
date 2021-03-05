@@ -1,0 +1,13 @@
+#placeNameTxt {
+  background-color: #e7e6e6;
+  border-style: solid;
+  border-width: thin;
+}
+
+h3 {
+  text-align: center;
+}
+
+.addBtn {
+  align-self: center;
+}
