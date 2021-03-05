@@ -14,7 +14,7 @@ class Navbar extends React.Component {
 				<ul className="nav-list">
 					<NavLink exact to="/" className="item">Home</NavLink>
 					<NavLink to="/Profile" className="item">Profile</NavLink>
-					<NavLink to="/Favorates" className="item">Favorates</NavLink>
+					<NavLink to="/Favorite" className="item">Favorates</NavLink>
 					<NavLink to="/Map" className="item">Map</NavLink>
 					<NavLink to="/SignIn" className="item">Sign In</NavLink>
 					<NavLink to="/about" className="item">About</NavLink>
