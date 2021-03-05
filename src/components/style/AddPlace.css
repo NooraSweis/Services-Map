@@ -2,12 +2,58 @@
   background-color: #e7e6e6;
   border-style: solid;
   border-width: thin;
+  height: 40px;
 }
 
-h3 {
+#placeNameP {
+  font-size: x-large;
+  width: 250px;
+  margin: auto;
+}
+
+#horiz {
+  margin-left: 70px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin-right: 70px;
+}
+
+h2 {
+  font-family: Georgia, "Times New Roman", Times, serif;
   text-align: center;
 }
 
 .addBtn {
-  align-self: center;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  position: "absolute";
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 60px;
+  padding-right: 60px;
+  font-weight: bold;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border: black;
+  border-style: solid;
+  border-width: medium;
+  padding: 5px;
+}
+
+#map {
+  margin: auto;
+  width: 100%;
+  margin-right: 50px;
 }

@@ -1,26 +1,28 @@
-.out{
-    width: 80%;
-    margin: auto;
-    text-align: center;
-    margin-top: 12%;
+.out {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  margin-top: 12%;
 }
-button{
-    background-color: white;
-    border: none;
-    width:20%;
-    min-width: 80px;
-    padding: 15px;
-    font-size: 15px;
+
+.signBtn {
+  background-color: white;
+  border: none;
+  width: 20%;
+  min-width: 80px;
+  padding: 15px;
+  font-size: 15px;
 }
-button:hover{
-    background-color:#666666;
-	color: white;
-    cursor: pointer;
+
+button:hover {
+  background-color: #666666;
+  color: white;
+  cursor: pointer;
 }
-.title{
-    font-size:30px;
+.title {
+  font-size: 30px;
 }
-.content{
-    font-size: 20px;
-    margin-bottom: 25px;
+.content {
+  font-size: 20px;
+  margin-bottom: 25px;
 }

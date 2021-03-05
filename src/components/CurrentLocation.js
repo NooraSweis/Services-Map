@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import "./style/Map.css";
 
 const mapStyles = {
     map: {
         position: 'absolute',
-        width: '100%',
-        height: '100%'
+        width: '50%',
+        height: '50%'
     }
 };
 
@@ -110,7 +111,7 @@ export class CurrentLocation extends React.Component {
         const style = Object.assign({}, mapStyles.map);
 
         return (
-            <div>
+            <div className="map">
                 <div style={style} ref="map">
                     Loading map...
             </div>
@@ -121,7 +122,7 @@ export class CurrentLocation extends React.Component {
 }
 
 CurrentLocation.defaultProps = {
-    zoom: 16,
+    zoom: 15,
     initialCenter: {
         lat: -1.2884,
         lng: 36.8233
