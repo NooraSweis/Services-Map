@@ -4,16 +4,16 @@ import React                     from 'react'
     return (
         <div>
               <div className="form-container sign-up-container">
-                <form action="#">
-                    <h2 >Signup as Client</h2>
+                <form className='form' action="#">
+                    <h2 className='h2' >Signup as Client</h2>
                   
-                    <input type="text" placeholder="Name" />
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input className='input' type="text" placeholder="Name" />
+                    <input className='input' type="email" placeholder="Email" />
+                    <input className='input' type="password" placeholder="Password" />
                     
-                    <input type="password" placeholder="Confirm Password" />
+                    <input className='input' type="password" placeholder="Confirm Password" />
                 
-                    <button  className="bt" >Sign Up</button>
+                    <button  className="bt button" >Sign Up</button>
                 </form>
             </div>
         </div>
