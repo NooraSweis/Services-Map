@@ -10,6 +10,9 @@ import About from './components/About';
 import AdminMenu from "./components/AddPlace";
 import AddPlace from './components/AddPlace';
 
+import Show_SP_Fields from './components/Login_SignUp/Show-SP-fields';
+import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
+
 function App() {
 	return (
 		<BrowserRouter>
@@ -21,6 +24,9 @@ function App() {
 			<Route exact path='/SignIn' component={SignIn} />
 			<Route exact path='/About' component={About} />
 			<Route exact path='/AddPlace' component={AddPlace} />
+
+			<Route exact path='/Show-SP-Fields' component={Show_SP_Fields} />
+			<Route exact path='/Show-Client-Fields' component={Show_client_Fields} />
 		</BrowserRouter>
 	);
 }
