@@ -10,6 +10,7 @@ function CustomDialogContent() {
         <center>
             <input
                 type="text"
+                className='input'
                 placeholder="Username"
                 onChange={(e) => {
                     setValue(e.target.value);
@@ -18,6 +19,7 @@ function CustomDialogContent() {
             />
             <input
                 type="email"
+                className='input'
                 placeholder="Email"
                 onChange={(e) => {
                     setValue(e.target.value);
@@ -25,6 +27,7 @@ function CustomDialogContent() {
             />
             <div >
             <button 
+              className='button'
                 onClick={() => {
 
                     dialog.close(value);

@@ -2,7 +2,7 @@
 
 .mainDiv {
     width: 97%;
-    height: 522px;
+    height: 541px;
     min-height: 522px;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@
 	z-index: '150';
 }
 
-h1 {
+.h1 {
 	font-weight: bold;
 	font-family: 'Akaya Telivigala', cursive;
 	margin:20px;
@@ -35,7 +35,7 @@ h1 {
 	
 }
 
-h2 {
+.h2 {
 	text-align: center;
 	font-weight: bold;
 	font-family: 'Akaya Telivigala', cursive;
@@ -44,7 +44,7 @@ h2 {
 	color: dimgray;
 }
 
-p {
+.p {
 	font-size: 17px;
 	font-weight: 100;
 	line-height: 20px;
@@ -55,6 +55,7 @@ p {
 span {
 	font-size: 12px;
 }
+
 .forgot-remember-div{
     cursor: 'pointer' ;
     background: white;  
@@ -67,21 +68,21 @@ span {
     cursor: 'pointer' ;
 }
 
-a , .custom-control-label{
+.a , .custom-control-label{
 	color: dimgray;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 0px 8px;
 }
-a:hover  , .custom-control-input:hover{
+.a:hover  , .custom-control-input:hover{
 	color: rgb(239, 174, 28);
 }
-button.close{
+.button.close{
 	float: right;
 	content: "";
 }
 
-button {
+.button {
 	border-radius: 20px;
 	border:1px  rgb(239, 174, 28);
 	background-color: rgb(239, 174, 28);
@@ -95,33 +96,33 @@ button {
 	cursor: pointer;
 	transition: transform 80ms ease-in;
 }
-button:hover{
+.button:hover{
 	background-color: rgb(239, 174, 28);
 	border:1px rgb(239, 174, 28);
 
 }
 
-button:active {
+.button:active {
 	transform: scale(0.95);
 }
 
-button:focus {
+.button:focus {
 	outline: none;
 }
 
-button.ghost {
+.button.ghost {
 	background-color: #FFFFFF;
 	color: rgb(239, 174, 28);
 	border: 1px solid #FFFFFF;
 }
-button.ghost:hover {
+.button.ghost:hover {
 	background-color: transparent;
 	border: 1px solid #FFFFFF;
 	color: #FFFFFF;
 	
 }
 
-form {
+.form {
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
@@ -132,7 +133,7 @@ form {
 	text-align: center;
 }
 
-input {
+.input {
 	background-color: #eee;
 	border: none;
 	border-color: transparent;
@@ -141,10 +142,10 @@ input {
 	margin: 8px 0;
 	width: 50%;
 }
-input:focus,
+.input:focus,
 select:focus,
 textarea:focus,
-button:focus {
+.button:focus {
     outline: none;
 }
 
@@ -169,19 +170,19 @@ button:focus {
 		max-width: 100%;
 		min-height: 100%;
 	}
-	h1{
+	.h1{
 		font-weight: bold;
 		font-family: 'Akaya Telivigala', cursive;
 		margin:10px;
 		font-size: 40px;
 	}
-    a , .custom-control-label{
+    .a , .custom-control-label{
         color: dimgray;
         font-size: 14px;
         text-decoration: none;
         margin: 0px 8px;
     }
-	input{
+	.input{
 		background-color: #eee;
 		border: none;
 		border-color: transparent;
@@ -189,7 +190,7 @@ button:focus {
 		width:200px;
 	}
 	
-	button {
+	.button {
 		border:1px  rgb(239, 174, 28);
 		background-color: rgb(239, 174, 28);
 		color: #FFFFFF;
@@ -207,19 +208,19 @@ button:focus {
             height: 600px;
 			margin-left: 0.5%;
         }
-		h1{
+		.h1{
 			font-size: 30px;
 		}
-		h2{
+		.h2{
 			font-size: 26px;
 		}
-        a , .custom-control-label{
+        .a , .custom-control-label{
             color: dimgray;
             font-size: 11px;
             text-decoration: none;
             margin: 0px 4px;
         }
-		button{
+		.button{
           font-size: 12px;
 		  border-radius: 20px;
 		}
@@ -246,7 +247,7 @@ button:focus {
 	max-width: 100%;
 	min-height: 100%;
 }
-h1{
+.h1{
 	font-weight: bold;
 	font-family: 'Akaya Telivigala', cursive;
 	margin:10px;
@@ -254,7 +255,7 @@ h1{
 	border-radius: 20px;
 	
 }
-input{
+.input{
 	background-color: #eee;
 	border: none;
 	border-color: transparent;
@@ -262,7 +263,7 @@ input{
 	width:200px;
 }
 
-button {
+.button {
 	border-radius: 20px;
 	border:1px  rgb(239, 174, 28);
 	background-color: rgb(239, 174, 28);
@@ -292,25 +293,25 @@ button {
 	min-height: 100%;
 	}
 	
-    h1{
+    .h1{
 		font-weight: bold;
 		font-family: 'Akaya Telivigala', cursive;
 		margin:10px;
 		font-size: 28px;
 	}
-	h2{
+	.h2{
 		font-size: 25px;
 	}
-    a , .custom-control-label{
+    .a , .custom-control-label{
         color: dimgray;
         font-size: 10px;
         text-decoration: none;
         margin: 0px 3px;
     }
-    p{
+    .p{
         font-size: 14px;
     }
-	input{
+	.input{
 		background-color: #eee;
 		border: none;
 		border-color: transparent;
@@ -320,7 +321,7 @@ button {
 		width:200px;
 	}
 	
-	button {
+	.button {
 		border-radius: 20px;
 		border:1px  rgb(239, 174, 28);
 		background-color: rgb(239, 174, 28);
