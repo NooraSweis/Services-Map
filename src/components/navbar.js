@@ -19,7 +19,7 @@ class Navbar extends React.Component {
 					<NavLink to="/SignIn" className="item">Sign In</NavLink>
 					<NavLink to="/about" className="item">About</NavLink>
 					<div class="dropdown">
-						<button class="item">AdminMenu</button>
+						<button class="item">User Name</button>
 						<div class="dropdown-content">
 							<NavLink exact to="/" className="admin-item">Account Approval</NavLink>
 							<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
