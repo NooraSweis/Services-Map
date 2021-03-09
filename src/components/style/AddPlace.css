@@ -50,46 +50,38 @@ h2 {
 }
 
 #map {
-  width: 80%;
-  margin-right: 15%;
+  width: 40%;
+  margin-right: 5%;
   margin-left: 5%;
 }
 
 .split {
   display: flex;
-  flex-direction: raw;
+  flex-direction: row;
+  height: 100%;
 }
 
-.left {
-  width: 50%;
+.split div {
+  flex-grow: 1;
 }
 
-.right {
-  width: 50%;
-}
-
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 850px) {
   .split {
-    display: flex;
     flex-direction: column;
   }
-
-  .left {
-    width: 100%;
-  }
-
   .right {
+    margin-top: 300px;
     width: 100%;
   }
-
   .card {
-    background-color: white;
-    padding: 5px;
-    border: black;
-    border-style: solid;
-    border-width: medium;
-    width: 40%;
-    margin-right: 5%;
-    position:fixed;
+    width: 80%;
+    left: 50%;
+    top: 30%;
+  }
+  .input {
+    width: 35%;
+  }
+  #map {
+    width: 80%;
   }
 }
