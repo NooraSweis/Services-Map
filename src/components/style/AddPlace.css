@@ -70,13 +70,13 @@ h2 {
     flex-direction: column;
   }
   .right {
-    margin-top: 300px;
+    margin-top: 350px;
     width: 100%;
   }
   .card {
     width: 80%;
     left: 50%;
-    top: 30%;
+    top: 250px; 
   }
   .input {
     width: 35%;
