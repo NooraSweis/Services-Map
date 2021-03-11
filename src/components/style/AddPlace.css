@@ -1,59 +1,87 @@
-#placeNameTxt {
-  background-color: #e7e6e6;
-  border-style: solid;
-  border-width: thin;
-  height: 40px;
-}
-
 #placeNameP {
-  font-size: x-large;
-  width: 250px;
+  font-size: 120%;
+  text-align: center;
+  width: 60%;
   margin: auto;
+  margin-right: 10%;
 }
 
 #horiz {
-  margin-left: 70px;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  margin-right: 70px;
+  display: flex;
+  flex-direction: raw;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 h2 {
-  font-family: Georgia, "Times New Roman", Times, serif;
   text-align: center;
 }
 
-.addBtn {
-  font-family: Georgia, "Times New Roman", Times, serif;
+#addBtn {
   position: "absolute";
   color: black;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  font-size: 100%;
   cursor: pointer;
-  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding-left: 60px;
-  padding-right: 60px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 10%;
+  padding-right: 10%;
   font-weight: bold;
 }
 
 .card {
   background-color: white;
-  padding: 20px;
+  padding: 5px;
   border: black;
   border-style: solid;
   border-width: medium;
-  padding: 5px;
+  width: 40%;
+  margin-right: 5%;
+
+  position: absolute;
+  left: 25%;
+  top: 55%;
+  transform: translate(-50%, -50%);
 }
 
 #map {
-  margin: auto;
-  width: 100%;
-  margin-right: 50px;
+  width: 40%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.split {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.split div {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 850px) {
+  .split {
+    flex-direction: column;
+  }
+  .right {
+    margin-top: 350px;
+    width: 100%;
+  }
+  .card {
+    width: 80%;
+    left: 50%;
+    top: 250px; 
+  }
+  .input {
+    width: 35%;
+  }
+  #map {
+    width: 80%;
+  }
 }
