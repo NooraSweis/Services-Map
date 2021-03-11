@@ -11,7 +11,6 @@ export const Main = (props) => {
 
    /* const [smShow, setSmShow] = useState(false);
     const dialog = useDialog();
-
     const [value, setValue] = useState();*/
 
     let history = useHistory();

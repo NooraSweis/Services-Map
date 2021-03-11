@@ -9,7 +9,7 @@ import SignIn from './components/SignIn';
 import About from './components/About';
 import AdminMenu from "./components/AddPlace";
 import AddPlace from './components/AddPlace';
-import AddNewAdmin from './components/Login_SignUp/AddNewAdmin';
+import AddNewAdmin from './components/AddNewAdmin';
 import Show_SP_Fields from './components/Login_SignUp/Show-SP-fields';
 import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
 
