@@ -5,7 +5,7 @@ import React                     from 'react'
         <div>
               <div className="form-container sign-up-container">
                 <form className='form' action="#">
-                    <h2 className='h2' >Signup as Client</h2>
+                <h2 className='h2' >Signup as Client</h2>
                   
                     <input className='input' type="text" placeholder="Name" />
                     <input className='input' type="email" placeholder="Email" />

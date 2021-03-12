@@ -1,0 +1,131 @@
+.externalDiv{
+    width: 50%;
+    margin: auto;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid black;
+    font-family: 'Akaya Telivigala', cursive;
+}
+#scrollDiv{
+    max-height: 600px;
+    overflow-y: scroll;
+    
+}
+.header{
+    overflow: hidden;
+    padding: 10px;
+}
+.header .Default-img{
+    float: left;
+    border-radius: 50%;
+    border: 5px solid rgb(239, 174, 28);
+    width: 10%;
+}
+.header h3,.part2{
+    float: left;
+    margin-left: 5px;
+    width: auto;
+}
+.fieldsChange form{
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
+.fieldsChange form label{
+    font-size: large;
+    padding: 12px 15px ;
+    display: inline-block;
+    width:40%;
+    float: left;
+}
+.fieldsChange form input , .inputForDelete{
+    background-color: #eee;
+	border: none;
+    border-radius: 20px ;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 31%;
+    margin-left: 15px;
+}
+.fieldsChange form .Save-Changes,.continue{
+    border-radius:20px;
+    padding: 12px 15px ;
+    width: 49%;
+    border: none;
+    background-color: rgb(239, 174, 28);
+    margin: 12px auto;
+    font-family: 'Akaya Telivigala', cursive;
+}
+.externalDiv .Delete{
+    margin: 8px;
+}
+.externalDiv .Delete:hover{
+  text-decoration: underline;
+  color: rgb(0, 153, 204);
+  cursor: pointer;
+}
+.delete-Dialog{
+    font-family: 'Akaya Telivigala', cursive;
+}
+.serviceDiv{
+    overflow: hidden;
+}
+.serviceDiv .plus{
+    background-color: white;
+    color: rgb(239, 174, 28);
+    border: none;
+    font-size: xx-large;
+    margin-top: 8px;
+    margin-left: 8px;
+    display: inline-block;
+    float: left;
+}
+.serviceDiv .search{
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+.serviceDiv .showServices{
+    height: auto;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+.serviceDiv .showServices .sepcService{
+    width: 20%;
+    margin: 5%;
+    height: 100px;
+    background-color:rgb(239, 174, 28);
+    float: left;
+}
+.inputForDelete:focus,
+.continue:focus,.Save-Changes:focus, .fieldsChange form input:focus{
+    outline: none;
+}
+@media only screen and (max-width: 1200px){
+    .externalDiv{
+        width: 80%;
+    }
+    .fieldsChange form .Save-Changes{
+        width: auto;
+    }
+}
+@media screen and (max-width: 700px){
+    .externalDiv{
+        width: 95%;
+    }
+    
+    .fieldsChange form{
+        width: 100%;
+    }
+    .fieldsChange form label,.fieldsChange form input{
+        width: 70%;
+        margin: auto;
+        float: none;
+    }
+    .fieldsChange form .Save-Changes{
+        width: auto;
+    }
+}

@@ -49,7 +49,12 @@
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
 }
-
+.fields{
+	width: 50%;
+	margin: auto;
+	margin-top: 5%;
+	height: 500px;
+}
 span {
   font-size: 12px;
 }
