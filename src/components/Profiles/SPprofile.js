@@ -4,38 +4,47 @@ import style from '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import ServiceDetailsDialog from './ServiceDetailsDialog';
 import { CustomDialog }           from 'react-st-modal';
+import EditServiceDetails from './EditServiceDetails';
 class SPprofile extends Component{
+    constructor(props){
+        super(props);
+        this.state = {enabled:'disabled'};
+    }
     render(){
+        const changeState = () =>{
+            this.setState({enabled:''});
+        };
         return(
             <div className='externalDiv' id='scrollDiv'>
                 <div className='header'>
                     <img src={logo} className='Default-img'/>
                     <h3>Personal information</h3>
                 </div>
+                <a className='edit' onClick={changeState} style={{width:'90%'}}>Edit</a>
                 <div className='fieldsChange'>
                     <form>
-                        <label>Name :</label>
-                        <input type='text'/>
+                        <label htmlFor='nameSP'>Name :</label>
+                        <input type='text' disabled={this.state.enabled} id='nameSP' name='nameSP'/>
                         <br/>
-                        <label>Email :</label>
-                        <input type='email'/>
+                        <label htmlFor='emailSP'>Email :</label>
+                        <input type='email' disabled={this.state.enabled} id='emailSP' name='emailSP'/>
                         <br/>
-                        <label>Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='passwordSP'>Password :</label>
+                        <input type='password' disabled={this.state.enabled} id='passwordSP' name='passwordSP'/>
                         <br/>
-                        <label>Confirm Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='confirmSP'>Confirm Password :</label>
+                        <input type='password' disabled={this.state.enabled} id='confirmSP' name='confirmSP'/>
                         <br/>
-                        <label>Phone :</label>
-                        <input type='text'/>
+                        <label htmlFor='phoneSP'>Phone :</label>
+                        <input type='text' disabled={this.state.enabled} id='phoneSP' name='phoneSP'/>
                         <br/>
-                        <label>Service type :</label>
-                        <input type='text'/>
+                        <label htmlFor='typeSP'>Service type :</label>
+                        <input type='text' disabled={this.state.enabled} id='typeSP' name='typeSP'/>
                         <br/>
-                        <label>Description :</label>
-                        <input type='text'/>
+                        <label htmlFor='descSP'>Description :</label>
+                        <input type='text' disabled={this.state.enabled} id='descSP' name='descSP'/>
                         <br/>
-                        <button type='submit'className='Save-Changes'>Save Changes</button>
+                        <button type='submit'className='Save-Changes' disabled={this.state.enabled} id='formSP' name='formSP'>Save Changes</button>
                     </form>
                 </div>
                 <hr/>
@@ -56,7 +65,12 @@ class SPprofile extends Component{
                     }}>&#43;</button>
                     <input type='search' placeholder='Search' className='search'/>
                     <div className='showServices'>
-                        <div className='sepcService'></div>
+                        <div className='sepcService' onClick={async () => {
+                        const result = await CustomDialog(<EditServiceDetails />, {
+                            title: 'Service Details',
+                            showCloseIcon: true,
+                        });
+                    }}></div>
                         <div className='sepcService'></div>
                         <div className='sepcService'></div>
                         <div className='sepcService'></div>

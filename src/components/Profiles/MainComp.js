@@ -4,28 +4,37 @@ import style from '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { CustomDialog }           from 'react-st-modal';
 class MainComp extends Component{
+    constructor(props){
+        super(props);
+        this.state = {enabled:'disabled'};
+    }
     render(){
+        const changeState = () =>{
+            this.setState({enabled:''});
+        };
         return(
             <div className='externalDiv'>
                 <div className='header'>
                     <img src={logo} className='Default-img'/>
                     <h3>Personal information</h3>
                 </div>
+                <a className='edit' onClick={changeState} style={{width:'90%'}}>Edit</a>
+                <br/>
                 <div className='fieldsChange'>
                     <form>
-                        <label>Name :</label>
-                        <input type='text'/>
+                        <label htmlFor='namePerson'>Name :</label>
+                        <input type='text'  disabled={this.state.enabled} id='namePerson' name='namePerson'/>
                         <br/>
-                        <label>Email :</label>
-                        <input type='email'/>
+                        <label htmlFor='emailPerson'>Email :</label>
+                        <input type='email'  disabled={this.state.enabled} id='emailPerson' name='emailPerson'/>
                         <br/>
-                        <label>Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='passwordPerson'>Password :</label>
+                        <input type='password'  disabled={this.state.enabled} id='passwordPerson' name='passwordPerson'/>
                         <br/>
-                        <label>Confirm Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='confirmPerson'>Confirm Password :</label>
+                        <input type='password'  disabled={this.state.enabled} id='confirmPerson' name='confirmPerson'/>
                         <br/>
-                        <button type='submit'className='Save-Changes'>Save Changes</button>
+                        <button type='submit'className='Save-Changes'  disabled={this.state.enabled} id='formPerson' name='formPerson'>Save Changes</button>
                     </form>
                 </div>
                 <hr/>

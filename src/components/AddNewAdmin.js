@@ -8,19 +8,19 @@ class AddNewAdmin extends Component{
                 <div className='fieldsChange'>
                     <form>
                         <h2 className='h2' >Add New Admin</h2>
-                        <label>Name :</label>
-                        <input type='text'/>
+                        <label htmlFor='nameAdmin'>Name :</label>
+                        <input type='text' id='nameAdmin' name='nameAdmin'/>
                         <br/>
-                        <label>Email :</label>
-                        <input type='email'/>
+                        <label htmlFor='emailAdmin'>Email :</label>
+                        <input type='email' id='emailAdmin' name='emailAdmin'/>
                         <br/>
-                        <label>Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='passwordAdmin'>Password :</label>
+                        <input type='password' id='passwordAdmin' name='passwordAdmin'/>
                         <br/>
-                        <label>Confirm Password :</label>
-                        <input type='password'/>
+                        <label htmlFor='confirmAdmin'>Confirm Password :</label>
+                        <input type='password' id='confirmAdmin' name='confirmAdmin'/>
                         <br/>
-                        <button type='submit'className='Save-Changes'>Save Changes</button>
+                        <button type='submit'className='Save-Changes' id='addAdminForm' name='addAdminForm'>Save Changes</button>
                     </form>
                 </div>
             </div>
