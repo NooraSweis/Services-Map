@@ -5,17 +5,15 @@
     margin-bottom: 4%;
     overflow: hidden;
     background-color: white;
-    border: 1px solid black;
     font-family: 'Akaya Telivigala', cursive;
+    border: 5px solid;
+    border-color: blanchedalmond;
+
 }
-#scrollDiv{
-    max-height: 600px;
-    overflow-y: scroll;
-    
-}
+
 .header{
     overflow: hidden;
-    padding: 10px;
+    margin: 8px;
 }
 .header .Default-img{
     float: left;
