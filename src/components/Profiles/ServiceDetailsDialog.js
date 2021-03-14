@@ -17,29 +17,29 @@ function ServiceDetailsDialog () {
         };
         return(
             <center className='fieldsChange'>
-                <img src={src}  id='ServicePic' style={{width:'95%'}}/>
+                <img src={src}  id='ServicePic' style={{width:'95%',height:'250px'}}/>
                 <form>
                     <label for="img">Select image:</label>
                     <input type="file" id="img" name="img" accept="image/*" onChange={changeHandler} />
-                    <label>Service Name :</label>
-                    <input type='text' />
+                    <label htmlFor='addSname'>Service Name :</label>
+                    <input type='text' id='addSname' name='addSname'/>
                     <br/>
-                    <label>Description :</label>
-                    <input type='text' />
+                    <label htmlFor='addSDesc'>Description :</label>
+                    <input type='text' id='addSDesc' name='addSDesc'/>
                     <br/>
-                    <label>Phone :</label>
-                    <input type='text' />
+                    <label htmlFor='addSPhone'>Phone :</label>
+                    <input type='text' id='addSPhone' name='addSPhone'/>
                     <br/>
-                    <label>Address :</label>
-                    <input type='text' />
+                    <label htmlFor='addSAddress'>Address :</label>
+                    <input type='text' id='addSAddress' name='addSAddress'/>
                     <br/>
-                    <label>Status :</label>
-                    <input type='text' />
+                    <label htmlFor='addSStatus'>Status :</label>
+                    <input type='text' id='addSStatus' name='addSStatus'/>
                     <br/>
                     <button className='continue' onClick={(e)=>{
                         setValue(e.target.value);
                         dialog.close(value);
-                    }}>Add Service</button>
+                    }} id='addSForm' name='addSForm'>Add Service</button>
                 </form>
             </center>
         );

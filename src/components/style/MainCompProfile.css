@@ -5,17 +5,15 @@
     margin-bottom: 4%;
     overflow: hidden;
     background-color: white;
-    border: 1px solid black;
     font-family: 'Akaya Telivigala', cursive;
+    border: 5px solid;
+    border-color: blanchedalmond;
+
 }
-#scrollDiv{
-    max-height: 600px;
-    overflow-y: scroll;
-    
-}
+
 .header{
     overflow: hidden;
-    padding: 10px;
+    margin: 8px;
 }
 .header .Default-img{
     float: left;
@@ -28,6 +26,9 @@
     margin-left: 5px;
     width: auto;
 }
+.fieldsChange{
+    font-family: 'Akaya Telivigala', cursive;
+}
 .fieldsChange form{
     width: 70%;
     margin: auto;
@@ -37,7 +38,7 @@
     font-size: large;
     padding: 12px 15px ;
     display: inline-block;
-    width:40%;
+    width:31%;
     float: left;
 }
 .fieldsChange form input , .inputForDelete{
@@ -46,7 +47,7 @@
     border-radius: 20px ;
 	padding: 12px 15px;
 	margin: 8px 0;
-	width: 31%;
+	width: 40%;
     margin-left: 15px;
 }
 .fieldsChange form .Save-Changes,.continue{
@@ -58,13 +59,16 @@
     margin: 12px auto;
     font-family: 'Akaya Telivigala', cursive;
 }
-.externalDiv .Delete{
+.externalDiv .Delete,.edit{
     margin: 8px;
 }
-.externalDiv .Delete:hover{
+.externalDiv .Delete:hover, .edit:hover{
   text-decoration: underline;
   color: rgb(0, 153, 204);
   cursor: pointer;
+}
+.edit{
+    float: left;
 }
 .delete-Dialog{
     font-family: 'Akaya Telivigala', cursive;
@@ -99,9 +103,11 @@
     height: 100px;
     background-color:rgb(239, 174, 28);
     float: left;
+    cursor: pointer;
 }
+
 .inputForDelete:focus,
-.continue:focus,.Save-Changes:focus, .fieldsChange form input:focus{
+.continue:focus,.Save-Changes:focus, .fieldsChange form input:focus,.serviceDiv .plus,.serviceDiv .search{
     outline: none;
 }
 @media only screen and (max-width: 1200px){
