@@ -1,0 +1,91 @@
+.outerdiv {
+  width: 50%;
+  margin: auto;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  padding: 2%;
+  overflow: hidden;
+  background-color: white;
+  font-family: "Akaya Telivigala", cursive;
+  border: 5px solid #f1b93d;
+}
+
+.approval-item {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  background-color: #f1b93d;
+  padding: 2%;
+}
+
+.approval-dialog-photo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 2%;
+}
+.approval-dialog-photo .Default-img {
+  border-radius: 50%;
+  border: 5px solid rgb(239, 174, 28);
+  width: 40%;
+  height: 40%;
+}
+
+#map {
+  margin: auto;
+}
+
+.aprroval-item-name {
+  font-size: larger;
+  width: 80%;
+}
+
+.aprroval-item-name:hover {
+  cursor: pointer;
+}
+
+.aprroval-item-btn {
+  font-size: larger;
+  width: 20%;
+  height: 20%;
+  text-align: center;
+  color: white;
+  background-color: #70ad47;
+  border: 1px solid green;
+}
+
+.row-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.approval-dialog-item {
+  width: 50%;
+  margin: 1%;
+  background-color: lightgray;
+  padding: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .aprroval-item-btn {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .outerdiv {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .outerdiv {
+    width: 80%;
+  }
+  .aprroval-item-name {
+    font-size: small;
+  }
+  .aprroval-item-btn {
+    font-size: small;
+  }
+}
