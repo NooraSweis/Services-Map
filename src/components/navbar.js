@@ -18,10 +18,17 @@ class Navbar extends React.Component {
 					<NavLink to="/Map" className="item">Map</NavLink>
 					<NavLink to="/SignIn" className="item">Sign In</NavLink>
 					<NavLink to="/about" className="item">About</NavLink>
+<<<<<<< HEAD
 					<div className="dropdown">
 						<button className="item">User Name</button>
 						<div className="dropdown-content">
 							<NavLink exact to="/" className="admin-item">Account Approval</NavLink>
+=======
+					<div class="dropdown">
+						<button class="item">User Name</button>
+						<div class="dropdown-content">
+							<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
+>>>>>>> ed0f3d9043484fc34da318412c6eaf64713aab4b
 							<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 							<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
 							<NavLink to="/" className="admin-item">Log Out</NavLink>

@@ -1,49 +1,50 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import logo from '../image/Profile.jpg';
-import style from '../style/MainCompProfile.css';
+import '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
-import { CustomDialog }           from 'react-st-modal';
-class MainComp extends Component{
-    constructor(props){
+import { CustomDialog } from 'react-st-modal';
+
+class MainComp extends Component {
+    constructor(props) {
         super(props);
-        this.state = {enabled:'disabled'};
+        this.state = { enabled: 'disabled' };
     }
-    render(){
-        const changeState = () =>{
-            this.setState({enabled:''});
+    render() {
+        const changeState = () => {
+            this.setState({ enabled: '' });
         };
-        return(
+        return (
             <div className='externalDiv'>
                 <div className='header'>
-                    <img src={logo} className='Default-img'/>
+                    <img src={logo} className='Default-img' />
                     <h3>Personal information</h3>
                 </div>
-                <a className='edit' onClick={changeState} style={{width:'90%'}}>Edit</a>
-                <br/>
+                <a className='edit' onClick={changeState} style={{ width: '90%' }}>Edit</a>
+                <br />
                 <div className='fieldsChange'>
                     <form>
                         <label htmlFor='namePerson'>Name :</label>
-                        <input type='text'  disabled={this.state.enabled} id='namePerson' name='namePerson'/>
-                        <br/>
+                        <input type='text' disabled={this.state.enabled} id='namePerson' name='namePerson' />
+                        <br />
                         <label htmlFor='emailPerson'>Email :</label>
-                        <input type='email'  disabled={this.state.enabled} id='emailPerson' name='emailPerson'/>
-                        <br/>
+                        <input type='email' disabled={this.state.enabled} id='emailPerson' name='emailPerson' />
+                        <br />
                         <label htmlFor='passwordPerson'>Password :</label>
-                        <input type='password'  disabled={this.state.enabled} id='passwordPerson' name='passwordPerson'/>
-                        <br/>
+                        <input type='password' disabled={this.state.enabled} id='passwordPerson' name='passwordPerson' />
+                        <br />
                         <label htmlFor='confirmPerson'>Confirm Password :</label>
-                        <input type='password'  disabled={this.state.enabled} id='confirmPerson' name='confirmPerson'/>
-                        <br/>
-                        <button type='submit'className='Save-Changes'  disabled={this.state.enabled} id='formPerson' name='formPerson'>Save Changes</button>
+                        <input type='password' disabled={this.state.enabled} id='confirmPerson' name='confirmPerson' />
+                        <br />
+                        <button type='submit' className='Save-Changes' disabled={this.state.enabled} id='formPerson' name='formPerson'>Save Changes</button>
                     </form>
                 </div>
-                <hr/>
+                <hr />
                 <a className='Delete' onClick={async () => {
-                        const result = await CustomDialog(<DeleteConfirmationDialog />, {
-                            title: 'Delete Account',
-                            showCloseIcon: true,
-                        });
-                    }}>Delete Account</a>
+                    const result = await CustomDialog(<DeleteConfirmationDialog />, {
+                        title: 'Delete Account',
+                        showCloseIcon: true,
+                    });
+                }}>Delete Account</a>
             </div>
         );
     }

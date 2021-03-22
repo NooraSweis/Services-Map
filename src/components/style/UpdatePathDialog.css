@@ -1,0 +1,25 @@
+.outercenter {
+  border: 5px solid #f1b93d;
+  padding: 20px;
+}
+
+.update-path-item {
+  background-color: #f1b93d;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  padding: 10px;
+}
+
+.update-path-item-name {
+  margin-left: 10px;
+}
+
+.update-path-btn {
+  background-color: #f1b93d;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  font-family: "Akaya Telivigala", cursive;
+  font-weight: bolder;
+  font-size: larger;
+}

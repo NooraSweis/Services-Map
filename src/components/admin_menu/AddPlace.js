@@ -1,7 +1,7 @@
 import React from 'react';
-import "./style/AddPlace.css";
+import "../style/AddPlace.css";
 import AddPlaceCard from "./AddPlaceCard";
-import Map from "./Map";
+import Map from "../Map";
 
 const AddPlace = () => {
     return (
