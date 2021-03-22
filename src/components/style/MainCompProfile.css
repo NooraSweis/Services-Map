@@ -186,7 +186,6 @@
     width: 95%;
   }
 
-<<<<<<< HEAD
 .inputForDelete:focus,
 .continue:focus,.Save-Changes:focus, .fieldsChange form input:focus,.serviceDiv .plus,.serviceDiv .search{
     outline: none;
@@ -216,7 +215,6 @@
     .fieldsChange form .Save-Changes{
         width: auto;
     }
-=======
   .fieldsChange form {
     width: 100%;
   }
@@ -229,5 +227,4 @@
   .fieldsChange form .Save-Changes {
     width: auto;
   }
->>>>>>> ed0f3d9043484fc34da318412c6eaf64713aab4b
 }
