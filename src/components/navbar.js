@@ -18,9 +18,9 @@ class Navbar extends React.Component {
 					<NavLink to="/Map" className="item">Map</NavLink>
 					<NavLink to="/SignIn" className="item">Sign In</NavLink>
 					<NavLink to="/about" className="item">About</NavLink>
-					<div class="dropdown">
-						<button class="item">User Name</button>
-						<div class="dropdown-content">
+					<div className="dropdown">
+						<button className="item">User Name</button>
+						<div className="dropdown-content">
 							<NavLink exact to="/" className="admin-item">Account Approval</NavLink>
 							<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 							<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
@@ -28,7 +28,7 @@ class Navbar extends React.Component {
 						</div>
 					</div>
 				</ul>
-				<label for="nav-toggle" className="icon-burger">
+				<label htmlFor="nav-toggle" className="icon-burger">
 					<div className="line"></div>
 					<div className="line"></div>
 					<div className="line"></div>
