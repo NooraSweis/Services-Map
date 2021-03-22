@@ -9,8 +9,6 @@
   border: 5px solid;
   border-color: blanchedalmond;
 }
-
-<<<<<<< HEAD
 .header{
     overflow: hidden;
     margin: 8px;
@@ -63,65 +61,6 @@
     margin: 8px;
 }
 .externalDiv .Delete:hover, .edit:hover{
-=======
-.header {
-  overflow: hidden;
-  margin: 8px;
-}
-.header .Default-img {
-  float: left;
-  border-radius: 50%;
-  border: 5px solid rgb(239, 174, 28);
-  width: 10%;
-}
-.header h3,
-.part2 {
-  float: left;
-  margin-left: 5px;
-  width: auto;
-}
-.fieldsChange {
-  font-family: "Akaya Telivigala", cursive;
-}
-.fieldsChange form {
-  width: 70%;
-  margin: auto;
-  text-align: center;
-}
-.fieldsChange form label {
-  font-size: large;
-  padding: 12px 15px;
-  display: inline-block;
-  width: 31%;
-  float: left;
-}
-.fieldsChange form input,
-.inputForDelete {
-  background-color: #eee;
-  border: none;
-  border-radius: 20px;
-  padding: 12px 15px;
-  margin: 8px 0;
-  width: 40%;
-  margin-left: 15px;
-}
-.fieldsChange form .Save-Changes,
-.continue {
-  border-radius: 20px;
-  padding: 12px 15px;
-  width: 49%;
-  border: none;
-  background-color: rgb(239, 174, 28);
-  margin: 12px auto;
-  font-family: "Akaya Telivigala", cursive;
-}
-.externalDiv .Delete,
-.edit {
-  margin: 8px;
-}
-.externalDiv .Delete:hover,
-.edit:hover {
->>>>>>> ed0f3d9043484fc34da318412c6eaf64713aab4b
   text-decoration: underline;
   color: rgb(0, 153, 204);
   cursor: pointer;
@@ -172,23 +111,6 @@
 .serviceDiv .plus,
 .serviceDiv .search {
   outline: none;
-}
-@media only screen and (max-width: 1200px) {
-  .externalDiv {
-    width: 80%;
-  }
-  .fieldsChange form .Save-Changes {
-    width: auto;
-  }
-}
-@media screen and (max-width: 700px) {
-  .externalDiv {
-    width: 95%;
-  }
-
-.inputForDelete:focus,
-.continue:focus,.Save-Changes:focus, .fieldsChange form input:focus,.serviceDiv .plus,.serviceDiv .search{
-    outline: none;
 }
 @media only screen and (max-width: 1200px){
     .externalDiv{
