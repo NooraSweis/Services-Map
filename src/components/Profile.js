@@ -4,18 +4,20 @@ import MainComp from './Profiles/MainComp';
 import './style/Profile&favorite(out).css';
 import './style/MainCompProfile.css';
 import SP from './Profiles/SPprofile';
+import Nav from './navbar';
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { position: 'SP' };
+    this.state = { position: 'Admin' };
   }
   signIn = () => {
     this.props.history.push('/SignIn/');
-
   }
+
   render() {
     const position = this.state.position;
+    <Nav position={this.state}></Nav>
     switch (position) {
       case 'client-out':
         return (

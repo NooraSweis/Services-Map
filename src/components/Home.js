@@ -1,9 +1,11 @@
 import React from 'react';
+import './style/Home.css'
 
 const Home = () => {
-    return (<div>
-        <input type='search' placeholder='Search' className='home-search' />
-    </div>
+    return (
+        <div>
+            <input type='search' placeholder='Search' className='search' id='home-search' />
+        </div>
     );
 }
 

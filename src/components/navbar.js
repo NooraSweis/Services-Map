@@ -4,10 +4,13 @@ import "./navbar.css";
 import { NavLink } from 'react-router-dom';
 
 class Navbar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { position: this.props.position };
+	}
 	render() {
 		return (
 			<div className="navbar">
-
 				<input id="nav-toggle" type="checkbox" />
 				<img className="logo" src="https://i.ibb.co/Dg4r5Gt/logo.png" alt="LOGO" />
 
