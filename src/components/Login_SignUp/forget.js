@@ -1,9 +1,9 @@
-import React, { useState }                     from 'react';
-import { useDialog }                           from 'react-st-modal';
+import React, { useState } from 'react';
+import { useDialog } from 'react-st-modal';
 
 function CustomDialogContent() {
-    const dialog = useDialog();
 
+    const dialog = useDialog();
     const [value, setValue] = useState();
 
     return (
@@ -14,7 +14,7 @@ function CustomDialogContent() {
                 placeholder="Username"
                 onChange={(e) => {
                     setValue(e.target.value);
-                    
+
                 }}
             />
             <input
@@ -26,16 +26,16 @@ function CustomDialogContent() {
                 }}
             />
             <div >
-            <button 
-              className='button'
-                onClick={() => {
+                <button
+                    className='button'
+                    onClick={() => {
 
-                    dialog.close(value);
-                }}
-            >
-               Rest password
+                        dialog.close(value);
+                    }}
+                >
+                    Rest password
       </button>
-      </div>
+            </div>
         </center>
     );
 }
