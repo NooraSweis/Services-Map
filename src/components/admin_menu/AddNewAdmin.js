@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../style/MainCompProfile.css';
-
+import firebase from '../config';
 class AddNewAdmin extends Component {
     render() {
         return (

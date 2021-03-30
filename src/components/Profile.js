@@ -9,7 +9,7 @@ import Nav from './navbar';
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { position: 'Admin' };
+    this.state = { position: 'SP' };
   }
   signIn = () => {
     this.props.history.push('/SignIn/');

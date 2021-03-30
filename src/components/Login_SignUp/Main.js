@@ -22,7 +22,7 @@ export const Main = (props) => {
 
                 <div className="overlay-container">
                     <div className="overlay">
-                        <div class="overlay-panel overlay-right">
+                        <div className="overlay-panel overlay-right">
                             <h1 className='h1' >Hello, Friend!</h1>
                             <p className='p' > If you don't have an account select your registration as !</p>
                             <button className="ghost button" id="signUp" onClick={() => {

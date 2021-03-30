@@ -13,7 +13,12 @@ import AddNewAdmin from './components/admin_menu/AddNewAdmin';
 import Show_SP_Fields from './components/Login_SignUp/Show-SP-fields';
 import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
 
-function App() {
+class App extends React.Component {
+	constructor(props){
+		super(props);
+		
+	}
+	render(){
 	return (
 		<BrowserRouter>
 			<Navbar />
@@ -31,5 +36,5 @@ function App() {
 		</BrowserRouter>
 	);
 }
-
+}
 export default App;
