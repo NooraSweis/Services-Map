@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import '../style/MainCompProfile.css';
-import firebase from '../config';
+
 class AddNewAdmin extends Component {
     render() {
         return (
             <div className='externalDiv'>
-
                 <div className='fieldsChange'>
                     <form>
                         <h2 className='h2' >Add New Admin</h2>

@@ -49,12 +49,6 @@ h2 {
   transform: translate(-50%, -50%);
 }
 
-#map {
-  width: 40%;
-  margin-right: 5%;
-  margin-left: 5%;
-}
-
 .split {
   display: flex;
   flex-direction: row;
@@ -72,16 +66,14 @@ h2 {
   .right {
     margin-top: 350px;
     width: 100%;
+    margin-left: 5%;
   }
   .card {
     width: 80%;
     left: 50%;
-    top: 250px; 
+    top: 250px;
   }
   .input {
     width: 35%;
-  }
-  #map {
-    width: 80%;
   }
 }

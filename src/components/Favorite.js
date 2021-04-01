@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import "./style/Profile&favorite(out).css";
 
 class Favorite extends Component {

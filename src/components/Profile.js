@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import MainComp from './Profiles/MainComp';
 import './style/Profile&favorite(out).css';
 import './style/MainCompProfile.css';
@@ -27,7 +26,6 @@ class Profile extends Component {
             <button className="signBtn" onClick={this.signIn}><b>Sign in</b></button>
           </div>
         );
-        break;
       case 'Admin':
       case 'client-in':
         return (
@@ -35,13 +33,13 @@ class Profile extends Component {
             <MainComp />
           </div>
         );
-        break;
       case 'SP':
         return (
           <div >
             <SP />
           </div>
         );
+      default:
     }
 
   }
