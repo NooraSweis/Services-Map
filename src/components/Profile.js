@@ -36,12 +36,10 @@ class Profile extends Component {
             <SP />
           </div>
         );
-<<<<<<< HEAD
+
         default :
         return(<div></div>)
-=======
-      default:
->>>>>>> 76b699d720cae6147b9b9b73cee94e6275cebd7b
+
     }
 
   }

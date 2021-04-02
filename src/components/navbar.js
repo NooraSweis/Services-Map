@@ -5,10 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Navbar extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { positionAdmin: true };
-	}
+	
 
 	render() {
 		return (
@@ -28,7 +25,7 @@ class Navbar extends Component {
 						(<div className="dropdown" id='List'>
 							<button className="item">User Name</button>
 
-							{this.state.positionAdmin ?
+							{this.props.position==='Admin' ?
 								(<div className="dropdown-content">
 									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
@@ -52,7 +49,8 @@ class Navbar extends Component {
 }
 function mapStateToProps(state) {
 	return {
-		isLoggedIn: state.isLoggedIn
+		isLoggedIn: state.isLoggedIn,
+		position: state.position
 	}
 }
 export default connect(mapStateToProps)(Navbar);
