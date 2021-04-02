@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap");
+
+.about {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.about div {
+  flex-grow: 1;
+}
+
+.about-image {
+  background-image: url(../image/Tulkarm.png);
+  background-repeat: no-repeat;
+  position: fixed;
+  min-width: 100%;
+  min-height: 80%;
+  background-size: cover;
+  background-position: center;
+}
+
+.about-image span {
+  font-family: "Akaya Telivigala", cursive;
+  background: white;
+  font-size: xx-large;
+}
+
+.about-paragragh {
+  font-size: 100%;
+  width: 70%;
+}
