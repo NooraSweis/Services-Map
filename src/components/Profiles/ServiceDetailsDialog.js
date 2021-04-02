@@ -4,7 +4,7 @@ import img from '../image/servicesDefault.png';
 import '../style/MainCompProfile.css';
 
 function ServiceDetailsDialog() {
-    const [source, setSource] = useState({ source: img });
+    useState({ source: img });
     const dialog = useDialog();
     const [value, setValue] = useState();
     const [{ src }, setImg] = useState({
@@ -18,7 +18,7 @@ function ServiceDetailsDialog() {
 
     return (
         <center className='fieldsChange'>
-            <img src={src} id='ServicePic' style={{ width: '95%', height: '250px' }} />
+            <img src={src} id='ServicePic' alt='service image' style={{ width: '95%', height: '250px' }} />
             <form>
                 <label for="img">Select image:</label>
                 <input type="file" id="img" name="img" accept="image/*" onChange={changeHandler} />

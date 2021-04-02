@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import { useDialog } from 'react-st-modal';
 import logo from '../image/Profile.jpg';
-import Map from "../Map";
+import Map from "../map/Map";
 import "../style/AccountApproval.css";
 
 function ItemDialog() {
 
-    const dialog = useDialog();
-    const [value, setValue] = useState();
-    const [setImg] = useState({
-    });
-
-    const changeHandler = (event) => {
-        setImg({ src: URL.createObjectURL(event.target.files[0]) }
-        );
-    };
+    useDialog();
+    useState();
 
     return (
         <center className="fieldsChange">
             <form>
                 <div className='approval-dialog-photo'>
-                    <img src={logo} className='Default-img' />
+                    <img src={logo} alt='logo' className='Default-img' />
                 </div>
                 <br />
                 <div className="row-item">

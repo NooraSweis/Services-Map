@@ -1,7 +1,7 @@
 import React from 'react';
 import "../style/AddPlace.css";
 import AddPlaceCard from "./AddPlaceCard";
-import Map from "../Map";
+import Map from "../map/FixedMap";
 
 const AddPlace = () => {
     return (
@@ -9,7 +9,7 @@ const AddPlace = () => {
             <div className="left">
                 <AddPlaceCard />
             </div>
-            <div className="right" id="map">
+            <div className="right">
                 <Map />
             </div>
         </div>
