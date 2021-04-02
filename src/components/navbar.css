@@ -3,6 +3,8 @@
 
 body {
     background-image: url("https://i.ibb.co/QXy2jC0/backg.jpg");
+	background-image:none;
+	background-color: rgb(239,174,28);
     background-size: cover;
 	background-position: center center;
     background-repeat: no-repeat;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Component } from 'react';
 import fire from '../config';
 class Signup_client_Fields extends Component {

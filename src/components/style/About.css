@@ -3,7 +3,7 @@
 .about {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height:500px;
 }
 
 .about div {
@@ -13,11 +13,12 @@
 .about-image {
   background-image: url(../image/Tulkarm.png);
   background-repeat: no-repeat;
-  position: fixed;
   min-width: 100%;
   min-height: 80%;
   background-size: cover;
   background-position: center;
+  text-align: center;
+  padding-top: 1%;
 }
 
 .about-image span {
@@ -27,6 +28,39 @@
 }
 
 .about-paragragh {
-  font-size: 100%;
+  font-size: 120%;
+  width: 70%;
+  text-align: justify;
+  text-justify: inter-word;
+  margin: auto;
+  font-weight: bold;
+  margin-top: 2%;
+}
+.about-team{
+  margin: 4%;
+  text-align: center;
+  text-decoration: underline;
+  font-weight: bold;
+  font-family: "Akaya Telivigala", cursive;
+  font-size: xx-large;
+  color: red;
+}
+.divMembers{
+  display: inline-block;
+  width: 70%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  font-family: "Akaya Telivigala", cursive;
+  font-size: x-large;
+}
+.member{
+  width: 30%;
+  text-align: center;
+  float: left;
+  margin-bottom: 100px;
+}
+.teamMemberPhoto{
+  border-radius: 50%;
   width: 70%;
 }

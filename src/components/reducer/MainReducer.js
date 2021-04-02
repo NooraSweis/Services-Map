@@ -1,7 +1,6 @@
 const initState={
     isLoggedIn:false,
-    position:'client-out',
-    email:''
+    position:'client-out'
 }
 const reducer =(state=initState,action)=>{
     if(action.type==='LOGIN')
