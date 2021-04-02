@@ -14,8 +14,8 @@ class Map extends Component {
         return (
             <MapContainer className="leaflet-map" center={[latitude, longitude]} zoom={17} scrollWheelZoom={true}>
                 <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {
                     !this.props.coords ?

@@ -11,16 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.about {
-  border-radius: 64px;
-  margin-left: 25%;
-  margin-right: 20%;
-  margin-top: 8%;
-  width: 40%;
-  text-align: center;
-  background-color: #e0b45be0;
-  padding: 3%;
-}
 .container {
   width: 50%;
   margin: auto;
