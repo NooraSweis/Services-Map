@@ -5,21 +5,32 @@ import fire from '../config';
 import {connect} from 'react-redux';
 
 class Login_Fields extends Component {
-
+    
     login=()=> {
+        
         const email = document.querySelector('#logEmail').value;
         const password = document.querySelector('#logPassword').value;
-        fire.auth().signInWithEmailAndPassword(email, password)
-          .then((u) => {
-            this.props.login({type:'LOGIN'})
-            console.log("successfully login")
-          })
-          .catch((err) => {
+        fire.auth().signInWithEmailAndPassword(email,password).then((u)=>{
+            fire.firestore().collection('User').where('email','==',email).get().then((snapshot)=>{
+                snapshot.forEach((doc)=>{
+                        this.props.login({type:'LOGIN'})
+                        this.props.position({type:doc.data().type})
+                        console.log("successfully login")
+                        
+            })
+        })
+ 
+            .catch((err) => {
+                console.log('Error: ' + err.toString());
+            })
+           
+        })
+          .catch((err)=>{
             console.log('Error: ' + err.toString());
-          })
-      }
-    
+          }) 
+    }
 render(){
+    
     return (
         <div className="form-container sign-in-container">
             <form className='form' action="#">
@@ -45,8 +56,10 @@ render(){
     );
 }}
 function mapDispatchToProps(dispatch){
-    return{
-        login:(item)=>dispatch(item)
+    return {
+        login:(item)=>dispatch(item),
+        position:(items)=>dispatch(items)
     }
   }
+
 export default connect(null,mapDispatchToProps)(Login_Fields);

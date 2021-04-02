@@ -5,19 +5,16 @@ import './style/Profile&favorite(out).css';
 import './style/MainCompProfile.css';
 import SP from './Profiles/SPprofile';
 import Nav from './navbar';
+import {connect} from 'react-redux';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { position: 'SP' };
-  }
+  
   signIn = () => {
     this.props.history.push('/SignIn/');
   }
 
   render() {
-    const position = this.state.position;
-    <Nav position={this.state}></Nav>
+    const position = this.props.position;
     switch (position) {
       case 'client-out':
         return (
@@ -42,9 +39,15 @@ class Profile extends Component {
             <SP />
           </div>
         );
+        default :
+        return(<div></div>)
     }
 
   }
 }
-
-export default Profile;
+function mapStateToProps(state){
+  return{
+	     position:state.position
+  }
+}
+export default connect(mapStateToProps)(Profile);

@@ -1,11 +1,14 @@
 const initState={
-    isLoggedIn:false
+    isLoggedIn:false,
+    position:'client-out'
 }
 const reducer =(state=initState,action)=>{
     if(action.type==='LOGIN')
-    return{isLoggedIn:true}
+       return{...state,isLoggedIn:true}
     if(action.type==='LOGOUT')
-    return{isLoggedIn:false}
+       return{isLoggedIn:false}
+    if(action.type==='client-in')
+       return{...state,position:'client-in'}
     return state
 }
 export default reducer;
