@@ -13,6 +13,9 @@ import AddNewAdmin from './components/admin_menu/AddNewAdmin';
 import Show_SP_Fields from './components/Login_SignUp/Show-SP-fields';
 import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
 
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.js";
+
 class App extends Component {
 
 	render() {

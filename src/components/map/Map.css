@@ -10,3 +10,9 @@
   padding: 250px 20px;
   margin-top: 5%;
 }
+
+.leaflet-signup-map {
+  width: 20%;
+  height: 20%;
+  padding: 100px 100px;
+}
