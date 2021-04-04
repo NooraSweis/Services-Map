@@ -1,5 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap");
 
+/*
+هاد ضفته عشان نحط الماب في تسجيل البروفايدر
+*/
+.provider-form {
+  padding-top: 200px;
+  overflow-y: scroll;
+
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 1px;
+  height: 100%;
+  text-align: center;
+}
+
 .mainDiv {
   width: 97%;
   height: 541px;

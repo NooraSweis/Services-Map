@@ -1,43 +1,34 @@
 import React, { Component } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import { geolocated } from 'react-geolocated';
+
+const DEFAULT_LATITUDE = 32.313268;
+const DEFAULT_LONGITUDE = 35.022895;
+var latitude;
+var longitude;
 
 class Map extends Component {
+
     render() {
-        const DEFAULT_LATITUDE = 32.313268;
-        const DEFAULT_LONGITUDE = 35.022895;
-        const latitude = this.props.coords ? this.props.coords.latitude : DEFAULT_LATITUDE;
-        const longitude = this.props.coords ? this.props.coords.longitude : DEFAULT_LONGITUDE;
+        latitude = this.props.coords ? this.props.coords.latitude : DEFAULT_LATITUDE;
+        longitude = this.props.coords ? this.props.coords.longitude : DEFAULT_LONGITUDE;
+        console.log(latitude + " " + longitude);
 
         return (
-            <MapContainer className="leaflet-map" center={[latitude, longitude]} zoom={17} scrollWheelZoom={true}>
+            <MapContainer className="leaflet-map" center={[latitude, longitude]}
+                zoom={17} scrollWheelZoom={false}
+                whenCreated={(map) => this.setState({ map })}>
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {
-                    !this.props.coords ?
-                        <div className="loading">Loading</div>
-                        :
-                        <Marker position={[latitude, longitude]}>
-                            <Popup>
-                                Here you are ^_^
-                            </Popup>
-                        </Marker>
-                }
             </MapContainer>
         );
     }
 }
 
-export default geolocated({
-    positionOptions: {
-        enableHighAccuracy: false
-    },
-    userDecisionTimeout: 1000
-})(Map);
+export default Map;
 
 /*
 Resources:
