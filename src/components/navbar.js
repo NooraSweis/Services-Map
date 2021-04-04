@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import "./navbar.css";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import fire from './config';
 class Navbar extends Component {
 	
 
