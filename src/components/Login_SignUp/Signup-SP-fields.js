@@ -1,4 +1,4 @@
-import { React, Component } from 'react';
+import { React, Component, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -11,8 +11,8 @@ var markerIcon = new L.icon({
     popupAnchor: [-3, -76]
 });
 
-var latitude = 32.313268;
-var longitude = 35.022895;
+var latitude = null;
+var longitude = null;
 var marker = null;
 
 class Signup_SP_Fields extends Component {
@@ -20,7 +20,27 @@ class Signup_SP_Fields extends Component {
     state = {
         map: null
     };
-
+    /*
+        handleSubmit(e) {
+            const { signup } = useAuth();
+            const name = document.querySelector('#userName').value;
+            const email = document.querySelector('#email').value;
+            const pass = document.querySelector('#pass').value;
+            const phone = document.querySelector('#phone').value;
+            const confirmPass = document.querySelector('#confirmPass').value;
+            const serviceType = document.querySelector('#serviceType').value;
+            const description = document.querySelector('#description').value;
+    
+            e.preventDefault();
+            if (latitude === null || longitude === null) {
+                alert("Please choose your location in the map");
+                return;
+            }
+            signup(name.current.value, email.current.value, pass.current.value, confirmPass.current.value,
+                phone.current.value, serviceType.current.value, description.current.value,
+                latitude, longitude);
+        }
+    */
     componentDidUpdate(prevProps, prevState) {
         const { map } = this.state;
         if (prevState.map !== map && map) {
@@ -45,13 +65,13 @@ class Signup_SP_Fields extends Component {
                 <form className='provider-form' action="#">
                     <h2 className='h2' >Signup as Service Provider</h2>
 
-                    <input className='input' type="text" placeholder="Name" />
-                    <input className='input' type="email" placeholder="Email" />
-                    <input className='input' type="password" placeholder="Password" />
-                    <input className='input' type="password" placeholder="Confirm Password" />
-                    <input className='input' type="text" placeholder="Phone" />
-                    <input className='input' type="text" placeholder="Service Type" />
-                    <input className='input' type="text" placeholder="Description" />
+                    <input className='input' type="text" placeholder="Name" id="userName" required />
+                    <input className='input' type="email" placeholder="Email" id="email" required />
+                    <input className='input' type="password" placeholder="Password" id="pass" required />
+                    <input className='input' type="password" placeholder="Confirm Password" id="confirmPass" required />
+                    <input className='input' type="text" placeholder="Phone" id="phone" required />
+                    <input className='input' type="text" placeholder="Service Type" id="serviceType" required />
+                    <input className='input' type="text" placeholder="Description" id="description" required />
 
                     <br />
 

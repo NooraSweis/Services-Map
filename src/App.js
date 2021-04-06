@@ -16,7 +16,15 @@ import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
+import firebase from './components/config';
+
 class App extends Component {
+
+	contructor() {
+		this.state = {
+			user: firebase.auth().currentUser
+		}
+	}
 
 	render() {
 		return (

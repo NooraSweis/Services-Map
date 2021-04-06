@@ -5,38 +5,41 @@ import fire from '../config';
 import { connect } from 'react-redux';
 
 class Login_Fields extends Component {
-    
-    login=()=> {
-        
+    constructor(props) {
+        super(props);
+        this.login = this.login.bind(this);
+    }
+    login() {
         const email = document.querySelector('#logEmail').value;
         const password = document.querySelector('#logPassword').value;
-        fire.auth().signInWithEmailAndPassword(email,password).then((u)=>{
-            fire.firestore().collection('User').where('email','==',email).get().then((snapshot)=>{
-                snapshot.forEach((doc)=>{
-                        this.props.login({type:'LOGIN'})
-                        this.props.position({type:doc.data().type})
-                        console.log("successfully login")
-                        
+        fire.auth().signInWithEmailAndPassword(email, password).then((u) => {
+            fire.firestore().collection('User').where('email', '==', email).get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    this.props.login({ type: 'LOGIN' })
+                    this.props.position({ type: doc.data().type })
+                    console.log("successfully login")
+
+                })
             })
+                .catch((err) => {
+                    console.log('Error: ' + err.toString());
+                })
+
         })
- 
             .catch((err) => {
                 console.log('Error: ' + err.toString());
-            })
-            
-        })
-          .catch((err)=>{
-            console.log('Error: ' + err.toString());
-          }) 
+            });
+
+      //  this.props.history.push("/Profile");
     }
-render(){
-    
-    return (
-        <div className="form-container sign-in-container">
-            <form className='form' action="#">
-                <h2 className='h2' >Sign in</h2>
-                <input className='input' type="email" placeholder="Email" name='email' id='logEmail' />
-                <input className='input' type="password" placeholder="Password"  id='logPassword'/>
+
+    render() {
+        return (
+            <div className="form-container sign-in-container">
+                <form className='form' action="#">
+                    <h2 className='h2' >Sign in</h2>
+                    <input className='input' type="email" placeholder="Email" name='email' id='logEmail' />
+                    <input className='input' type="password" placeholder="Password" id='logPassword' />
 
 
                     <div className='forgot-remember-div' > <a className='a' style={{ cursor: 'pointer' }} onClick={async () => {
@@ -52,16 +55,17 @@ render(){
                     </div>
 
 
-                <button className="bt button" onClick={this.login}>Login</button>
-            </form>
-        </div>
-    );
-}}
-function mapDispatchToProps(dispatch){
-    return {
-        login:(item)=>dispatch(item),
-        position:(items)=>dispatch(items)
+                    <button className="bt button" onClick={this.login.bind(this)} >Login</button>
+                </form>
+            </div>
+        );
     }
-  }
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        login: (item) => dispatch(item),
+        position: (items) => dispatch(items)
+    }
+}
 
-export default connect(null,mapDispatchToProps)(Login_Fields);
+export default connect(null, mapDispatchToProps)(Login_Fields);

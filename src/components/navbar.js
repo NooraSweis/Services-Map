@@ -3,10 +3,8 @@ import React, { Component } from 'react';
 import "./navbar.css";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import fire from './config';
-class Navbar extends Component {
-	
 
+class Navbar extends Component {
 	render() {
 		return (
 			<div className="navbar">
@@ -25,7 +23,7 @@ class Navbar extends Component {
 						(<div className="dropdown" id='List'>
 							<button className="item">User Name</button>
 
-							{this.props.position==='Admin' ?
+							{this.props.position === 'Admin' ?
 								(<div className="dropdown-content">
 									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>

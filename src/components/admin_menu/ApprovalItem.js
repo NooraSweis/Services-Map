@@ -8,7 +8,7 @@ class ApprovalItem extends Component {
         return (
             <div className="approval-item">
                 <div className="aprroval-item-name" onClick={async () => {
-                    const result = await CustomDialog(<ItemDialog />, {
+                    await CustomDialog(<ItemDialog />, {
                         title: 'Account Request Information',
                         showCloseIcon: true,
                     });

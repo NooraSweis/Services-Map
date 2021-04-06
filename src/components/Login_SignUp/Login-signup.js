@@ -6,7 +6,6 @@ const Login_SignUp = () => {
     return (
         <div>
             <Signup_SP_Fields />
-
             <Login_Fields />
         </div>
     );
