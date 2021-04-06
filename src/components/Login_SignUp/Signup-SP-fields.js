@@ -62,6 +62,7 @@ class Signup_SP_Fields extends Component {
     render() {
         return (
             <div className="form-container sign-up-container" >
+                <div className='scrol-div'>
                 <form className='provider-form' action="#">
                     <h2 className='h2' >Signup as Service Provider</h2>
 
@@ -73,7 +74,6 @@ class Signup_SP_Fields extends Component {
                     <input className='input' type="text" placeholder="Service Type" id="serviceType" required />
                     <input className='input' type="text" placeholder="Description" id="description" required />
 
-                    <br />
 
                     <MapContainer draggable={true} className="leaflet-signup-map"
                         center={[32.313620252850725, 35.02780873501613]} zoom={15} scrollWheelZoom={false}
@@ -85,7 +85,7 @@ class Signup_SP_Fields extends Component {
                     </MapContainer>
 
                     <button className="bt button" >Sign Up</button>
-                </form>
+               </form></div> 
             </div>
         )
     }

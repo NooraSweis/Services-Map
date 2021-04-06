@@ -5,8 +5,6 @@
 */
 .provider-form {
   padding-top: 200px;
-  overflow-y: scroll;
-
   background-color: #ffffff;
   display: flex;
   align-items: center;
@@ -15,6 +13,13 @@
   padding: 0 1px;
   height: 100%;
   text-align: center;
+}
+
+.scrol-div{
+  overflow-y: scroll;
+   background: #ffffff ;
+   max-height: 541px;
+
 }
 
 .mainDiv {
@@ -174,7 +179,7 @@ textarea:focus,
   overflow: hidden;
   width: 1325px;
   max-width: 100%;
-  min-height: 500px;
+  min-height: 100%;
 }
 @media (max-width: 1325px) {
   .mainDiv {
@@ -288,9 +293,7 @@ textarea:focus,
     border: 1px rgb(239, 174, 28);
     background-color: rgb(239, 174, 28);
     color: #ffffff;
-
     font-weight: bold;
-
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
@@ -336,7 +339,6 @@ textarea:focus,
     border: none;
     border-color: transparent;
     border-radius: 20px;
-
     width: 200px;
   }
 
@@ -345,7 +347,6 @@ textarea:focus,
     border: 1px rgb(239, 174, 28);
     background-color: rgb(239, 174, 28);
     color: #ffffff;
-
     font-weight: bold;
     font-size: 10px;
     letter-spacing: 1px;
@@ -360,6 +361,7 @@ textarea:focus,
   top: 0;
   height: 100%;
   transition: all 0.6s ease-in-out;
+  
 }
 
 .sign-in-container {
@@ -375,8 +377,12 @@ textarea:focus,
 .sign-up-container {
   left: 50%;
   width: 50%;
+  border-radius: 50%;
+  height: 100%;
+  /*padding-top: 30%;*/
   opacity: 1;
   z-index: 1;
+
 }
 
 .container.right-panel-active .sign-up-container {
@@ -384,6 +390,8 @@ textarea:focus,
   opacity: 1;
   z-index: 5;
   animation: show 0.6s;
+  border-radius: 50%;
+ 
 }
 
 @keyframes show {
