@@ -1,7 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
 import fire from '../config';
-<<<<<<< HEAD
 import { Link } from 'react-router-dom';
 
 class Signup_client_Fields extends Component {
@@ -76,7 +75,6 @@ class Signup_client_Fields extends Component {
         )
     }
 }
-=======
 class Signup_client_Fields extends Component {
     signUp=()=> {
         const name = document.querySelector('#SignName').value;
@@ -119,5 +117,4 @@ class Signup_client_Fields extends Component {
         </div>
     )
 }}
->>>>>>> 2af52bc26845daa577587447ed323c70e997a732
 export default Signup_client_Fields;
