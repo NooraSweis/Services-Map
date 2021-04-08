@@ -23,7 +23,7 @@ class Profile extends Component {
             <button className="signBtn" onClick={this.signIn}><b>Sign in</b></button>
           </div>
         );
-      case 'Admin':
+      case 'ADMIN':
       case 'client-in':
         return (
           <div >
