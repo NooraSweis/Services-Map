@@ -14,8 +14,8 @@ const reducer = (state = initState, action) => {
    }
    else if (action.type === 'client-in') {
       return { ...state, position: 'client-in' }
-   } else if (action.type === 'SERVICE-PROVIDER') {
-      return { isLoggedIn: true, position: 'service-provider' }
+   } else if (action.type === 'SP') {
+      return { isLoggedIn: true, position: 'SP' }
    }
    return state
 }
