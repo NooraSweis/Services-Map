@@ -9,7 +9,8 @@ class Login_Fields extends Component {
         super(props);
         this.login = this.login.bind(this);
     }
-    login() {
+    login(e) {
+        e.preventDefault();
         const email = document.querySelector('#logEmail').value;
         const password = document.querySelector('#logPassword').value;
         fire.auth().signInWithEmailAndPassword(email, password).then((u) => {
@@ -30,7 +31,7 @@ class Login_Fields extends Component {
                 console.log('Error: ' + err.toString());
             });
 
-      //  this.props.history.push("/Profile");
+        //  this.props.history.push("/Profile");
     }
 
     render() {

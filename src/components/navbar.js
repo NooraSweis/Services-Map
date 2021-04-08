@@ -3,8 +3,25 @@ import React, { Component } from 'react';
 import "./navbar.css";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { auth } from './config';
 
 class Navbar extends Component {
+	state = {
+		isLoggedIn: this.props.isLoggedIn,
+		position: this.props.position
+	}
+	logout = (e) => {
+		e.preventDefault();
+		console.log('this.logout')
+		auth.signOut();
+		this.setState({
+			isLoggedIn: false,
+			position: 'client-out'
+		}, function () {
+			console.log(this.state);
+		});
+		window.location.reload(false)
+	}
 	render() {
 		return (
 			<div className="navbar">
@@ -28,9 +45,9 @@ class Navbar extends Component {
 									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 									<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
-									<NavLink to="/" className="admin-item">Log Out</NavLink>
+									<NavLink onClick={this.logout} exact to="/" className="admin-item">Log Out</NavLink>
 								</div>) : (<div className="dropdown-content">
-									<NavLink to="/" className="admin-item" >Log Out</NavLink>
+									<NavLink onClick={this.logout} exact to="/" className="admin-item" >Log Out</NavLink>
 								</div>)}
 
 						</div>) : null}
@@ -51,4 +68,10 @@ function mapStateToProps(state) {
 		position: state.position
 	}
 }
-export default connect(mapStateToProps)(Navbar);
+function mapDispatchToProps(dispatch) {
+	console.log('disp')
+	return {
+		logout: () => dispatch({ type: 'LOGOUT' })
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Home from './components/Home';
 import Profile from './components/Profile';
@@ -17,13 +17,12 @@ import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 
 import firebase from './components/config';
+import { connect } from 'react-redux';
 
 class App extends Component {
 
-	contructor() {
-		this.state = {
-			user: firebase.auth().currentUser
-		}
+	state = {
+		user: firebase.auth().currentUser
 	}
 
 	render() {
@@ -35,6 +34,9 @@ class App extends Component {
 				<Route exact path='/Favorite' component={Favorite} />
 				<Route exact path='/Map' component={Map} />
 				<Route exact path='/SignIn' component={SignIn} />
+				<Route path='/SignIn' render={() => (
+					!this.props.isLoggedIn ? <SignIn /> : <Redirect to='/Profile' />
+				)} />
 				<Route exact path='/About' component={About} />
 				<Route exact path='/AccountApproval' component={AccountApproval} />
 				<Route exact path='/AddPlace' component={AddPlace} />
@@ -45,4 +47,11 @@ class App extends Component {
 		);
 	}
 }
-export default App;
+function mapStateToProps(state) {
+	return {
+		isLoggedIn: state.isLoggedIn,
+		position: state.position
+	}
+}
+export default connect(mapStateToProps)(App);
+
