@@ -31,7 +31,6 @@ class Navbar extends Component {
 				<ul className="nav-list">
 					<NavLink exact to="/" className="item">Home</NavLink>
 					<NavLink to="/Profile" className="item">Profile</NavLink>
-					<NavLink to="/Favorite" className="item">Favorates</NavLink>
 					<NavLink to="/Map" className="item">Map</NavLink>
 					{!this.props.isLoggedIn ? <NavLink to="/SignIn" className="item">Sign In</NavLink> : (null)}
 
@@ -42,11 +41,13 @@ class Navbar extends Component {
 
 							{this.props.position === 'Admin' ?
 								(<div className="dropdown-content">
+									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
 									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 									<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
 									<NavLink onClick={this.logout} exact to="/" className="admin-item">Log Out</NavLink>
 								</div>) : (<div className="dropdown-content">
+									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
 									<NavLink onClick={this.logout} exact to="/" className="admin-item" >Log Out</NavLink>
 								</div>)}
 

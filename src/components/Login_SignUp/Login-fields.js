@@ -30,8 +30,6 @@ class Login_Fields extends Component {
             .catch((err) => {
                 console.log('Error: ' + err.toString());
             });
-
-        //  this.props.history.push("/Profile");
     }
 
     render() {
@@ -42,13 +40,13 @@ class Login_Fields extends Component {
                     <input className='input' type="email" placeholder="Email" name='email' id='logEmail' />
                     <input className='input' type="password" placeholder="Password" id='logPassword' />
 
-
-                    <div className='forgot-remember-div' > <a className='a' style={{ cursor: 'pointer' }} onClick={async () => {
-                        const result = await CustomDialog(<CustomDialogContent />, {
-                            title: 'Reset password',
-                            showCloseIcon: true,
-                        });
-                    }}>Forgot your password?</a>
+                    <div className='forgot-remember-div' >
+                        <a href='/' className='a' style={{ cursor: 'pointer' }} onClick={async () => {
+                            await CustomDialog(<CustomDialogContent />, {
+                                title: 'Reset password',
+                                showCloseIcon: true,
+                            });
+                        }}>Forgot your password?</a>
 
                         <input className='input' type="checkbox" className="custom-control-input" id="customCheck1" />
                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>

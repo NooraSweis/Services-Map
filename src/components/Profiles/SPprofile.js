@@ -18,10 +18,10 @@ class SPprofile extends Component {
         return (
             <div className='externalDiv' id='scrollDiv'>
                 <div className='header'>
-                    <img src={logo} className='Default-img' />
+                    <img src={logo} alt='logo' className='Default-img' />
                     <h3>Personal information</h3>
                 </div>
-                <a className='edit' onClick={changeState} style={{ width: '90%' }}>Edit</a>
+                <a href='/Profile' className='edit' onClick={changeState} style={{ width: '90%' }}>Edit</a>
                 <div className='fieldsChange'>
                     <form>
                         <label htmlFor='nameSP'>Name :</label>
@@ -49,8 +49,8 @@ class SPprofile extends Component {
                     </form>
                 </div>
                 <hr />
-                <a className='Delete' onClick={async () => {
-                    const result = await CustomDialog(<DeleteConfirmationDialog />, {
+                <a href='/Profile' className='Delete' onClick={async () => {
+                    await CustomDialog(<DeleteConfirmationDialog />, {
                         title: 'Delete Account',
                         showCloseIcon: true,
                     });
@@ -59,7 +59,7 @@ class SPprofile extends Component {
                 <div className='serviceDiv'>
                     <h3 className='part2'>Services :</h3>
                     <button className='plus' onClick={async () => {
-                        const result = await CustomDialog(<ServiceDetailsDialog />, {
+                        await CustomDialog(<ServiceDetailsDialog />, {
                             title: 'Add Service Details',
                             showCloseIcon: true,
                         });
@@ -67,7 +67,7 @@ class SPprofile extends Component {
                     <input type='search' placeholder='Search' className='search' />
                     <div className='showServices'>
                         <div className='sepcService' onClick={async () => {
-                            const result = await CustomDialog(<EditServiceDetails />, {
+                            await CustomDialog(<EditServiceDetails />, {
                                 title: 'Service Details',
                                 showCloseIcon: true,
                             });
