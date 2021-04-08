@@ -21,9 +21,10 @@ class Signup_SP_Fields extends Component {
     state = {
         map: null
     };
-    signUp = () => {
+    signUp = (e) => {
+        e.preventDefault();
         const name = document.querySelector('#userName').value;
-        const email = document.querySelector('#email').value;
+        const email = document.querySelector('#email').value.trim();
         const pass = document.querySelector('#pass').value;
         const phone = document.querySelector('#phone').value;
         const confirmPass = document.querySelector('#confirmPass').value;

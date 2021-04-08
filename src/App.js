@@ -12,6 +12,7 @@ import AddPlace from './components/admin_menu/AddPlace';
 import AddNewAdmin from './components/admin_menu/AddNewAdmin';
 import Show_SP_Fields from './components/Login_SignUp/Show-SP-fields';
 import Show_client_Fields from './components/Login_SignUp/Show-client-fields';
+import PasswordReset from './components/Login_SignUp/forget';
 
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
@@ -43,6 +44,7 @@ class App extends Component {
 				<Route exact path='/AddNewAdmin' component={AddNewAdmin} />
 				<Route exact path='/Show-SP-Fields' component={Show_SP_Fields} />
 				<Route exact path='/Show-Client-Fields' component={Show_client_Fields} />
+				<Route exact path='/password-reset' component={PasswordReset} />
 			</BrowserRouter>
 		);
 	}

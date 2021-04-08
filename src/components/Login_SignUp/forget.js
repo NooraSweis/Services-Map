@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDialog } from 'react-st-modal';
+import fire from '../config';
 
 function CustomDialogContent() {
 
@@ -8,29 +9,23 @@ function CustomDialogContent() {
 
     return (
         <center>
-            <input
-                type="text"
-                className='input'
-                placeholder="Username"
-                onChange={(e) => {
-                    setValue(e.target.value);
-
-                }}
-            />
-            <input
-                type="email"
-                className='input'
-                placeholder="Email"
+            <input type="email" className='input' placeholder="Email" id="email"
                 onChange={(e) => {
                     setValue(e.target.value);
                 }}
             />
             <div >
-                <button
-                    className='button'
+                <button className='button'
                     onClick={() => {
-
-                        dialog.close(value);
+                        const email = document.querySelector('#email').value.toString().trim();
+                        fire.auth().sendPasswordResetEmail(value)
+                            .then(function () {
+                                alert('DONE! :) Please check your email to choose your new password')
+                                dialog.close(value);
+                            }).catch(function (e) {
+                                alert('Failed! Please try again and make sure to write your EMAIL correctly :(')
+                                console.log(e)
+                            })
                     }}
                 >
                     Rest password

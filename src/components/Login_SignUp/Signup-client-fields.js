@@ -4,9 +4,10 @@ import fire from '../config';
 
 class Signup_client_Fields extends Component {
 
-    signUp = () => {
+    signUp = (e) => {
+        e.preventDefault();
         const name = document.querySelector('#SignName').value;
-        const email = document.querySelector('#SignEmail').value;
+        const email = document.querySelector('#SignEmail').value.trim();
         const password = document.querySelector('#SignPassword').value;
         const confirmPass = document.querySelector('#SignConfirm').value;
 
