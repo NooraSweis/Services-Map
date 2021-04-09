@@ -4,7 +4,7 @@
 هاد ضفته عشان نحط الماب في تسجيل البروفايدر
 */
 
-body{
+body {
   overflow-y: scroll;
   max-height: 400px;
 }
@@ -21,21 +21,19 @@ body{
   text-align: center;
 }
 
-.scrol-div{
+.scrol-div {
   overflow-y: scroll;
-   background: #ffffff ;
-   max-height: 100%;
+  background: #ffffff;
+  max-height: 100%;
 }
 
-.signin{
+.signin {
   display: flex;
   flex-direction: column;
   height: 500px;
-
 }
-.signin div{
+.signin div {
   flex-grow: 0;
-
 }
 
 .mainDiv {
@@ -103,7 +101,6 @@ span {
 }
 .custom-control-input {
   width: 15px;
-  margin-left: 7%;
   cursor: "pointer";
 }
 
@@ -273,13 +270,13 @@ textarea:focus,
     max-width: 100%;
     min-height: 100%;
   }
-  .input{
+  .input {
     width: 65%;
   }
 }
 @media (max-width: 950px) {
   .mainDiv {
-    height: 90%;;
+    height: 90%;
   }
   .container {
     background-color: rgb(239, 174, 28);
@@ -321,8 +318,15 @@ textarea:focus,
 }
 
 @media (max-width: 570px) {
+  /*   مش عارفة هاد السطر إذا ضروري، عمل مشكلة بصفحة اﻷباوت فعملته كومنت
   body{
     overflow-y: hidden;
+  } */
+  #signUp {
+    padding-right: 90px;
+  }
+  #signUpClient {
+    padding-right: 70px;
   }
   .mainDiv {
     height: 575px;
@@ -333,40 +337,40 @@ textarea:focus,
     background-color: white;
   }
   .container {
-    background-color:white;
+    background-color: white;
     border-radius: 0;
     overflow: hidden;
     width: 100%;
     max-width: 100%;
     min-height: 100%;
   }
-.overlay-container{
-  position: static;
+  .overlay-container {
+    position: static;
     margin-left: -16%;
     border-radius: 84%;
     margin-top: -28%;
-}
+  }
 
-.form{
-  width: 133%;
-}
+  .form {
+    width: 133%;
+  }
 
-.overlay{
-  margin: -30%;
-  background-color: red;
-  margin-left: 30px;
-  border-radius: 84%;
-  margin-top: 55%;
-  height: 61%;
-}
+  .overlay {
+    margin: -30%;
+    background-color: red;
+    margin-left: 30px;
+    border-radius: 84%;
+    margin-top: 55%;
+    height: 61%;
+  }
 
-.scrol-div{
-  width: 133%;
-  max-height: 100%;
-}
-.form-container{
-  margin-left: -16%;
-}
+  .scrol-div {
+    width: 133%;
+    max-height: 100%;
+  }
+  .form-container {
+    margin-left: -16%;
+  }
   .h1 {
     /*font-weight: bold;
     font-family: "Akaya Telivigala", cursive;
@@ -389,7 +393,7 @@ textarea:focus,
     /*font-size: 14px;*/
     display: none;
   }
-  
+
   .input {
     width: 65%;
     background-color: #eee;
@@ -411,19 +415,18 @@ textarea:focus,
     transition: transform 80ms ease-in;
   }
 
-.ghost {
-  
-  font-size: 10px;
-  margin-left: 46%;
-  margin-bottom: 46%;
-  margin-top: -38%;
-  border-radius: 71%;
-  width: 29%;
-/*color: blanchedalmond;
+  .ghost {
+    font-size: 10px;
+    margin-left: 46%;
+    margin-bottom: 46%;
+    margin-top: -38%;
+    border-radius: 71%;
+    width: 29%;
+    /*color: blanchedalmond;
 background-color: none;
 border-bottom: 3px solid black;
     border-radius: 12px;*/
-}
+  }
 }
 
 .form-container {
@@ -431,7 +434,6 @@ border-bottom: 3px solid black;
   top: 0;
   height: 100%;
   transition: all 0.6s ease-in-out;
-  
 }
 
 .sign-in-container {
@@ -452,7 +454,6 @@ border-bottom: 3px solid black;
   /*padding-top: 30%;*/
   opacity: 1;
   z-index: 1;
-
 }
 
 .container.right-panel-active .sign-up-container {
@@ -461,7 +462,6 @@ border-bottom: 3px solid black;
   z-index: 5;
   animation: show 0.6s;
   border-radius: 50%;
- 
 }
 
 @keyframes show {

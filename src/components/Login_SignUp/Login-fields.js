@@ -53,19 +53,17 @@ class Login_Fields extends Component {
                     <input className='input' type="password" placeholder="Password" id='logPassword' />
 
                     <div className='forgot-remember-div' >
+                        <input className='input' type="checkbox" className="custom-control-input" onChange={this.handleInputChange} />
+                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                        <br />
                         <a className='a' style={{ cursor: 'pointer' }} onClick={async () => {
                             await CustomDialog(<CustomDialogContent />, {
                                 title: 'Reset password',
                                 showCloseIcon: true,
                             });
                         }}>Forgot your password?</a>
-
-                        <input className='input' type="checkbox" className="custom-control-input" id="customCheck1" onChange={this.handleInputChange} />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-
                     </div>
-
-
+                    <br />
                     <button className="bt button" onClick={this.login.bind(this)} >Login</button>
                 </form>
             </div>

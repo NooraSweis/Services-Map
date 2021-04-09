@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import { auth } from './config';
 
 class Navbar extends Component {
+	menu = React.createRef();
 	state = {
 		isLoggedIn: this.props.isLoggedIn,
 		position: this.props.position
 	}
+
 	logout = (e) => {
 		e.preventDefault();
 		console.log('this.logout')
@@ -22,6 +24,7 @@ class Navbar extends Component {
 		});
 		window.location.reload(false)
 	}
+
 	render() {
 		return (
 			<div className="navbar">
@@ -33,16 +36,15 @@ class Navbar extends Component {
 					<NavLink to="/Profile" className="item">Profile</NavLink>
 					<NavLink to="/Map" className="item">Map</NavLink>
 					{!this.props.isLoggedIn ? <NavLink to="/SignIn" className="item">Sign In</NavLink> : (null)}
-
 					<NavLink to="/about" className="item">About</NavLink>
-					{this.props.isLoggedIn ?
-						(<div className="dropdown" id='List'>
-							<button className="item">User Name</button>
 
-							{this.props.position === 'Admin' ?
+					{this.props.isLoggedIn ?
+						(<div className="dropdown" id='List' ref={this.menu}>
+							<button className="item">User Name</button>
+							{this.props.position === 'ADMIN' ?
 								(<div className="dropdown-content">
 									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
-									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
+									<NavLink to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 									<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
 									<NavLink onClick={this.logout} exact to="/" className="admin-item">Log Out</NavLink>
