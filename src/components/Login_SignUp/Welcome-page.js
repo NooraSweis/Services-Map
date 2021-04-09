@@ -13,7 +13,7 @@ const Welcome_page = () => {
             <div className="overlay">
                 <div className="overlay-panel overlay-right">
                     <h1 className='h1' >Welcome Back!</h1>
-                    <p>If you have an account click her </p>
+                    <p className='p'>If you have an account click her </p>
                     <button className="ghost button" id="signIn" onClick={() => { Auth.login(() => { history.push('/SignIn') }) }} > SignIn </button>
                 </div>
             </div>

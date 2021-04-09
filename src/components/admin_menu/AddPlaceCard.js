@@ -7,7 +7,7 @@ const AddPlaceCard = () => {
             <h2 className="h2">Add Fixed Place</h2>
             <div id="horiz">
                 <div id="placeNameP">Name of Place:</div>
-                <input className="input" id="placeNameTxt" />
+                <input className="input1" id="placeNameTxt" />
             </div>
             <button className="button" id="addBtn">Add</button>
         </div>
