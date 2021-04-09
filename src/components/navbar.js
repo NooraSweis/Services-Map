@@ -57,11 +57,10 @@ class Navbar extends Component {
 					{this.props.isLoggedIn ? (
 						<div className="dropdown" id="List">
 							<button className="item">User Name</button>
-
-							{this.props.position === "Admin" ? (
+							{this.props.position === "ADMIN" ? (
 								<div className="dropdown-content">
 									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
-									<NavLink exact to="/AccountApproval" className="admin-item">ccount Approval</NavLink>
+									<NavLink exact to="/AccountApproval" className="admin-item">Account Approval</NavLink>
 									<NavLink to="/AddPlace" className="admin-item">Add fixed places</NavLink>
 									<NavLink to="/AddNewAdmin" className="admin-item">Add new admin</NavLink>
 									<NavLink onClick={this.logout} exact to="/" className="admin-item" > Log Out</NavLink>
