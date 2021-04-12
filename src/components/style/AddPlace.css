@@ -76,8 +76,7 @@ h2 {
   }
   .right {
     margin-top: 350px;
-    width: 100%;
-    margin-left: 5%;
+    margin-left: 12%;
   }
   .card {
     width: 80%;
@@ -87,5 +86,18 @@ h2 {
   /*************** عدلت على اسم الانبوت صار تعارض **************/
   .input1 {
     width: 35%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .right {
+    margin-left: 8%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .right {
+    margin-left: 5%;
+    height: 5%;
   }
 }

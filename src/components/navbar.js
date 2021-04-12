@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./navbar.css";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { auth } from "./config";
+import fire from "./config";
 
 class Navbar extends Component {
 	state = {
@@ -18,8 +18,13 @@ class Navbar extends Component {
 	}
 	logout = (e) => {
 		e.preventDefault();
-		console.log("this.logout");
-		auth.signOut();
+		//		var user = fire.auth().currentUser;
+		//		console.log(user);
+		fire.auth().signOut().then(() => {
+			window.location.reload(false);
+		}).catch((error) => {
+			// An error happened.
+		});
 		this.setState(
 			{
 				isLoggedIn: false,
@@ -29,7 +34,6 @@ class Navbar extends Component {
 				console.log(this.state);
 			}
 		);
-		window.location.reload(false);
 	};
 	render() {
 		return (
@@ -90,7 +94,6 @@ function mapStateToProps(state) {
 	};
 }
 function mapDispatchToProps(dispatch) {
-	console.log("disp");
 	return {
 		logout: () => dispatch({ type: "LOGOUT" })
 	};
