@@ -10,13 +10,10 @@ var latitude = null;
 var longitude = null;
 var marker = null;
 var fixed_place_name = "";
+const markers = [];
+var deleted = false;
 
 class AddPlace extends Component {
-    constructor() {
-        super();
-        this.displayPlaces();
-    }
-
     state = {
         map: null
     };
@@ -43,15 +40,24 @@ class AddPlace extends Component {
             });
         }
 
+
         map.on('zoomend', function () {
             var currentZoom = map.getZoom();
             if (currentZoom < 16) {
-                map.removeLayer(marker)
-                //map._panes.markerPane.remove();
-            } else {
-                map.addLayer(marker);
+                if (marker !== null) {
+                    map.removeLayer(marker)
+                }
+                markers.forEach((m) => map.removeLayer(m));
+                deleted = true;
+            } else if (deleted && currentZoom >= 16) {
+                if (marker !== null) {
+                    map.addLayer(marker);
+                }
+                markers.forEach((marker) => map.addLayer(marker));
+                deleted = false;
             }
         });
+
     }
 
     handleInputChange(event) {
@@ -77,14 +83,28 @@ class AddPlace extends Component {
     }
 
     displayPlaces() {
-        firestore.collection("Places").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
+        const { map } = this.state;
+        if (map !== null) {
+            firestore.collection("Places").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //console.log(doc.id, " => ", doc.data());
+                    const marker = L.marker([doc.data().latitude, doc.data().longitude], {
+                        icon: new L.DivIcon({
+                            className: 'my-div-icon',
+                            iconSize: [5, 5],
+                            html: '<p class="my-div-span" id="fixed-place-name">' + (doc.data().name) + '</p>'
+                        })
+                    })
+                        .addTo(map);
+                    markers.push(marker);
+                });
             });
-        });
+            console.log(markers)
+        }
     }
 
     render() {
+        this.displayPlaces();
         return (
             <div className="split">
 

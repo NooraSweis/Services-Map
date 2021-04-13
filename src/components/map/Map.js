@@ -2,19 +2,56 @@ import React, { Component } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
+import { firestore } from '../config';
+import L from 'leaflet';
 
-const DEFAULT_LATITUDE = 32.313268;
-const DEFAULT_LONGITUDE = 35.022895;
-var latitude;
-var longitude;
+var latitude = 32.313268;
+var longitude = 35.022895;
+const markers = [];
+var deleted = false;
 
 class Map extends Component {
 
-    render() {
-        latitude = this.props.coords ? this.props.coords.latitude : DEFAULT_LATITUDE;
-        longitude = this.props.coords ? this.props.coords.longitude : DEFAULT_LONGITUDE;
-        console.log(latitude + " " + longitude);
+    state = {
+        map: null
+    };
 
+    componentDidUpdate() {
+        const { map } = this.state;
+
+        map.on('zoomend', function () {
+            var currentZoom = map.getZoom();
+            if (currentZoom < 16) {
+                markers.forEach((marker) => map.removeLayer(marker));
+                deleted = true;
+            } else if (deleted && currentZoom >= 16) {
+                markers.forEach((marker) => map.addLayer(marker));
+                deleted = false;
+            }
+        });
+    }
+
+    displayPlaces() {
+        const { map } = this.state;
+        if (map !== null) {
+            firestore.collection("Places").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const marker = L.marker([doc.data().latitude, doc.data().longitude], {
+                        icon: new L.DivIcon({
+                            className: 'my-div-icon',
+                            iconSize: [5, 5],
+                            html: '<p class="my-div-span">' + (doc.data().name) + '</p>'
+                        })
+                    })
+                        .addTo(map);
+                    markers.push(marker);
+                });
+            });
+        }
+    }
+
+    render() {
+        this.displayPlaces();
         return (
             <MapContainer className="leaflet-map" center={[latitude, longitude]}
                 zoom={17} scrollWheelZoom={false}
@@ -29,14 +66,3 @@ class Map extends Component {
 }
 
 export default Map;
-
-/*
-Resources:
-https://www.youtube.com/watch?v=7N2t4zulUVE&ab_channel=CodingwithBasir
-
-You have to install this:
-1. npm install react react-dom leaflet
-2. npm install react-leaflet
-3. npm install -D @types/leaflet
-4. install react-geolocated
-*/
