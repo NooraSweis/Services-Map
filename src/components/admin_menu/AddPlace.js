@@ -4,7 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../map/Map.css';
 import L from 'leaflet';
-import fire from '../config';
+import fire, { firestore } from '../config';
 
 var latitude = null;
 var longitude = null;
@@ -12,6 +12,11 @@ var marker = null;
 var fixed_place_name = "";
 
 class AddPlace extends Component {
+    constructor() {
+        super();
+        this.displayPlaces();
+    }
+
     state = {
         map: null
     };
@@ -72,11 +77,14 @@ class AddPlace extends Component {
     }
 
     displayPlaces() {
-        console.log()
+        firestore.collection("Places").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", doc.data());
+            });
+        });
     }
 
     render() {
-        this.displayPlaces();
         return (
             <div className="split">
 
