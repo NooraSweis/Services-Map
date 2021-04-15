@@ -48,6 +48,9 @@
 	width: 40%;
     margin-left: 15px;
 }
+.fieldsChange form input{
+  text-align: center;
+}
 .fieldsChange form .Save-Changes,.continue{
     border-radius:20px;
     padding: 12px 15px ;

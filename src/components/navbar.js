@@ -8,8 +8,7 @@ class Navbar extends Component {
 	state = {
 		isLoggedIn: this.props.isLoggedIn,
 		position: this.props.position,
-		userName: '',
-		userType: 'client-out'
+		userName: ''
 	};
 
 
@@ -20,12 +19,11 @@ class Navbar extends Component {
 			fire.firestore().collection('User').where('email', '==', user.email).get().then((snapshot) => {
 				snapshot.forEach((doc) => {
 					this.setState({
-						...this.state, userName: doc.data().name,
-						userType: doc.data().type
+						...this.state, userName: doc.data().name
 					})
 				})
 			})
-			console.log(this.state.userType)
+			
 		}
 	}
 
