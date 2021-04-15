@@ -1,15 +1,13 @@
 import React from 'react';
-import Signup_SP from './Signup-SP-fields';
-import Welcome_page from './Welcome-page';
+import SignupSP from './Signup-SP-fields';
+import WelcomePage from './Welcome-page';
 
 const Show_SP_Fields = () => {
     return (
         <div className='mainDiv'>
             <div className="container " id="container" >
-
-                <Signup_SP />
-
-                <Welcome_page />
+                <SignupSP />
+                <WelcomePage />
             </div>
         </div>
     );

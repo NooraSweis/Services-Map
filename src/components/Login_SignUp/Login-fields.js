@@ -3,7 +3,7 @@ import CustomDialogContent from './forget';
 import { CustomDialog } from 'react-st-modal';
 import fire from '../config';
 import { connect } from 'react-redux';
-import firebase from 'firebase/app';
+//import firebase from 'firebase/app';
 import 'firebase/auth';
 
 var checked = false;
@@ -17,26 +17,25 @@ class Login_Fields extends Component {
         e.preventDefault();
         const email = document.querySelector('#logEmail').value;
         const password = document.querySelector('#logPassword').value;
-        fire.auth().setPersistence(checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
-            .then(() => {
-                fire.auth().signInWithEmailAndPassword(email.trim(), password).then((u) => {
-                    fire.firestore().collection('User').where('email', '==', email.trim()).get().then((snapshot) => {
-                        snapshot.forEach((doc) => {
-                            this.props.login({ type: 'LOGIN' })
-                            this.props.position({ type: doc.data().type })
-                            console.log("successfully login")
-                        })
-                    })
-                        .catch((err) => {
-                            console.log('Error: ' + err.toString());
-                        })
-
+        /*  fire.auth().setPersistence(checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
+              .then(() => { */
+        fire.auth().signInWithEmailAndPassword(email.trim(), password).then((u) => {
+            fire.firestore().collection('User').where('email', '==', email.trim()).get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    this.props.login({ type: 'LOGIN' })
+                    this.props.position({ type: doc.data().type })
+                    console.log("successfully login")
                 })
-                    .catch((err) => {
-                        console.log('Error: ' + err.toString());
-                    });
             })
-        console.log(fire.auth().Persistence)
+                .catch((err) => {
+                    console.log('Error: ' + err.toString());
+                })
+
+        })
+            .catch((err) => {
+                console.log('Error: ' + err.toString());
+            });
+        // })
     }
 
     handleInputChange(e) {
@@ -53,15 +52,15 @@ class Login_Fields extends Component {
                     <input className='input' type="password" placeholder="Password" id='logPassword' />
 
                     <div className='forgot-remember-div' >
-                        <input className='input' type="checkbox" className="custom-control-input" onChange={this.handleInputChange} />
+                        <input className='input' type="checkbox" id="custom-control-input" onChange={this.handleInputChange} />
                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                         <br />
-                        <a className='a' style={{ cursor: 'pointer' }} onClick={async () => {
+                        <div className='a' style={{ cursor: 'pointer' }} onClick={async () => {
                             await CustomDialog(<CustomDialogContent />, {
                                 title: 'Reset password',
                                 showCloseIcon: true,
                             });
-                        }}>Forgot your password?</a>
+                        }}>Forgot your password?</div>
                     </div>
                     <br />
                     <button className="bt button" onClick={this.login.bind(this)} >Login</button>

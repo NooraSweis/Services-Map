@@ -99,7 +99,7 @@ span {
   background: white;
   width: 100%;
 }
-.custom-control-input {
+#custom-control-input {
   width: 15px;
   cursor: "pointer";
 }

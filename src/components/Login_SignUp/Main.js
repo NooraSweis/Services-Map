@@ -1,9 +1,8 @@
 import React from 'react';
-import Login_SignUp from './Login-signup';
+import LoginSignUp from './Login-signup';
 import { useHistory } from "react-router-dom";
 import './style.css';
 import Auth from './Auth';
-
 
 export const Main = (props) => {
 
@@ -18,7 +17,7 @@ export const Main = (props) => {
         <div className='mainDiv'>
             <div className="container " id="container" >
 
-                <Login_SignUp />
+                <LoginSignUp />
 
                 <div className="overlay-container">
                     <div className="overlay">

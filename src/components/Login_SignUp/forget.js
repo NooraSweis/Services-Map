@@ -17,7 +17,6 @@ function CustomDialogContent() {
             <div >
                 <button className='button'
                     onClick={() => {
-                        const email = document.querySelector('#email').value.toString().trim();
                         fire.auth().sendPasswordResetEmail(value)
                             .then(function () {
                                 alert('DONE! :) Please check your email to choose your new password')

@@ -3,7 +3,6 @@ import MainComp from './Profiles/MainComp';
 import './style/Profile&favorite(out).css';
 import './style/MainCompProfile.css';
 import SP from './Profiles/SPprofile';
-import Nav from './navbar';
 import {connect} from 'react-redux';
 
 class Profile extends Component {

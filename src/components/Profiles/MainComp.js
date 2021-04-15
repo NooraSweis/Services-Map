@@ -16,10 +16,10 @@ class MainComp extends Component {
         return (
             <div className='externalDiv'>
                 <div className='header'>
-                    <img src={logo} className='Default-img' />
+                    <img alt= "logo" src={logo} className='Default-img' />
                     <h3>Personal information</h3>
                 </div>
-                <a className='edit' onClick={changeState} style={{ width: '90%' }}>Edit</a>
+                <div className='edit' onClick={changeState} style={{ width: '90%' }}>Edit</div>
                 <br />
                 <div className='fieldsChange'>
                     <form>
@@ -39,12 +39,12 @@ class MainComp extends Component {
                     </form>
                 </div>
                 <hr />
-                <a className='Delete' onClick={async () => {
-                    const result = await CustomDialog(<DeleteConfirmationDialog />, {
+                <div className='Delete' onClick={async () => {
+                    await CustomDialog(<DeleteConfirmationDialog />, {
                         title: 'Delete Account',
                         showCloseIcon: true,
                     });
-                }}>Delete Account</a>
+                }}>Delete Account</div>
             </div>
         );
     }
