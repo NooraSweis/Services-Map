@@ -51,7 +51,7 @@ class Login_Fields extends Component {
     render() {
         return (
             <div className="form-container sign-in-container">
-                <form className='form' action="#">
+                <form className='form' action="../Profile.js" method="post">
                     <h2 className='h2' >Sign in</h2>
                     <input className='input' type='email' placeholder="Email" name='email' id='logEmail' onChange={this.ChangeEmail}/>
                     <input className='input' type="password" placeholder="Password" id='logPassword' onChange={this.ChangePass}/>

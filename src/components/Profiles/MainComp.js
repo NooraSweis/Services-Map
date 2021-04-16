@@ -16,17 +16,17 @@ class MainComp extends Component {
         this.edit=this.edit.bind(this);   
         this.save=this.save.bind(this);     
     }
-    changeName=(e)=>{
-        this.setState({...this.state,newName:e.target.value})
+    changeName = (e) => {
+        this.setState({ ...this.state, newName: e.target.value })
     }
-    changeEmail=(e)=>{
-        this.setState({...this.state,email:e.target.value})
+    changeEmail = (e) => {
+        this.setState({ ...this.state, email: e.target.value })
     }
-    changepassword=(e)=>{
-        this.setState({...this.state,newpassword:e.target.value})
+    changepassword = (e) => {
+        this.setState({ ...this.state, newpassword: e.target.value })
     }
-    changeConfirmpassword=(e)=>{
-        this.setState({...this.state,newConf:e.target.value})
+    changeConfirmpassword = (e) => {
+        this.setState({ ...this.state, newConf: e.target.value })
     }
     edit=()=>{
         this.setState({...this.state,read:false,enabled: ''})
@@ -121,35 +121,35 @@ class MainComp extends Component {
         return (
             <div className='externalDiv'>
                 <div className='header'>
-                    <img src={logo} className='Default-img' />
+                    <img alt="logo" src={logo} className='Default-img' />
                     <h3>Personal information</h3>
                 </div>
-                <a className='edit'  style={{ width: '90%' }} onClick={this.edit}>Edit</a>
+                <div className='edit' style={{ width: '90%' }} onClick={this.edit}>Edit</div>
                 <br />
                 <div className='fieldsChange'>
                     <form>
                         <label htmlFor='namePerson'>Name :</label>
-                        <input type='text'  id='namePerson' name='namePerson' defaultValue={this.state.name} onChange={this.changeName} readOnly={this.state.read}/>
+                        <input type='text' id='namePerson' name='namePerson' defaultValue={this.state.name} onChange={this.changeName} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='emailPerson'>Email :</label>
-                        <input type='email'  id='emailPerson' name='emailPerson' defaultValue={this.state.email} onChange={this.changeEmail} readOnly/>
+                        <input type='email' id='emailPerson' name='emailPerson' defaultValue={this.state.email} onChange={this.changeEmail} readOnly />
                         <br />
                         <label htmlFor='passwordPerson'>Password :</label>
-                        <input type='password'  id='passwordPerson' name='passwordPerson' defaultValue={this.state.password} onChange={this.changepassword} readOnly={this.state.read}/>
+                        <input type='password' id='passwordPerson' name='passwordPerson' defaultValue={this.state.password} onChange={this.changepassword} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='confirmPerson'>Confirm Password :</label>
-                        <input type='password'  id='confirmPerson' name='confirmPerson' defaultValue={this.state.password} onChange={this.changeConfirmpassword} readOnly={this.state.read}/>
+                        <input type='password' id='confirmPerson' name='confirmPerson' defaultValue={this.state.password} onChange={this.changeConfirmpassword} readOnly={this.state.read} />
                         <br />
                         <button type='submit' className='Save-Changes'  id='formPerson' name='formPerson' disabled={this.state.enabled} onClick={this.save}>Save Changes</button>
                     </form>
                 </div>
                 <hr />
-                <a className='Delete' onClick={async () => {
-                    const result = await CustomDialog(<DeleteConfirmationDialog />, {
+                <div className='Delete' onClick={async () => {
+                    await CustomDialog(<DeleteConfirmationDialog />, {
                         title: 'Delete Account',
                         showCloseIcon: true,
                     });
-                }}>Delete Account</a>
+                }}>Delete Account</div>
             </div>
         );
     }
