@@ -61,9 +61,9 @@ class MainComp extends Component {
                     this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                 })
             })
-                .catch((err) => {
-                    console.log("err " + err.toString())
-                })
+            .catch((err) => {
+                console.log("err " + err.toString())
+            })
         }
         /**********************************************/
         else if (newName !== '' && (newpass !== '' || newconf !== '')) {
@@ -89,10 +89,12 @@ class MainComp extends Component {
                     })
             }
             else { alert("password doesn't match") }
+
         }
         /*************************************************************/
         else if (newName === '' && (newpass !== '' || newconf !== '')) {
             if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
+
                 alert('password must be at least 8 characters , at least one capital and one small letter')
             }
             else if (newpass === newconf) {
@@ -113,8 +115,8 @@ class MainComp extends Component {
             else { alert("password doesn't match") }
         }
     }
-
     render() {
+
         return (
             <div className='externalDiv'>
                 <div className='header'>
