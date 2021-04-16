@@ -51,8 +51,8 @@ class MainComp extends Component {
     const newpass= this.state.newpassword;
     const newconf=this.state.newConf;
     var x;
-    if(newName!=''&&newpass==''&&newconf=='')
-   {const docs=fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
+    if(newName!==''&&newpass===''&&newconf==='')
+   {fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
     {
         snap.forEach((doc)=>{
              x=doc.id;
@@ -65,15 +65,15 @@ class MainComp extends Component {
         console.log("err "+err.toString())
     })}
     /**********************************************/
-    else if(newName!=''&&(newpass!=''||newconf!='')){
+    else if(newName!==''&&(newpass!==''||newconf!=='')){
         if (newName.length < 2 ||!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
            if(newName.length<2)
             alert('name field is required and must be 3 or more characters long!')
             else
             alert('password must be at least 8 characters , at least one capital and one small letter')
         }
-        else if(newpass==newconf){
-            const docs=fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
+        else if(newpass===newconf){
+            fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
             {
                 snap.forEach((doc)=>{
                     x=doc.id;
@@ -92,13 +92,13 @@ class MainComp extends Component {
     
    }
     /*************************************************************/
-    else if(newName==''&&(newpass!=''||newconf!='')){
+    else if(newName===''&&(newpass!==''||newconf!=='')){
         if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
             
              alert('password must be at least 8 characters , at least one capital and one small letter')
          }
-         else if(newpass==newconf){
-             const docs=fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
+         else if(newpass===newconf){
+             fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
              {
                  snap.forEach((doc)=>{
                      x=doc.id;
