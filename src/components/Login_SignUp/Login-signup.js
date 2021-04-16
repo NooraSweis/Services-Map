@@ -1,12 +1,12 @@
 import React from 'react';
-import Signup_SP_Fields from './Signup-SP-fields';
-import Login_Fields from './Login-fields';
+import SignupFields from './Signup-SP-fields';
+import LoginFields from './Login-fields';
 
 const Login_SignUp = () => {
     return (
         <div>
-            <Signup_SP_Fields />
-            <Login_Fields />
+            <SignupFields />
+            <LoginFields />
         </div>
     );
 }

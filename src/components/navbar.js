@@ -7,8 +7,25 @@ import fire from "./config";
 class Navbar extends Component {
 	state = {
 		isLoggedIn: this.props.isLoggedIn,
-		position: this.props.position
+		position: this.props.position,
+		userName: ''
 	};
+
+
+	getUserData() {
+		// user name
+		const user = fire.auth().currentUser;
+		if (user) {
+			fire.firestore().collection('User').where('email', '==', user.email).get().then((snapshot) => {
+				snapshot.forEach((doc) => {
+					this.setState({
+						...this.state, userName: doc.data().name
+					})
+				})
+			})
+			
+		}
+	}
 
 	componentDidMount() {
 		console.log(document.querySelector("#nav-toggle"));
@@ -21,21 +38,15 @@ class Navbar extends Component {
 		//		var user = fire.auth().currentUser;
 		//		console.log(user);
 		fire.auth().signOut().then(() => {
+			this.props.logout({ type: 'LOGOUT' })
 			window.location.reload(false);
 		}).catch((error) => {
 			// An error happened.
+			console.log(error.toString);
 		});
-		this.setState(
-			{
-				isLoggedIn: false,
-				position: "client-out"
-			},
-			function () {
-				console.log(this.state);
-			}
-		);
 	};
 	render() {
+		this.getUserData();
 		return (
 			<div className="navbar">
 				<input id="nav-toggle" type="checkbox" />
@@ -60,7 +71,7 @@ class Navbar extends Component {
           </NavLink>
 					{this.props.isLoggedIn ? (
 						<div className="dropdown" id="List">
-							<button className="item">User Name</button>
+							<button className="item">{this.state.userName}</button>
 							{this.props.position === "ADMIN" ? (
 								<div className="dropdown-content">
 									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
@@ -95,7 +106,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
 	return {
-		logout: () => dispatch({ type: "LOGOUT" })
+		logout: (item) => dispatch(item)
 	};
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

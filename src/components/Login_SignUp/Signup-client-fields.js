@@ -11,12 +11,13 @@ class Signup_client_Fields extends Component {
         const password = document.querySelector('#SignPassword').value;
         const confirmPass = document.querySelector('#SignConfirm').value;
 
-        if (name.length < 2) {
-            alert('name field is required and must be 3 or more characters long!')
+        if (name.length < 2 ||!(password.match(/[0-9]/g)) || !(password.match(/[a-z]/g)) || !(password.match(/[A-Z]/g)) || password.length < 8) {
+            if (name.length < 2)  
+                 alert('name field is required and must be 3 or more characters long!')
+            else 
+            alert('password must be at least 8 characters , at least one capital and one small letter') 
         }
-        if (!(password.match(/[0-9]/g)) || !(password.match(/[a-z]/g)) || !(password.match(/[A-Z]/g)) || password.length < 8) {
-            alert('password must be at least 8 characters , at least one capital and one small letter')
-        }
+        
         else if (password === confirmPass) {
             fire.auth().createUserWithEmailAndPassword(email, password).then((u) => {
                 fire.firestore().collection('User').add({

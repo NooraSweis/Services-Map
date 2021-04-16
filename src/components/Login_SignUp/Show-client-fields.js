@@ -1,16 +1,16 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import Signup_client from './Signup-client-fields';
-import Welcome_page from './Welcome-page';
+import SignupClient from './Signup-client-fields';
+import WelcomePage from './Welcome-page';
 
 const Show_Client_Fields = () => {
 
-    let history = useHistory();
+    useHistory();
     return (
         <div className='mainDiv'>
             <div className="container " id="container" >
-                <Signup_client />
-                <Welcome_page />
+                <SignupClient />
+                <WelcomePage />
             </div>
         </div>
     );
