@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component }           from 'react';
+import axios                          from 'axios';
 import '../style/MainCompProfile.css';
 
-import axios from 'axios';
 class AddNewAdmin extends Component {
-
-    /*****************************/
 
     constructor(props) {
 
@@ -18,12 +16,10 @@ class AddNewAdmin extends Component {
         }
     }
 
-    /*******************************/
     handleChangeName = (event) => {
 
         this.setState({
             name: event.target.value,
-
         })
     }
 
@@ -31,7 +27,6 @@ class AddNewAdmin extends Component {
 
         this.setState({
             email: event.target.value,
-
         })
     }
 
@@ -39,7 +34,6 @@ class AddNewAdmin extends Component {
 
         this.setState({
             password: event.target.value,
-
         })
     }
 
@@ -47,7 +41,6 @@ class AddNewAdmin extends Component {
 
         this.setState({
             confirmPassword: event.target.value,
-
         })
     }
 
@@ -57,6 +50,16 @@ class AddNewAdmin extends Component {
             ele[i].innerHTML = '';
             ele[i].style.display = 'none';
         }
+    }
+
+    resetInputFields = () => {
+        this.setState({
+            name:"",
+            email:"",
+            password:"",
+            confirmPassword:""
+
+        })
     }
 
     handleSubmit = (event) => {
@@ -78,7 +81,9 @@ class AddNewAdmin extends Component {
                 type: 'admin',
             
         }).then(response => {
+
             this.resetErrorMsgs();
+            this.resetInputFields();
             alert('Submitted Successfuly', response);
 
         }).catch((error) => {
@@ -90,17 +95,11 @@ class AddNewAdmin extends Component {
                     ele.innerHTML = errors[i]['msg'];
                     ele.style.display = 'block';
                 }
-
             }
-           // console.log('Submitted faild', error);
         });
-
         event.preventDefault();
     }
 
-    /**************************** */
-
-    
      
 
     render() {
@@ -109,18 +108,23 @@ class AddNewAdmin extends Component {
                 <div className='fieldsChange'>
                     <form onSubmit={this.handleSubmit}>
                         <h2 className='h2' >Add New Admin</h2>
+                        
                         <label htmlFor='nameAdmin'>Name :</label>
-                        <input type='text' id='nameAdmin' name='nameAdmin' placeholder='Name' value={this.state.name} onChange={this.handleChangeName} required />
+                        <input type='text' id='nameAdmin' name='nameAdmin' value={this.state.name} onChange={this.handleChangeName} required />
+                        <span className="error_msg" id="error_name" style={{display: 'none',color: 'red'}}></span>
+
                         <br />
                         <label htmlFor='emailAdmin'>Email :</label>
-                        <input type='email' id='emailAdmin' name='emailAdmin' placeholder='Email' value={this.state.email} onChange={this.handleChangeEmail} required />
+                        <input type='email' id='emailAdmin' name='emailAdmin' value={this.state.email} onChange={this.handleChangeEmail} required />
                         <span className="error_msg" id="error_email" style={{display: 'none',color: 'red'}}></span>
                         <br />
                         <label htmlFor='passwordAdmin'>Password :</label>
-                        <input type='password' id='passwordAdmin' name='passwordAdmin' placeholder='Password' value={this.state.password} onChange={this.handleChangePassword} required />
+                        <input type='password' id='passwordAdmin' name='passwordAdmin' value={this.state.password} onChange={this.handleChangePassword} required />
+                        <span className="error_msg" id="error_password" style={{display: 'none',color: 'red'}}></span>
+
                         <br />
                         <label htmlFor='confirmAdmin'>Confirm Password :</label>
-                        <input type='password' id='confirmAdmin' name='confirmAdmin' placeholder='Confirm Password' value={this.state.confirmPassword} onChange={this.handleChangeConfirmPassword} required />
+                        <input type='password' id='confirmAdmin' name='confirmAdmin' value={this.state.confirmPassword} onChange={this.handleChangeConfirmPassword} required />
                         <span className="error_msg" id="error_confirmPassword" style={{display: 'none',color: 'red'}}></span>
 
                         <br />

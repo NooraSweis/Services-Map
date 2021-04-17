@@ -197,7 +197,6 @@ handleChangeConfirmPassword=()=>{
                 <div className='fieldsChange'>
                     <form>
                         <label htmlFor='namePerson'>Name :</label>
-
                         <input type='text' id='namePerson' name='namePerson' defaultValue={this.state.name} onChange={this.changeName} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='emailPerson'>Email :</label>
