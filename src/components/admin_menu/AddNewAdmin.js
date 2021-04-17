@@ -78,7 +78,7 @@ class AddNewAdmin extends Component {
                 email: email,
                 password: password,
                 confirmPassword: confirmPassword,
-                type: 'admin',
+                type: 'ADMIN',
             
         }).then(response => {
 
