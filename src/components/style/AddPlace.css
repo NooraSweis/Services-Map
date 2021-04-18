@@ -1,0 +1,103 @@
+/***************ضفته لما عملت التعديل على الاسم************/
+.input1 {
+  background-color: #eee;
+  border: none;
+  border-color: transparent;
+  border-radius: 20px;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 50%;
+}
+
+#placeNameP {
+  font-size: 120%;
+  text-align: center;
+  width: 60%;
+  margin: auto;
+  margin-right: 10%;
+}
+
+#horiz {
+  display: flex;
+  flex-direction: raw;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+h2 {
+  text-align: center;
+}
+
+#addBtn {
+  position: "absolute";
+  color: black;
+  text-align: center;
+  font-size: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-weight: bold;
+}
+
+.card {
+  background-color: white;
+  padding: 5px;
+  border: black;
+  border-style: solid;
+  border-width: medium;
+  width: 40%;
+  margin-right: 5%;
+
+  position: absolute;
+  left: 25%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+
+.split {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.split div {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 850px) {
+  .split {
+    flex-direction: column;
+  }
+  .right {
+    margin-top: 350px;
+    margin-left: 12%;
+  }
+  .card {
+    width: 80%;
+    left: 50%;
+    top: 250px;
+  }
+  /*************** عدلت على اسم الانبوت صار تعارض **************/
+  .input1 {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .right {
+    margin-left: 8%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .right {
+    margin-left: 5%;
+    height: 5%;
+  }
+}

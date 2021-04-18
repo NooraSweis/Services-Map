@@ -1,0 +1,49 @@
+.leaflet-map {
+  width: 80%;
+  height: 80%;
+  margin: 20px;
+  margin-left: 10%;
+  margin-right: auto;
+  position: absolute;
+  z-index: -1;
+}
+
+.fixed-map {
+  position: absolute;
+  width: 40%;
+  height: 60%;
+  /* padding: 250px 20px; */
+  margin-top: 5%;
+  z-index: 0;
+}
+
+.leaflet-signup-map {
+  width: 20%;
+  height: 20%;
+  padding: 100px 100px;
+  z-index: 9;
+}
+
+.my-div-span {
+  font-size: 8px;
+}
+
+@media screen and (max-width: 850px) {
+  .fixed-map {
+    margin-left: 3%;
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .fixed-map {
+    margin-left: 6%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .fixed-map {
+    margin-left: 4%;
+    width: 80%;
+  }
+}
