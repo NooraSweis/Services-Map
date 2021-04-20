@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import '../map/Map.css';
 import fire from '../config';
+import { withRouter } from 'react-router';
 
 var markerIcon = new L.icon({
     iconUrl: 'https://i.ibb.co/VphkX1M/marker-48.png',
@@ -63,6 +64,7 @@ class Signup_SP_Fields extends Component {
             }).then(() => {
                 loading = false;
                 this.setState({ ...this.setState })
+                this.props.history.push("/");
                 alert("Done! Please wait for an Admin to approve the account :)")
             })
         }
@@ -123,4 +125,4 @@ class Signup_SP_Fields extends Component {
     }
 }
 
-export default Signup_SP_Fields;
+export default withRouter(Signup_SP_Fields);

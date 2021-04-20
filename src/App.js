@@ -31,20 +31,22 @@ class App extends Component {
 			<BrowserRouter>
 				<Navbar />
 				<Route exact path='/' component={Home} />
-				<Route exact path='/Profile' component={Profile} />
-				<Route exact path='/Favorite' component={Favorite} />
-				<Route exact path='/Map' component={Map} />
-				<Route exact path='/SignIn' component={SignIn} />
+				<Route path='/Profile' component={Profile} />
+				<Route path='/Map' component={Map} />
+				<Route path='/SignIn' component={SignIn} />
+				<Route path='/Show-SP-Fields' component={Show_SP_Fields} />
+				<Route path='/Show-Client-Fields' component={Show_client_Fields} />
 				<Route path='/SignIn' render={() => (
 					!this.props.isLoggedIn ? <SignIn /> : <Redirect to='/Profile' />
 				)} />
-				<Route exact path='/About' component={About} />
-				<Route exact path='/AccountApproval' component={AccountApproval} />
-				<Route exact path='/AddPlace' component={AddPlace} />
-				<Route exact path='/AddNewAdmin' component={AddNewAdmin} />
-				<Route exact path='/Show-SP-Fields' component={Show_SP_Fields} />
-				<Route exact path='/Show-Client-Fields' component={Show_client_Fields} />
-				<Route exact path='/password-reset' component={PasswordReset} />
+				<Route path='/About' component={About} />
+				{ this.props.isLoggedIn ?
+					<Route path='/Favorite' component={Favorite} /> : null
+				}
+				{ this.props.position === "ADMIN" ? <Route path='/AccountApproval' component={AccountApproval} /> : null}
+				{ this.props.position === "ADMIN" ? <Route path='/AddPlace' component={AddPlace} /> : null}
+				{ this.props.position === "ADMIN" ? <Route path='/AddNewAdmin' component={AddNewAdmin} /> : null}
+				<Route path='/password-reset' component={PasswordReset} />
 			</BrowserRouter>
 		);
 	}

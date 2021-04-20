@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import fire from '../config';
+import { withRouter } from "react-router-dom";
 
 var loading = false;
 
@@ -34,7 +35,8 @@ class Signup_client_Fields extends Component {
                         var user = fire.auth().currentUser;
                         user.sendEmailVerification().then(() => {
                             loading = false;
-                            this.setState({ ...this.setState })
+                            this.setState({ ...this.setState });
+                            this.props.history.push("/SignIn");
                             alert('please check your email')
                         })
                             .catch((err) => {
@@ -76,4 +78,4 @@ class Signup_client_Fields extends Component {
         )
     }
 }
-export default Signup_client_Fields;
+export default withRouter(Signup_client_Fields);
