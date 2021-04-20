@@ -10,14 +10,15 @@ import fire from '../config';
 class SPprofile extends Component {
     constructor(props) {
         super(props);
-        this.state = {enabled:'disabled',read:true,name:'',email:'',password:'',phone:'',serviceType:'',description:'',
-        newName:'',newpassword:'',newConf:'',newPhone:'',newType:'',newDescription:''};
+        this.state = {serviceList:[],urlImage:'',enabled:'disabled',read:true,name:'',email:'',password:'',phone:'',serviceType:'',description:'',
+        newName:'',newpassword:'',newConf:'',newPhone:'',newType:'',newDescription:'',arr:[]};
         this.changeName=this.changeName.bind(this);
         this.changeEmail=this.changeEmail.bind(this);
         this.changepassword=this.changepassword.bind(this);
         this.changeConfirmpassword=this.changeConfirmpassword.bind(this);
         this.edit=this.edit.bind(this);   
         this.save=this.save.bind(this);
+        this.showData=this.showData.bind(this);
     }
     changeName = (e) => {
         this.setState({ ...this.state, newName: e.target.value })
@@ -43,6 +44,18 @@ class SPprofile extends Component {
     edit=()=>{
         this.setState({...this.state,read:false,enabled: ''})
     }
+    showData=()=>{
+        {fire.firestore().collection('services').where('email','==', fire.auth().currentUser.email)
+        .get().then((snap)=>{
+        snap.forEach((doc)=>{
+            
+            return(<div className='sepcService' >
+                {doc.data().name}    
+            </div>)
+
+            })
+    })}
+    }
     componentDidMount(){
         const user=fire.auth().currentUser;
         if(user){
@@ -50,10 +63,22 @@ class SPprofile extends Component {
             snapshot.forEach((doc)=>{
                 
                 this.setState({name:doc.data().name,email:doc.data().email,password:doc.data().password,
-                phone:doc.data().phone,serviceType:doc.data().serviceType,description:doc.data().description}) 
+                phone:doc.data().phone,serviceType:doc.data().serviceType,description:doc.data().description,
+                newName:doc.data().name,newpassword:doc.data().password,newConf:doc.data().password,
+                newPhone:doc.data().phone,newType:doc.data().serviceType,newDescription:doc.data().description}) 
             })
-        })}
-       }
+        })
+           
+           var list=[];
+           fire.firestore().collection('services').where('email','==',user.email).get().then((snap)=>{
+               snap.forEach((doc)=>{
+                   list.push(doc.data());
+               })
+               this.setState({...this.state,serviceList:list});
+           })
+           
+       }}
+      
        componentWillUnmount(){
         this.setState( { name:'', email:'',password:'',phone:'',serviceType:'',description:''});
        }
@@ -65,105 +90,37 @@ class SPprofile extends Component {
         const newPhone=this.state.newPhone;
         const newType=this.state.newType;
         const newDesc=this.state.newDescription;
-
         var x;
-        if(newName!=='')
-       {    if(newName.length<2)
+        if(newName.length<2)
                 alert('name field is required and must be 3 or more characters long!')
-          else{ fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-        {
-            snap.forEach((doc)=>{
-                 x=doc.id;
-                 fire.firestore().collection('User').doc(x).update({name:newName});
-                 this.setState({...this.state,read:true,newName:'',enabled: ''})
-                 console.log('name updated')
-            })
-        })
-        .catch((err)=>{
-            console.log("err "+err.toString())
-        })}}
-        /**********************************************/
-         if((newpass!==''||newconf!=='')){
-            if(newpass===newconf){
-                if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
-                    alert('password must be at least 8 characters , at least one capital and one small letter')
-                }
-                else{fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
+        else if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
+                alert('password must be at least 8 characters , at least one capital and one small letter')
+            }
+        else if(newPhone.length<1 || newType.length<1 ||newDesc.length<1)
+           alert('all fields are required')
+        else if(newpass===newconf){
+            fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
                 {
                     snap.forEach((doc)=>{
                         x=doc.id;
-                        fire.firestore().collection('User').doc(x).update({password:newpass});
+                        fire.firestore().collection('User').doc(x).update({name:newName,password:newpass,phone:newPhone,
+                        serviceType:newType,description:newDesc});
                         var user=fire.auth().currentUser;
                         user.updatePassword(newpass);
                         this.setState({...this.state,read:true,newpassword:'',newConf:'',enabled: ''})
-                        console.log('password updated')
+                        console.log('your profile is updated')
                     })
                 })
                 .catch((err)=>{
                     console.log("err "+err.toString())
                 })
-            }}
-            else{alert("password doesn't match")}
+            }
         
-       }
-        /*************************************************************/
-         if(newPhone!==''){
-             if(newPhone.length<1){
-                 alert('your phone is required')
-             }
-               else{ fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-                 {
-                     snap.forEach((doc)=>{
-                         x=doc.id;
-                         fire.firestore().collection('User').doc(x).update({phone:newPhone});
-                         this.setState({...this.state,read:true,newPhone:'',enabled: ''})
-                         console.log('phone updated')
-                     })
-                 })
-                 .catch((err)=>{
-                     console.log("err "+err.toString())
-                 })
-             }}
-        /****************************************************************/
-         if(newType!==''){
-            if(newType.length<1){
-                alert('your service type is required')
-            }
-              else{ fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-                {
-                    snap.forEach((doc)=>{
-                        x=doc.id;
-                        fire.firestore().collection('User').doc(x).update({serviceType:newType});
-                        alert('your profile is updated');
-                        this.setState({...this.state,read:true,newType:'',enabled: ''})
-                        console.log('service type updated')
-                    })
-                })
-                .catch((err)=>{
-                    console.log("err "+err.toString())
-                }) 
-         } }
-         /****************************************************************/
-         if(newDesc!==''){
-            if(newDesc.length<1){
-                alert('your description is required')
-            }
-              else{ fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-                {
-                    snap.forEach((doc)=>{
-                        x=doc.id;
-                        fire.firestore().collection('User').doc(x).update({description:newDesc});
-                        alert('your profile is updated');
-                        this.setState({...this.state,read:true,newDescription:'',enabled: ''})
-                        console.log('description updated')
-                    })
-                })
-                .catch((err)=>{
-                    console.log("err "+err.toString())
-                }) 
-         } }
+        else{alert("password doesn't match")}
+       
        }
     render() {
+
         return (
             <div className='externalDiv' id='scrollDiv'>
                 <div className='header'>
@@ -214,16 +171,29 @@ class SPprofile extends Component {
                         });
                     }}>&#43;</button>
                     <input type='search' placeholder='Search' className='search' />
-                    <div className='showServices'>
+                    <div className='showServices' id='showServices'>
                         <div className='sepcService' onClick={async () => {
                             await CustomDialog(<EditServiceDetails />, {
                                 title: 'Service Details',
                                 showCloseIcon: true,
                             });
                         }}></div>
-                        <div className='sepcService'></div>
-                        <div className='sepcService'></div>
-                        <div className='sepcService'></div>
+                       
+                        {
+                        this.state.serviceList.map((item)=>{
+                            var urlser='';
+                            console.log(item.serviceImg);
+                             fire.storage().ref().child(item.serviceImg).getDownloadURL().then(url=>{
+                                urlser=url; 
+                                console.log(urlser)
+                            })
+                            
+                            console.log(urlser);
+                            return (<div className='sepcService' key={item.serviceImg}
+                                 style={{backgroundImage:`url(${urlser})`,backgroundSize:'contain'}}>{urlser}</div>)
+                            
+                        })}
+                        
                     </div>
                 </div>
             </div>
