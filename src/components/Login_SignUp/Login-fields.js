@@ -7,6 +7,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 
 var checked = false;
+var loading = false;
 
 class Login_Fields extends Component {
     constructor(props) {
@@ -18,6 +19,13 @@ class Login_Fields extends Component {
     }
     login(e) {
         e.preventDefault();
+        if (loading) {
+            document.querySelector("#loading-login").innerHTML = "LOADING!";
+            document.querySelector("#loading-login").style.color = "#1add08";
+        }
+        loading = true;
+        this.setState({ ...this.state });
+        //firebase login
         fire.auth().setPersistence(checked ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION)
             .then(() => {
                 fire.auth().signInWithEmailAndPassword(this.state.email.trim(), this.state.password).then((u) => {
@@ -29,12 +37,14 @@ class Login_Fields extends Component {
                         })
                     })
                         .catch((err) => {
-                            console.log('Error: ' + err.toString());
+                            document.querySelector("#loading-login").style.color = "#970808";
+                            document.querySelector("#loading-login").innerHTML = err;
                         })
 
                 })
                     .catch((err) => {
-                        console.log('Error: ' + err.toString());
+                        document.querySelector("#loading-login").style.color = "#970808";
+                        document.querySelector("#loading-login").innerHTML = err;
                     });
             })
     }
@@ -45,9 +55,11 @@ class Login_Fields extends Component {
     }
     ChangeEmail = (e) => {
         this.setState({ ...this.state, email: e.target.value });
+        if (loading) document.querySelector("#loading-login").innerHTML = "";
     }
     ChangePass = (e) => {
         this.setState({ ...this.state, password: e.target.value });
+        if (loading) document.querySelector("#loading-login").innerHTML = "";
     }
 
     render() {
@@ -70,6 +82,9 @@ class Login_Fields extends Component {
                         }}>Forgot your password?</div>
                     </div>
                     <br />
+                    {loading ?
+                        <div className="loading-sign" id="loading-login">LOADING!</div> : null
+                    }
                     <button className="bt button" onClick={this.login} >Login</button>
                 </form>
             </div>

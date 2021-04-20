@@ -15,6 +15,7 @@ var markerIcon = new L.icon({
 var latitude = null;
 var longitude = null;
 var marker = null;
+var loading = false;
 
 class Signup_SP_Fields extends Component {
 
@@ -23,6 +24,8 @@ class Signup_SP_Fields extends Component {
     };
     signUp = (e) => {
         e.preventDefault();
+        loading = true;
+        this.setState({ ...this.setState })
         const name = document.querySelector('#userName').value;
         const email = document.querySelector('#email').value.trim();
         const pass = document.querySelector('#pass').value;
@@ -57,7 +60,9 @@ class Signup_SP_Fields extends Component {
                 latitude: latitude,
                 longitude: longitude,
                 type: 'SP'
-            }).then(function () {
+            }).then(() => {
+                loading = false;
+                this.setState({ ...this.setState })
                 alert("Done! Please wait for an Admin to approve the account :)")
             })
         }
@@ -108,6 +113,9 @@ class Signup_SP_Fields extends Component {
                             />
                         </MapContainer>
 
+                        {loading ?
+                            <div className="loading-sign" id="loading-sp-signup">LOADING!</div> : null
+                        }
                         <button className="bt button" >Sign Up</button>
                     </form></div>
             </div>
