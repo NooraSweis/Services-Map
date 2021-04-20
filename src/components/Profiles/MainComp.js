@@ -5,16 +5,14 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { CustomDialog } from 'react-st-modal';
 import fire from '../config';
 
-import axios from 'axios';
-
 class MainComp extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            name:null,
-            email:"",
-            password:"",
-            confirmPassword:""
+        this.state = {
+            name: null,
+            email: "",
+            password: "",
+            confirmPassword: ""
         };
         this.state = { enabled: 'disabled', read: true, name: '', email: '', password: '', newName: '', newpassword: '', newConf: '' };
         this.changeName = this.changeName.bind(this);
@@ -39,7 +37,7 @@ class MainComp extends Component {
     edit = () => {
         this.setState({ ...this.state, read: false, enabled: '' })
     }
-    componentDidMount() {
+    async componentDidMount() {
         const user = fire.auth().currentUser;
         if (user) {
             fire.firestore().collection('User').where('email', '==', user.email).get().then((snapshot) => {
@@ -69,9 +67,9 @@ class MainComp extends Component {
                     this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                 })
             })
-            .catch((err) => {
-                console.log("err " + err.toString())
-            })
+                .catch((err) => {
+                    console.log("err " + err.toString())
+                })
         }
         /**********************************************/
         else if (newName !== '' && (newpass !== '' || newconf !== '')) {
@@ -124,68 +122,24 @@ class MainComp extends Component {
         }
     }
 
-/******************************* */
+    /******************************* */
 
-async componentDidMount(){
-    const response = await fetch("http://localhost:8080/api/User/OIEzwwdVm4FF9cw0Q53q");
-    const data = await response.json();
-    this.setState({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        confirmPassword: data.password
-    });
-}
+    handleChangeName = () => {
 
-handleChangeName=()=>{
+        this.setState({
+            //  [event.target.value]: name,
+        })
+    }
+    handleChangeEmail = () => {
 
-    this.setState({
-      //  [event.target.value]: name,
-    })
-}
-handleChangeEmail=()=>{
-    
-}
-handleChangePassword=()=>{
-    
-}
-handleChangeConfirmPassword=()=>{
-    
-}
+    }
+    handleChangePassword = () => {
 
-/*handleSubmit = (event) => {
-    const {
-        name,
-        email,
-        password,
-        confirmPassword,
-    } = this.state;
-
-
- 
-   axios.get("http://localhost:8080/api/User/OIEzwwdVm4FF9cw0Q53q", {
-        User: {
-            name: name,
-            email: email,
-            password: password,
-           // confirmPassword: confirmPassword,
-            type: 'admin',
-        }
-    }).then(response => {
-        console.log('Submitted Successfuly', response);
-    }).catch(error => {
-        console.log('Submitted faild', error);
-    });
-
-    event.preventDefault();
-}
-
-
-/****************************** */
-
+    }
+    handleChangeConfirmPassword = () => {
+    }
 
     render() {
-
         return (
             <div className='externalDiv'>
                 <div className='header'>

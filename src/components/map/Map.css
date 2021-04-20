@@ -24,6 +24,14 @@
   z-index: 9;
 }
 
+.leaflet-approval {
+  width: 300px;
+  height: 300px;
+  z-index: 5;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .my-div-span {
   font-size: 8px;
 }
