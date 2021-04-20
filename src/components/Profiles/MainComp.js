@@ -8,13 +8,19 @@ import fire from '../config';
 class MainComp extends Component {
     constructor(props) {
         super(props);
-        this.state = {enabled:'disabled',read:true,name:'',email:'',password:'',newName:'',newpassword:'',newConf:''};
-        this.changeName=this.changeName.bind(this);
-        this.changeEmail=this.changeEmail.bind(this);
-        this.changepassword=this.changepassword.bind(this);
-        this.changeConfirmpassword=this.changeConfirmpassword.bind(this);
-        this.edit=this.edit.bind(this);   
-        this.save=this.save.bind(this);     
+        this.state = {
+            name: null,
+            email: "",
+            password: "",
+            confirmPassword: ""
+        };
+        this.state = { enabled: 'disabled', read: true, name: '', email: '', password: '', newName: '', newpassword: '', newConf: '' };
+        this.changeName = this.changeName.bind(this);
+        this.changeEmail = this.changeEmail.bind(this);
+        this.changepassword = this.changepassword.bind(this);
+        this.changeConfirmpassword = this.changeConfirmpassword.bind(this);
+        this.edit = this.edit.bind(this);
+        this.save = this.save.bind(this);
     }
     changeName = (e) => {
         this.setState({ ...this.state, newName: e.target.value })
@@ -28,96 +34,112 @@ class MainComp extends Component {
     changeConfirmpassword = (e) => {
         this.setState({ ...this.state, newConf: e.target.value })
     }
-    edit=()=>{
-        this.setState({...this.state,read:false,enabled: ''})
+    edit = () => {
+        this.setState({ ...this.state, read: false, enabled: '' })
     }
-   componentDidMount(){
-    const user=fire.auth().currentUser;
-    if(user){
-         fire.firestore().collection('User').where('email','==',user.email).get().then((snapshot)=>{
-        snapshot.forEach((doc)=>{
-            
-            this.setState({name:doc.data().name,email:doc.data().email,password:doc.data().password}) 
-        })
-    })}
-   }
-   componentWillUnmount(){
-    this.setState( { name:'', email:'',password:''});
-   }
+    async componentDidMount() {
+        const user = fire.auth().currentUser;
+        if (user) {
+            fire.firestore().collection('User').where('email', '==', user.email).get().then((snapshot) => {
+                snapshot.forEach((doc) => {
 
-   save=(e)=>{
-    e.preventDefault();
-    const newName=this.state.newName;
-    const newpass= this.state.newpassword;
-    const newconf=this.state.newConf;
-    var x;
-    if(newName!==''&&newpass===''&&newconf==='')
-   {fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-    {
-        snap.forEach((doc)=>{
-             x=doc.id;
-             fire.firestore().collection('User').doc(x).update({name:newName});
-             alert('your profile is updated');
-             this.setState({...this.state,read:true,newName:'',newpassword:'',newConf:'',enabled: ''})
-        })
-    })
-    .catch((err)=>{
-        console.log("err "+err.toString())
-    })}
-    /**********************************************/
-    else if(newName!==''&&(newpass!==''||newconf!=='')){
-        if (newName.length < 2 ||!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
-           if(newName.length<2)
-            alert('name field is required and must be 3 or more characters long!')
-            else
-            alert('password must be at least 8 characters , at least one capital and one small letter')
-        }
-        else if(newpass===newconf){
-            fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-            {
-                snap.forEach((doc)=>{
-                    x=doc.id;
-                    fire.firestore().collection('User').doc(x).update({name:newName,password:newpass});
-                    var user=fire.auth().currentUser;
-                    user.updatePassword(newpass);
-                    alert('your profile is updated');
-                    this.setState({...this.state,read:true,newName:'',newpassword:'',newConf:'',enabled: ''})
+                    this.setState({ name: doc.data().name, email: doc.data().email, password: doc.data().password })
                 })
             })
-            .catch((err)=>{
-                console.log("err "+err.toString())
-            })
         }
-        else{alert("password doesn't match")}
-    
-   }
-    /*************************************************************/
-    else if(newName===''&&(newpass!==''||newconf!=='')){
-        if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
-            
-             alert('password must be at least 8 characters , at least one capital and one small letter')
-         }
-         else if(newpass===newconf){
-             fire.firestore().collection("User").where('email','==',this.state.email).get().then((snap)=>
-             {
-                 snap.forEach((doc)=>{
-                     x=doc.id;
-                     fire.firestore().collection('User').doc(x).update({password:newpass});
-                     var user=fire.auth().currentUser;
-                     user.updatePassword(newpass);
-                     alert('your profile is updated');
-                     this.setState({...this.state,read:true,newName:'',newpassword:'',newConf:'',enabled: ''})
-                 })
-             })
-             .catch((err)=>{
-                 console.log("err "+err.toString())
-             })
-         }
-         else{alert("password doesn't match")}
     }
-}
+    componentWillUnmount() {
+        this.setState({ name: '', email: '', password: '' });
+    }
+
+    save = (e) => {
+        e.preventDefault();
+        const newName = this.state.newName;
+        const newpass = this.state.newpassword;
+        const newconf = this.state.newConf;
+        var x;
+        if (newName !== '' && newpass === '' && newconf === '') {
+            fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
+                snap.forEach((doc) => {
+                    x = doc.id;
+                    fire.firestore().collection('User').doc(x).update({ name: newName });
+                    alert('your profile is updated');
+                    this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
+                })
+            })
+                .catch((err) => {
+                    console.log("err " + err.toString())
+                })
+        }
+        /**********************************************/
+        else if (newName !== '' && (newpass !== '' || newconf !== '')) {
+            if (newName.length < 2 || !(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
+                if (newName.length < 2)
+                    alert('name field is required and must be 3 or more characters long!')
+                else
+                    alert('password must be at least 8 characters , at least one capital and one small letter')
+            }
+            else if (newpass === newconf) {
+                fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
+                    snap.forEach((doc) => {
+                        x = doc.id;
+                        fire.firestore().collection('User').doc(x).update({ name: newName, password: newpass });
+                        var user = fire.auth().currentUser;
+                        user.updatePassword(newpass);
+                        alert('your profile is updated');
+                        this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
+                    })
+                })
+                    .catch((err) => {
+                        console.log("err " + err.toString())
+                    })
+            }
+            else { alert("password doesn't match") }
+
+        }
+        /*************************************************************/
+        else if (newName === '' && (newpass !== '' || newconf !== '')) {
+            if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
+
+                alert('password must be at least 8 characters , at least one capital and one small letter')
+            }
+            else if (newpass === newconf) {
+                fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
+                    snap.forEach((doc) => {
+                        x = doc.id;
+                        fire.firestore().collection('User').doc(x).update({ password: newpass });
+                        var user = fire.auth().currentUser;
+                        user.updatePassword(newpass);
+                        alert('your profile is updated');
+                        this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
+                    })
+                })
+                    .catch((err) => {
+                        console.log("err " + err.toString())
+                    })
+            }
+            else { alert("password doesn't match") }
+        }
+    }
+
+    /******************************* */
+
+    handleChangeName = () => {
+
+        this.setState({
+            //  [event.target.value]: name,
+        })
+    }
+    handleChangeEmail = () => {
+
+    }
+    handleChangePassword = () => {
+
+    }
+    handleChangeConfirmPassword = () => {
+    }
+
     render() {
-      
         return (
             <div className='externalDiv'>
                 <div className='header'>
@@ -140,7 +162,7 @@ class MainComp extends Component {
                         <label htmlFor='confirmPerson'>Confirm Password :</label>
                         <input type='password' id='confirmPerson' name='confirmPerson' defaultValue={this.state.password} onChange={this.changeConfirmpassword} readOnly={this.state.read} />
                         <br />
-                        <button type='submit' className='Save-Changes'  id='formPerson' name='formPerson' disabled={this.state.enabled} onClick={this.save}>Save Changes</button>
+                        <button type='submit' className='Save-Changes' id='formPerson' name='formPerson' disabled={this.state.enabled} onClick={this.save}>Save Changes</button>
                     </form>
                 </div>
                 <hr />

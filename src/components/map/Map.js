@@ -19,16 +19,18 @@ class Map extends Component {
     componentDidUpdate() {
         const { map } = this.state;
 
-        map.on('zoomend', function () {
-            var currentZoom = map.getZoom();
-            if (currentZoom < 16) {
-                markers.forEach((marker) => map.removeLayer(marker));
-                deleted = true;
-            } else if (deleted && currentZoom >= 16) {
-                markers.forEach((marker) => map.addLayer(marker));
-                deleted = false;
-            }
-        });
+        if (map !== null) {
+            map.on('zoomend', function () {
+                var currentZoom = map.getZoom();
+                if (currentZoom < 16) {
+                    markers.forEach((marker) => map.removeLayer(marker));
+                    deleted = true;
+                } else if (deleted && currentZoom >= 16) {
+                    markers.forEach((marker) => map.addLayer(marker));
+                    deleted = false;
+                }
+            });
+        }
     }
 
     displayPlaces() {

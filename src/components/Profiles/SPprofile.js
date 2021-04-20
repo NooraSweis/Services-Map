@@ -41,8 +41,8 @@ class SPprofile extends Component {
     changeDescription = (e) => {
         this.setState({ ...this.state, newDescription: e.target.value })
     }
-    edit=()=>{
-        this.setState({...this.state,read:false,enabled: ''})
+    edit = () => {
+        this.setState({ ...this.state, read: false, enabled: '' })
     }
     showData=()=>{
         {fire.firestore().collection('services').where('email','==', fire.auth().currentUser.email)
@@ -127,29 +127,29 @@ class SPprofile extends Component {
                     <img src={logo} alt='logo' className='Default-img' />
                     <h3>Personal information</h3>
                 </div>
-                <a className='edit' onClick={this.edit} style={{ width: '90%' }}>Edit</a>
+                <div className='edit' onClick={this.edit} style={{ width: '90%' }}>Edit</div>
                 <div className='fieldsChange'>
                     <form>
                         <label htmlFor='nameSP'>Name :</label>
                         <input type='text' id='nameSP' name='nameSP' defaultValue={this.state.name} onChange={this.changeName} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='emailSP'>Email :</label>
-                        <input type='email'  id='emailSP' name='emailSP' defaultValue={this.state.email} onChange={this.changeEmail} readOnly/>
+                        <input type='email' id='emailSP' name='emailSP' defaultValue={this.state.email} onChange={this.changeEmail} readOnly />
                         <br />
                         <label htmlFor='passwordSP'>Password :</label>
-                        <input type='password'  id='passwordSP' name='passwordSP' defaultValue={this.state.password} onChange={this.changepassword} readOnly={this.state.read}/>
+                        <input type='password' id='passwordSP' name='passwordSP' defaultValue={this.state.password} onChange={this.changepassword} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='confirmSP'>Confirm Password :</label>
-                        <input type='password'  id='confirmSP' name='confirmSP' defaultValue={this.state.password} onChange={this.changeConfirmpassword} readOnly={this.state.read}/>
+                        <input type='password' id='confirmSP' name='confirmSP' defaultValue={this.state.password} onChange={this.changeConfirmpassword} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='phoneSP'>Phone :</label>
-                        <input type='text'  id='phoneSP' name='phoneSP' defaultValue={this.state.phone} onChange={this.changePhone} readOnly={this.state.read}/>
+                        <input type='text' id='phoneSP' name='phoneSP' defaultValue={this.state.phone} onChange={this.changePhone} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='typeSP'>Service type :</label>
-                        <input type='text'  id='typeSP' name='typeSP' defaultValue={this.state.serviceType} onChange={this.changeServiceType} readOnly={this.state.read}/>
+                        <input type='text' id='typeSP' name='typeSP' defaultValue={this.state.serviceType} onChange={this.changeServiceType} readOnly={this.state.read} />
                         <br />
                         <label htmlFor='descSP'>Description :</label>
-                        <input type='text'  id='descSP' name='descSP' defaultValue={this.state.description} onChange={this.changeDescription} readOnly={this.state.read}/>
+                        <input type='text' id='descSP' name='descSP' defaultValue={this.state.description} onChange={this.changeDescription} readOnly={this.state.read} />
                         <br />
                         <button type='submit' className='Save-Changes' disabled={this.state.enabled} id='formSP' name='formSP' onClick={this.save}>Save Changes</button>
                     </form>

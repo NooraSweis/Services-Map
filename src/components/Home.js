@@ -2,7 +2,8 @@ import React from 'react';
 import './style/Home.css'
 
 const Home = () => {
-    return (
+  
+     return (
         <div>
             <input type='search' placeholder='Search' className='search' id='home-search' />
         </div>
