@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { firestore } from '../config';
+import fire,{ firestore } from '../config';
 import img from '../image/servicesDefault.png';
 import '../style/MainCompProfile.css';
 
@@ -7,11 +7,10 @@ class EditServiceDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: '', name: '', description: '', address: '', status: '',
+            file: '', name: '', description: '', address: '', status: '',url:'',
             phone: '', src: img, FileName: 'servicesDefault.png', image: false,
-            enabled: 'disabled', read: true, newName: '', newDescription: '', newAddress: '',
-            newStatus: ''
-
+            enabled: 'disabled', read: true, newName: '', newDescription: '',
+            newAddress: '',newStatus: ''
         }
         this.changeHandler = this.changeHandler.bind(this);
         this.changeName = this.changeName.bind(this);
@@ -24,7 +23,7 @@ class EditServiceDetails extends Component {
     }
     changeHandler = (event) => {
         this.setState({
-            ...this.state, src: URL.createObjectURL(event.target.files[0]), image: true, FileName: "" + this.props.userID + this.props.numberOfServices + event.target.files[0].name
+            ...this.state, url: URL.createObjectURL(event.target.files[0]), image: true, FileName: "" + this.props.userID + this.props.numberOfServices + event.target.files[0].name
             , file: event.target.files[0]
         });
     };
@@ -52,6 +51,14 @@ class EditServiceDetails extends Component {
                 address: this.state.newAddress,
                 status: this.state.newStatus
             }).then(() => {
+                if(this.state.image){
+                    const storageRef = fire.storage().ref().child(this.state.FileName);
+                storageRef.put(this.state.file).then(()=>{
+                    firestore.collection("services").doc(this.props.item.id).update({
+                        serviceImg:this.state.FileName
+                    })
+                })
+                }
                 this.setState({ ...this.state, read: true, enabled: 'disabled' })
                 alert("Changed successfully")
             })
@@ -79,6 +86,7 @@ class EditServiceDetails extends Component {
             newDescription: this.props.item.description,
             newAddress: this.props.item.address,
             newStatus: this.props.item.status,
+            url:this.props.item.url
         }
         )
     }
@@ -86,7 +94,7 @@ class EditServiceDetails extends Component {
     render() {
         return (
             <center className='fieldsChange' >
-                <img src={this.src} alt="logo" id='ServicePic' style={{ width: '95%', height: '250px' }} />
+                <img src={this.state.url} alt="logo" id='ServicePic' style={{ width: '95%', height: '250px' }} />
                 <div className='edit' onClick={this.edit}>Edit</div>
                 <form>
                     <label htmlFor="img2">Select image:</label>
@@ -106,9 +114,7 @@ class EditServiceDetails extends Component {
                     <label htmlFor='editSStatus'>Status :</label>
                     <input type='text' id='editSStatus' name='editSStatus' defaultValue={this.state.status} onChange={this.changeStatus} readOnly={this.state.read} />
                     <br />
-                    <button className='continue' onClick={(e) => {
-                        //dialog.close(value);
-                    }} id='editSForm' name='editSForm' disabled={this.state.enabled} onClick={this.saveChanges}>Save Changes</button>
+                    <button className='continue' id='editSForm' name='editSForm' disabled={this.state.enabled} onClick={this.saveChanges}>Save Changes</button>
                     <button className='continue' onClick={this.deleteItem}>Delete</button>
                 </form>
             </center>

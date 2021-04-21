@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import logo from '../image/Profile.jpg';
 import '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
@@ -216,7 +216,7 @@ class SPprofile extends Component {
                                 this.state.serviceList.map((item, index) => (
                                     <div className='showServices' key={index}
                                         onClick={async () => {
-                                            await CustomDialog(<EditServiceDetails item={item} />, {
+                                            await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices}/>, {
                                                 title: 'Service Details',
                                                 showCloseIcon: true,
                                             });

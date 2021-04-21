@@ -125,7 +125,7 @@ class ServiceDetailsDialog extends Component {
             </center>
         );
     }
-    componentWillUnmount(){
+   /* componentWillUnmount(){
         this.setState({name:'',description:'',address:'',status:'',url:'',phone:'',src:img});
        }
 render(){
@@ -152,5 +152,5 @@ render(){
         </center>
     );
             }
-}
+}*/}
 export default ServiceDetailsDialog;
