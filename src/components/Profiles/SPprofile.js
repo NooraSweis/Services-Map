@@ -98,7 +98,9 @@ class SPprofile extends Component {
                                     phone: doc.data().phone,
                                     serviceImg: doc.data().serviceImg,
                                     status: doc.data().status,
-                                    url: urlser
+                                    url: urlser,
+                                    address: doc.data().address,
+                                    description: doc.data().description
                                 }
                                 ]
                             });
