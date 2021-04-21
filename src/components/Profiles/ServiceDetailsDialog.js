@@ -23,23 +23,29 @@ class ServiceDetailsDialog extends Component {
             ...this.state, src: URL.createObjectURL(event.target.files[0]), image: true, FileName: "" + this.props.userID + this.props.numberOfServices + event.target.files[0].name
             , file: event.target.files[0]
         });
+        document.querySelector("#loading-add-service").innerHTML = "";
     };
-    changeName=(e)=>{
-        this.setState({...this.state,name:e.target.value});
+    changeName = (e) => {
+        this.setState({ ...this.state, name: e.target.value });
+        document.querySelector("#loading-add-service").innerHTML = "";
     };
-    changeDesc=(e)=>{
-        this.setState({...this.state,description:e.target.value});
+    changeDesc = (e) => {
+        this.setState({ ...this.state, description: e.target.value });
+        document.querySelector("#loading-add-service").innerHTML = "";
     };
-    changeAddress=(e)=>{
-        this.setState({...this.state,address:e.target.value});
+    changeAddress = (e) => {
+        this.setState({ ...this.state, address: e.target.value });
+        document.querySelector("#loading-add-service").innerHTML = "";
     };
-    changeStatus=(e)=>{
-        this.setState({...this.state,status:e.target.value});
+    changeStatus = (e) => {
+        this.setState({ ...this.state, status: e.target.value });
+        document.querySelector("#loading-add-service").innerHTML = "";
     };
     addServices=(e)=>{
         e.preventDefault();
         loading = true;
         this.setState({ ...this.state });
+        alert(this.state.phone)
         if (this.state.name !== '' && this.state.description !== '' && this.state.address !== '' && this.state.status !== '') {
             const user = fire.auth().currentUser;
             const email = user.email;
@@ -90,7 +96,7 @@ class ServiceDetailsDialog extends Component {
 
     }
     componentWillUnmount() {
-        this.setState = { name: '', description: '', address: '', status: '', url: '', phone: '', src: img }
+        this.setState = { name: '', description: '', address: '', status: '', url: '', src: img }
     }
     render() {
         return (
