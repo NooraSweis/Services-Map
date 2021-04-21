@@ -16,7 +16,7 @@ class SPprofile extends Component {
             serviceList: [], urlImage: '', enabled: 'disabled', read: true, id: '', name: '',
             email: '', password: '', phone: '', serviceType: '', description: '',
             newName: '', newpassword: '', newConf: '', newPhone: '', newType: '',
-            newDescription: '', arr: [], numberOfServices: 0
+            newDescription: '', arr: [], numberOfServices: 0,search:''
         };
         this.changeName = this.changeName.bind(this);
         this.changeEmail = this.changeEmail.bind(this);
@@ -25,6 +25,7 @@ class SPprofile extends Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.showData = this.showData.bind(this);
+        this.searching=this.searching.bind(this);
     }
     changeName = (e) => {
         this.setState({ ...this.state, newName: e.target.value })
@@ -60,6 +61,9 @@ class SPprofile extends Component {
 
                 })
             })
+    }
+    searching=(e)=>{
+        this.setState({...this.state,search:e.target.value});
     }
     componentDidMount() {
         this.getServicesData();
@@ -206,7 +210,7 @@ class SPprofile extends Component {
                             });
                             this.setState({...this.setState()});
                         }}>&#43;</button>
-                        <input type='search' placeholder='Search' className='search' />
+                        <input type='search' placeholder='Search' className='search' id='search' name='search' onChange={this.searching}/>
                     </div>
 
                     <div className="sp-profile-display-all-services">
@@ -214,7 +218,8 @@ class SPprofile extends Component {
                         {
                             this.state.serviceList !== 0 ?
                                 this.state.serviceList.map((item, index) => (
-                                    <div className='showServices' key={index}
+                                   (item.name.toLowerCase().includes(this.state.search.toLowerCase())||item.description.toLowerCase().includes(this.state.search.toLowerCase()))?
+                                   ( <div className='showServices' key={index}
                                         onClick={async () => {
                                             await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices}/>, {
                                                 title: 'Service Details',
@@ -227,7 +232,9 @@ class SPprofile extends Component {
                                         }}
                                     >
                                         <span>{item.name}</span>
-                                    </div>
+                                    </div>):(
+                                        console.log('nothing')
+                                    )
                                 ))
                                 :
                                 <div>Add New Services to see!</div>
