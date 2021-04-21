@@ -60,6 +60,7 @@ class Signup_SP_Fields extends Component {
                 description: description,
                 latitude: latitude,
                 longitude: longitude,
+                numberOfServices: 0,
                 type: 'SP'
             }).then(() => {
                 loading = false;

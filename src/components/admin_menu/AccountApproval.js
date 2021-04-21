@@ -69,6 +69,7 @@ class AccountApproval extends Component {
                                             description: user.description,
                                             latitude: user.latitude,
                                             longitude: user.longitude,
+                                            numberOfServices: 0,
                                             type: 'SP'
                                         })
                                             .then((u) => {
