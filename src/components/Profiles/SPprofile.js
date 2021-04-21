@@ -202,6 +202,7 @@ class SPprofile extends Component {
                                 title: 'Add Service Details',
                                 showCloseIcon: true,
                             });
+                            this.setState({ ...this.setState() });
                         }}>&#43;</button>
                         <input type='search' placeholder='Search' className='search' />
                     </div>
