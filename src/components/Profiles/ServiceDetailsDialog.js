@@ -19,15 +19,10 @@ class ServiceDetailsDialog extends Component {
         this.addServices=this.addServices.bind(this);
     }   
     changeHandler = (event) => {
-<<<<<<< HEAD
-        this.setState({...this.state, src: URL.createObjectURL(event.target.files[0]),image:true,FileName:event.target.files[0].name
-            ,file:event.target.files[0]});
-=======
         this.setState({
             ...this.state, src: URL.createObjectURL(event.target.files[0]), image: true, FileName: "" + this.props.userID + this.props.numberOfServices + event.target.files[0].name
             , file: event.target.files[0]
         });
->>>>>>> d7e766aea40164910ba6f06c8862d59877d0f105
     };
     changeName=(e)=>{
         this.setState({...this.state,name:e.target.value});
@@ -48,6 +43,7 @@ class ServiceDetailsDialog extends Component {
         if (this.state.name !== '' && this.state.description !== '' && this.state.address !== '' && this.state.status !== '') {
             const user = fire.auth().currentUser;
             const email = user.email;
+            console.log(this.state.phone)
             if (this.state.image) {
                 const storageRef = fire.storage().ref().child(this.state.FileName);
                 storageRef.put(this.state.file).then((e) => {
