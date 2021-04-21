@@ -6,7 +6,7 @@ import { Component } from 'react';
 class ServiceDetailsDialog extends Component {
     constructor(props){
         super(props);
-        this.state={name:'',description:'',address:'',status:'',
+        this.state={file:'',name:'',description:'',address:'',status:'',
         phone:'',src:img,FileName:'servicesDefault.png',image:false}
         this.changeHandler=this.changeHandler.bind(this);
         this.changeName=this.changeName.bind(this);
@@ -16,7 +16,8 @@ class ServiceDetailsDialog extends Component {
         this.addServices=this.addServices.bind(this);
     }   
     changeHandler = (event) => {
-        this.setState({...this.state, src: URL.createObjectURL(event.target.files[0]),image:true,FileName:event.target.files[0].name});
+        this.setState({...this.state, src: URL.createObjectURL(event.target.files[0]),image:true,FileName:event.target.files[0].name
+            ,file:event.target.files[0]});
     };
     changeName=(e)=>{
         this.setState({...this.state,name:e.target.value});
@@ -37,7 +38,7 @@ class ServiceDetailsDialog extends Component {
             const email = user.email;
             if(this.state.image){
                 const storageRef=fire.storage().ref().child(this.state.FileName);
-                storageRef.put(this.state.src).then((e)=>{
+                storageRef.put(this.state.file).then((e)=>{
                 //this.setState({...this.state,url: storageRef.getDownloadURL()})
                 fire.firestore().collection("services")
                         .add({serviceImg:this.state.FileName,email:email,name:this.state.name,phone:this.state.phone,

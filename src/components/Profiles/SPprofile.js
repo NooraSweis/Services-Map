@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import logo from '../image/Profile.jpg';
 import '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
@@ -6,6 +6,7 @@ import ServiceDetailsDialog from './ServiceDetailsDialog';
 import { CustomDialog } from 'react-st-modal';
 import EditServiceDetails from './EditServiceDetails';
 import fire from '../config';
+import { Renderer } from 'leaflet';
 
 class SPprofile extends Component {
     constructor(props) {
@@ -120,8 +121,8 @@ class SPprofile extends Component {
        
        }
     render() {
-
-        return (
+       
+                return (
             <div className='externalDiv' id='scrollDiv'>
                 <div className='header'>
                     <img src={logo} alt='logo' className='Default-img' />
@@ -180,19 +181,23 @@ class SPprofile extends Component {
                         }}></div>
                        
                         {
+                            
                         this.state.serviceList.map((item)=>{
-                            var urlser='';
+                            var urlser;
                             console.log(item.serviceImg);
-                             fire.storage().ref().child(item.serviceImg).getDownloadURL().then(url=>{
+                           fire.storage().ref().child(item.serviceImg).getDownloadURL().then( url=>{
                                 urlser=url; 
                                 console.log(urlser)
+                                
                             })
-                            
                             console.log(urlser);
                             return (<div className='sepcService' key={item.serviceImg}
                                  style={{backgroundImage:`url(${urlser})`,backgroundSize:'contain'}}>{urlser}</div>)
+                                 
                             
-                        })}
+                        })
+                        
+                        }
                         
                     </div>
                 </div>
