@@ -70,7 +70,7 @@ class ServiceDetailsDialog extends Component {
          
     }
     componentWillUnmount(){
-        this.state={name:'',description:'',address:'',status:'',url:'',phone:'',src:img}
+        this.setState({name:'',description:'',address:'',status:'',url:'',phone:'',src:img});
        }
 render(){
     return (
