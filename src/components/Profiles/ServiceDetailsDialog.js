@@ -1,78 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import img from '../image/servicesDefault.png';
 import '../style/MainCompProfile.css';
-import fire, { firestore } from '../config';
-import { Component } from 'react';
+import { firestore, storage } from '../config';
+import { useDialog } from 'react-st-modal';
 
-var loading = false;
+function ServiceDetailsDialog(props) {
+    const dialog = useDialog();
 
-class ServiceDetailsDialog extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            file: '', name: '', description: '', address: '', status: '',
-            phone: '', src: img, FileName: 'servicesDefault.png', image: false
-        }
-        this.changeHandler = this.changeHandler.bind(this);
-        this.changeName = this.changeName.bind(this);
-        this.changeDesc = this.changeDesc.bind(this);
-        this.changeAddress = this.changeAddress.bind(this);
-        this.changeStatus = this.changeStatus.bind(this);
-        this.addServices = this.addServices.bind(this);
-    }
-    changeHandler = (event) => {
-        this.setState({
-            ...this.state,
-            src: URL.createObjectURL(event.target.files[0]),
-            image: true,
-            FileName: "" + this.props.userID + this.props.numberOfServices + event.target.files[0].name,
-            file: event.target.files[0]
-        });
-        document.querySelector("#loading-add-service").innerHTML = "";
-    };
-    changeName = (e) => {
-        this.setState({ ...this.state, name: e.target.value });
-        document.querySelector("#loading-add-service").innerHTML = "";
-    };
-    changeDesc = (e) => {
-        this.setState({ ...this.state, description: e.target.value });
-        document.querySelector("#loading-add-service").innerHTML = "";
-    };
-    changeAddress = (e) => {
-        this.setState({ ...this.state, address: e.target.value });
-        document.querySelector("#loading-add-service").innerHTML = "";
-    };
-    changeStatus = (e) => {
-        this.setState({ ...this.state, status: e.target.value });
-        document.querySelector("#loading-add-service").innerHTML = "";
-    };
-    addServices = (e) => {
+    const [loading, setLoading] = useState(false);
+    const [file, setFile] = useState(img);
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
+    const [address, setAddress] = useState();
+    const [status, setStatus] = useState();
+    const [src, setSrc] = useState('https://i.ibb.co/55YtvZS/services-Default.jpg');
+    const [fileName, setFileName] = useState('servicesDefault.png');
+    const [image, setImage] = useState(false);
+
+    const addServices = (e) => {
         e.preventDefault();
-        loading = true;
-        this.setState({ ...this.state });
-        if (this.state.name !== '' && this.state.description !== '' && this.state.address !== '' && this.state.status !== '') {
-            const user = fire.auth().currentUser;
-            const email = user.email;
-            const storageRef = fire.storage().ref().child(this.state.FileName);
-            storageRef.put(this.state.file).then((e) => {
-                //this.setState({...this.state,url: storageRef.getDownloadURL()})
+        setLoading(true);
+        if (name !== '' && description !== '' && address !== '' && status !== '') {
+            const email = props.userEmail;
+            const phone = props.userPhone;
+            const storageRef = storage.ref().child(fileName);
+            storageRef.put(file).then((e) => {
                 firestore.collection("services")
                     .add({
-                        serviceImg: this.state.FileName,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
                         email: email,
-                        name: this.state.name,
-                        phone: this.state.phone,
-                        description: this.state.description,
-                        address: this.state.address,
-                        status: this.state.status
+                        name: name,
+                        phone: phone,
+                        description: description,
+                        address: address,
+                        status: status
                     })
             }).then(() => {
-                firestore.collection("User").doc(this.props.userID).update({
-                    numberOfServices: this.props.numberOfServices
+                firestore.collection("User").doc(props.userID).update({
+                    numberOfServices: props.numberOfServices
                 })
             }).then(() => {
-                document.querySelector("#loading-add-service").innerHTML = "DONE! ^_^";
-                this.setState({ ...this.state });
+                dialog.close();
+                alert("Your service added successfully")
             }).catch((err) => {
                 alert(err)
             });
@@ -81,50 +50,37 @@ class ServiceDetailsDialog extends Component {
             alert('all fields are required !');
         }
     }
-    componentDidMount() {
-        const user = fire.auth().currentUser;
-        const email = user.email;
-        //console.log(email)
-        fire.firestore().collection("User").where("email", "==", email).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                this.setState({ ...this.state, phone: doc.data().phone });
-            });
 
-        })
-            .catch((error) => {
-                console.log("Error getting phone: ", error);
-            });
+    return (
+        <center className='fieldsChange'>
+            <img src={src} id='ServicePic' alt='service' style={{ width: '95%', height: '250px' }} />
+            <form>
+                <label htmlFor="img">Select image:</label>
+                <input type="file" id="img" name="img" accept="image/*" onChange={(e) => {
+                    setFile(e.target.files[0])
+                    setFileName("" + props.userID + props.numberOfServices + e.target.files[0].name);
+                    setSrc(URL.createObjectURL(e.target.files[0]));
+                    setImage(true);
+                }} />
+                <label htmlFor='addSname'>Service Name :</label>
+                <input type='text' id='addSname' name='addSname' onChange={(e) => { setName(e.target.value); console.log(name) }} />
+                <br />
+                <label htmlFor='addSDesc'>Description :</label>
+                <input type='text' id='addSDesc' name='addSDesc' onChange={(e) => { setDescription(e.target.value); console.log(description) }} />
+                <br />
+                <label htmlFor='addSAddress'>Address :</label>
+                <input type='text' id='addSAddress' name='addSAddress' onChange={(e) => { setAddress(e.target.value); console.log(address) }} />
+                <br />
+                <label htmlFor='addSStatus'>Status :</label>
+                <input type='text' id='addSStatus' name='addSStatus' onChange={(e) => { setStatus(e.target.value) }} />
+                <br />
 
-    }
-    componentWillUnmount() {
-        this.setState = { name: '', description: '', address: '', status: '', url: '', src: img }
-    }
-    render() {
-        return (
-            <center className='fieldsChange'>
-                <img src={this.state.src} id='ServicePic' alt='service' style={{ width: '95%', height: '250px' }} />
-                <form>
-                    <label htmlFor="img">Select image:</label>
-                    <input type="file" id="img" name="img" accept="image/*" onChange={this.changeHandler} />
-                    <label htmlFor='addSname'>Service Name :</label>
-                    <input type='text' id='addSname' name='addSname' onChange={this.changeName} />
-                    <br />
-                    <label htmlFor='addSDesc'>Description :</label>
-                    <input type='text' id='addSDesc' name='addSDesc' onChange={this.changeDesc} />
-                    <br />
-                    <label htmlFor='addSAddress'>Address :</label>
-                    <input type='text' id='addSAddress' name='addSAddress' onChange={this.changeAddress} />
-                    <br />
-                    <label htmlFor='addSStatus'>Status :</label>
-                    <input type='text' id='addSStatus' name='addSStatus' onChange={this.changeStatus} />
-                    <br />
+                <div className="loading-sign" id="loading-add-service">{loading ? "Please wait...!" : ""}</div>
 
-                    <div className="loading-sign" id="loading-add-service">{loading ? "Please wait...!" : ""}</div>
-
-                    <button className='continue' id='addSForm' name='addSForm' onClick={this.addServices}>Add Service</button>
-                </form>
-            </center>
-        );
-    }
+                <button className='continue' id='addSForm' name='addSForm' onClick={addServices}>Add Service</button>
+            </form>
+        </center>
+    );
 }
+
 export default ServiceDetailsDialog;

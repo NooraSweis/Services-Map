@@ -90,7 +90,7 @@ class SPprofile extends Component {
                     snap.forEach((doc) => {
                         urlser = '';
                         fire.storage().ref().child(doc.data().serviceImg).getDownloadURL().then(url => {
-                            urlser = url;
+                            urlser = doc.data().serviceImg === 'servicesDefault.png' ? 'https://i.ibb.co/kh3k0Zw/services-Default.jpg' : url;
                         }).then(() => {
                             this.setState({
                                 ...this.state,
