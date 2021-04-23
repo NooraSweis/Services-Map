@@ -133,6 +133,12 @@
   font-weight: bold;
 }
 
+.sp-profile-display-all-services span {
+  background-color: rgba(245, 222, 179, 0.445);
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 .inputForDelete:focus, .continue:focus, .Save-Changes:focus, .fieldsChange form input:focus, .serviceDiv .plus, .serviceDiv .search {
   outline: none;
 }
@@ -143,6 +149,13 @@
   }
   .fieldsChange form .Save-Changes {
     width: auto;
+  }
+  .sp-profile-display-all-services {
+    width: 100%;
+    padding-left: 2%;
+  }
+  .sp-profile-display-all-services .showServices {
+    width: 22%;
   }
 }
 
@@ -171,5 +184,16 @@
   }
   .fieldsChange form .Save-Changes {
     width: auto;
+  }
+}
+
+@media screen and (max-width:450px) {
+  .sp-profile-display-all-services {
+    width: 100%;
+    padding-left: 3%;
+  }
+  .sp-profile-display-all-services .showServices {
+    width: 40%;
+    margin-left: 3%;
   }
 }
