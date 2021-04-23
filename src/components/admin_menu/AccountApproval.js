@@ -71,6 +71,12 @@ class AccountApproval extends Component {
                                             longitude: user.longitude,
                                             numberOfServices: 0,
                                             type: 'SP'
+                                        }).then(() => {
+                                            firestore.collection('Places').add({
+                                                name: user.name,
+                                                latitude: user.latitude,
+                                                longitude: user.longitude
+                                            })
                                         })
                                             .then((u) => {
                                                 var us = thirdApp.auth().currentUser;

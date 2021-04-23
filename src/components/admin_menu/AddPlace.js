@@ -4,7 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../map/Map.css';
 import L from 'leaflet';
-import fire, { firestore } from '../config';
+import { firestore } from '../config';
 
 var latitude = null;
 var longitude = null;
@@ -73,7 +73,7 @@ class AddPlace extends Component {
             if (latitude === null) {
                 alert("PLEASE choose a location")
             } else {
-                fire.firestore().collection('Places').add({
+                firestore.collection('Places').add({
                     name: fixed_place_name,
                     latitude: latitude,
                     longitude: longitude
