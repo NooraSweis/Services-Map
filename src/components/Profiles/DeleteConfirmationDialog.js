@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import fire, { firestore } from '../config';
+import { auth, firestore } from '../config';
 
-var user = fire.auth().currentUser;
+var user = auth.currentUser;
 var email = user ? user.email.toString() : "";
 var password = "";
 var typedPassword = "";
@@ -10,8 +10,8 @@ var docID = "";
 class DeleteConfirmationDialog extends Component {
 
     componentDidMount() {
-        user = fire.auth().currentUser;
-        email = fire.auth().currentUser.email;
+        user = auth.currentUser;
+        email = auth.currentUser.email;
         //console.log(email)
         firestore.collection("User").where("email", "==", email)
             .get()
@@ -31,17 +31,23 @@ class DeleteConfirmationDialog extends Component {
         if (password === typedPassword) {
             user.delete().then(function () {
                 console.log("Auth deleted")
-            }).catch(function (error) {
-                console.log(error)
-            }).then(function () {
-                firestore.collection("User").doc(docID).delete().then(() => {
-                    console.error("Account successfully deleted");
-                }).then(function () {
-                    window.location.reload(false);
-                }).catch((error) => {
-                    console.error("Error removing document: ", error);
-                })
+            }).then(() => {
+                var docs = firestore.collection('services').where('email', '==', email);
+                docs.get().then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        doc.ref.delete();
+                    });
+                });
             })
+                .then(function () {
+                    firestore.collection("User").doc(docID).delete()
+                        .then(() => {
+                            window.location.reload(false);
+                            console.error("Account successfully deleted");
+                        })
+                }).catch((error) => {
+                    console.error(error);
+                })
         } else {
             alert("Password is NOT correct")
         }
