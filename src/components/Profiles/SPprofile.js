@@ -3,7 +3,7 @@ import logo from '../image/Profile.jpg';
 import '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import ServiceDetailsDialog from './ServiceDetailsDialog';
-import { CustomDialog } from 'react-st-modal';
+import { CustomDialog, StaticDialog } from 'react-st-modal';
 import EditServiceDetails from './EditServiceDetails';
 import fire, { auth, firestore } from '../config';
 
@@ -16,7 +16,8 @@ class SPprofile extends Component {
             serviceList: [], urlImage: '', enabled: 'disabled', read: true, id: '', name: '',
             email: '', password: '', phone: '', serviceType: '', description: '',
             newName: '', newpassword: '', newConf: '', newPhone: '', newType: '',
-            newDescription: '', arr: [], numberOfServices: 0, search: ''
+            newDescription: '', arr: [], numberOfServices: 0, search: '',
+            open: false
         };
         this.changeName = this.changeName.bind(this);
         this.changeEmail = this.changeEmail.bind(this);
@@ -200,13 +201,31 @@ class SPprofile extends Component {
                 <div className='serviceDiv'>
                     <div className="sp-profile-search-row">
                         <h3 className='part2'>Services :</h3>
-                        <button className='plus' onClick={async () => {
-                            await CustomDialog(<ServiceDetailsDialog numberOfServices={this.state.numberOfServices + 1}
-                                userID={this.state.id} userEmail={this.state.email} userPhone={this.state.phone} />, {
-                                title: 'Add Service Details',
-                                showCloseIcon: true,
-                            });
-                            this.setState({ ...this.setState() });
+                        <StaticDialog
+                            isOpen={this.state.open}
+                            title="Add Service Details"
+                            showCloseIcon={true}
+                            onAfterClose={(result) => {
+                                if (result) {
+                                    this.setState({
+                                        ...this.state,
+                                        open: false,
+                                        serviceList: [...this.state.serviceList, result]
+                                    });
+                                } else {
+                                    this.setState({
+                                        ...this.state,
+                                        open: false
+                                    });
+                                }
+                            }}
+                        >
+                            <ServiceDetailsDialog numberOfServices={this.state.numberOfServices + 1}
+                                userID={this.state.id} userEmail={this.state.email}
+                                userPhone={this.state.phone} />
+                        </StaticDialog>
+                        <button className='plus' onClick={() => {
+                            this.setState({ ...this.state, open: true })
                         }}>&#43;</button>
                         <input type='search' placeholder='Search' className='search' id='search' name='search' onChange={this.searching} />
                     </div>

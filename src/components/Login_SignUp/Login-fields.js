@@ -5,6 +5,7 @@ import fire from '../config';
 import { connect } from 'react-redux';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { withRouter } from "react-router-dom";
 
 var checked = false;
 var loading = false;
@@ -35,6 +36,8 @@ class Login_Fields extends Component {
                             this.props.position({ type: doc.data().type })
                             console.log("successfully login")
                         })
+                    }).then(() => {
+                        this.props.history.push("/Profile");
                     })
                         .catch((err) => {
                             document.querySelector("#loading-login").style.color = "#970808";
@@ -98,4 +101,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Login_Fields);
+export default withRouter(connect(null, mapDispatchToProps)(Login_Fields));

@@ -16,6 +16,15 @@ function ServiceDetailsDialog(props) {
     const [src, setSrc] = useState('https://i.ibb.co/55YtvZS/services-Default.jpg');
     const [fileName, setFileName] = useState('servicesDefault.png');
     const [image, setImage] = useState(false);
+    const [value, setValue] = useState({
+        url: src,
+        serviceImg: 'servicesDefault.png',
+        name: name,
+        phone: props.userPhone,
+        description: description,
+        address: address,
+        status: status
+    });
 
     const addServices = (e) => {
         e.preventDefault();
@@ -40,7 +49,14 @@ function ServiceDetailsDialog(props) {
                     numberOfServices: props.numberOfServices
                 })
             }).then(() => {
-                dialog.close();
+                setSrc('https://i.ibb.co/55YtvZS/services-Default.jpg');
+                setName("");
+                setAddress("");
+                setDescription("");
+                setImage(false);
+                setStatus("");
+                setLoading(false);
+                dialog.close(value.name ? value : null);
                 alert("Your service added successfully")
             }).catch((err) => {
                 alert(err)
@@ -61,18 +77,71 @@ function ServiceDetailsDialog(props) {
                     setFileName("" + props.userID + props.numberOfServices + e.target.files[0].name);
                     setSrc(URL.createObjectURL(e.target.files[0]));
                     setImage(true);
+                    setValue({
+                        url: src,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
+                        name: name,
+                        phone: props.userPhone,
+                        description: description,
+                        address: address,
+                        status: status
+                    });
                 }} />
                 <label htmlFor='addSname'>Service Name :</label>
-                <input type='text' id='addSname' name='addSname' onChange={(e) => { setName(e.target.value); console.log(name) }} />
+                <input type='text' id='addSname' name='addSname' value={name} onChange={(e) => {
+                    setName(e.target.value);
+                    setValue({
+                        url: src,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
+                        name: e.target.value,
+                        phone: props.userPhone,
+                        description: description,
+                        address: address,
+                        status: status
+                    });
+                }} />
                 <br />
                 <label htmlFor='addSDesc'>Description :</label>
-                <input type='text' id='addSDesc' name='addSDesc' onChange={(e) => { setDescription(e.target.value); console.log(description) }} />
+                <input type='text' id='addSDesc' name='addSDesc' value={description} onChange={(e) => {
+                    setDescription(e.target.value);
+                    setValue({
+                        url: src,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
+                        name: name,
+                        phone: props.userPhone,
+                        description: e.target.value,
+                        address: address,
+                        status: status
+                    });
+                }} />
                 <br />
                 <label htmlFor='addSAddress'>Address :</label>
-                <input type='text' id='addSAddress' name='addSAddress' onChange={(e) => { setAddress(e.target.value); console.log(address) }} />
+                <input type='text' id='addSAddress' name='addSAddress' value={address} onChange={(e) => {
+                    setAddress(e.target.value);
+                    setValue({
+                        url: src,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
+                        name: name,
+                        phone: props.userPhone,
+                        description: description,
+                        address: e.target.value,
+                        status: status
+                    });
+                }} />
                 <br />
                 <label htmlFor='addSStatus'>Status :</label>
-                <input type='text' id='addSStatus' name='addSStatus' onChange={(e) => { setStatus(e.target.value) }} />
+                <input type='text' id='addSStatus' name='addSStatus' value={status} onChange={(e) => {
+                    setStatus(e.target.value);
+                    setValue({
+                        url: src,
+                        serviceImg: image ? fileName : 'servicesDefault.png',
+                        name: name,
+                        phone: props.userPhone,
+                        description: description,
+                        address: address,
+                        status: e.target.value
+                    });
+                }} />
                 <br />
 
                 <div className="loading-sign" id="loading-add-service">{loading ? "Please wait...!" : ""}</div>
