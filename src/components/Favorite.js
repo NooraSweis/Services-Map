@@ -3,9 +3,7 @@ import './style/Home.css';
 import './Login_SignUp/style.css';
 import './style/FavouritCard.css';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -22,8 +20,7 @@ export default class Favorite extends Component {
 
     state = {
         items: [],
-        anchortEl: null,
-        expand: false
+        anchortEl: null
     }
 
     componentDidMount() {
@@ -57,7 +54,8 @@ export default class Favorite extends Component {
                                         phone: item.data().phone,
                                         email: item.data().email,
                                         status: item.data().status,
-                                        serviceImg: item.data().serviceImg
+                                        serviceImg: item.data().serviceImg,
+                                        expand: false
                                     }
                                 ]
                             })
@@ -76,7 +74,7 @@ export default class Favorite extends Component {
                 {
                     this.state.items.length !== 0 ?
                         this.state.items.map((item, i) => (
-                            <Grid>
+                            <Grid style={{ height: '100%' }}>
                                 <Card className="root" key={i}>
                                     <CardMedia className='media' key="media">
                                         <img style={{ width: "100%", height: "150px" }}
@@ -99,16 +97,16 @@ export default class Favorite extends Component {
                                         </IconButton>
                                         <IconButton
                                             onClick={() => {
+                                                item.expand = !item.expand;
                                                 this.setState({
-                                                    ...this.state,
-                                                    expand: !this.state.expand
+                                                    ...this.state
                                                 })
                                             }}>
                                             <ExpandMoreIcon />
                                         </IconButton>
                                     </CardActions>
 
-                                    <Collapse in={this.state.expand} timeout="auto"
+                                    <Collapse in={item.expand} timeout="auto"
                                         unmountOnExit key="collapse">
                                         <CardContent key="content">
                                             <div>{item.description}</div>
@@ -137,13 +135,6 @@ export default class Favorite extends Component {
     }
 }
 
-/*
-                                <CardContent key={i}>
-                                    <Typography className='description'>
-                                        {item.description}
-                                    </Typography>
-                                </CardContent>
-*/
 
 /*
                                         action={
