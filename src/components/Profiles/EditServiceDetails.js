@@ -18,9 +18,6 @@ function EditServiceDetails(props) {
     const [read, setRead] = useState(true);
     const [image, setImage] = useState(false);
 
-    const edit = () => {
-        setRead(false);
-    }
     const saveChanges = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -72,7 +69,7 @@ function EditServiceDetails(props) {
     return (
         <center className='fieldsChange' >
             <img src={src} alt="logo" id='ServicePic' style={{ width: '95%', height: '250px' }} />
-            <div className='edit' onClick={edit}>Edit</div>
+            <div className='edit' onClick={() => { setRead(false) }}>Edit</div>
             <form>
                 <label htmlFor="img2">Select image:</label>
                 <input type="file" id="img2" name="img2" accept="image/*" onChange={(e) => {
@@ -82,19 +79,19 @@ function EditServiceDetails(props) {
                     setImage(true);
                 }} readOnly={read} />
                 <label htmlFor='editSName'>Service Name:</label>
-                <input type='text' id='editSName' name='editSName' defaultValue={name} onChange={(e) => { setName(e.target.value); }} readOnly={read} />
+                <input type='text' id='editSName' name='editSName' value={name} onChange={(e) => { setName(e.target.value); }} readOnly={read} />
                 <br />
                 <label htmlFor='editSDesc'>Description:</label>
-                <input type='text' id='editSDesc' name='editSDesc' defaultValue={description} onChange={(e) => { setDescription(e.target.value); }} readOnly={read} />
+                <input type='text' id='editSDesc' name='editSDesc' value={description} onChange={(e) => { setDescription(e.target.value); }} readOnly={read} />
                 <br />
                 <label htmlFor='editSPhone'>Phone:</label>
-                <input type='text' id='editSPhone' name='editSPhone' defaultValue={phone} readOnly />
+                <input type='text' id='editSPhone' name='editSPhone' value={phone} readOnly />
                 <br />
                 <label htmlFor='editSAddress'>Address:</label>
-                <input type='text' id='editSAddress' name='editSAddress' defaultValue={address} onChange={(e) => { setAddress(e.target.value); }} readOnly={read} />
+                <input type='text' id='editSAddress' name='editSAddress' value={address} onChange={(e) => { setAddress(e.target.value); }} readOnly={read} />
                 <br />
                 <label htmlFor='editSStatus'>Status:</label>
-                <input type='text' id='editSStatus' name='editSStatus' defaultValue={status} onChange={(e) => { setStatus(e.target.value); }} readOnly={read} />
+                <input type='text' id='editSStatus' name='editSStatus' value={status} onChange={(e) => { setStatus(e.target.value); }} readOnly={read} />
                 <br />
 
                 <div className="loading-sign">{loading ? "Please wait..." : ""}</div>

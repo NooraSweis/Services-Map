@@ -28,7 +28,6 @@ class Navbar extends Component {
 	}
 
 	componentDidMount() {
-		console.log(document.querySelector("#nav-toggle"));
 		this.props.history.listen((location) => {
 			document.querySelector("#nav-toggle").checked = false;
 		});
