@@ -38,7 +38,7 @@ div.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-ro
   color: cornflowerblue
 }
 
-button:hover {
+.outerDiv-favorites button:hover {
   color: sienna !important;
 }
 
@@ -54,7 +54,6 @@ button:hover {
 }
 
 .card-actions {
-  padding: 0 0 5px 0;
   height: 30px;
 }
 

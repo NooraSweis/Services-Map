@@ -8,19 +8,20 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import BusinessIcon from '@material-ui/icons/Business';
 import EmailIcon from '@material-ui/icons/Email';
 import CallIcon from '@material-ui/icons/Call';
+import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
-import { CardContent, Collapse, Grid } from '@material-ui/core';
+import { CardContent, Collapse, Grid, Menu, MenuItem } from '@material-ui/core';
 
 var userID = "";
 
 export default class Favorite extends Component {
 
     state = {
-        items: [],
-        anchortEl: null
+        items: []
     }
 
     componentDidMount() {
@@ -61,7 +62,8 @@ export default class Favorite extends Component {
                                         status: item.data().status,
                                         serviceImg: item.data().serviceImg,
                                         expand: false,
-                                        red: true
+                                        red: true,
+                                        anchortEl: null
                                     }
                                 ]
                             })
@@ -94,13 +96,47 @@ export default class Favorite extends Component {
                         this.state.items.map((item, i) => (
                             <Grid>
                                 <Card className="root" key={i}>
-                                    <CardMedia className='media' key="media">
-                                        <img style={{ width: "100%", height: "150px" }}
+                                    <CardMedia style={{ position: 'relative' }}
+                                        className='media' key="media">
+                                        <img style={{ width: "100%", height: "150px", zIndex: '-1' }}
                                             src={"https://firebasestorage.googleapis.com/v0/b/services-map-306613.appspot.com/o/" + item.serviceImg + "?alt=media&token=15d6d649-3451-415a-985a-994a33e7a620"}
                                             alt="SERVICE"
                                         />
+                                        <IconButton
+                                            style={{
+                                                position: 'absolute',
+                                                top: '0',
+                                                right: '0'
+                                            }}
+                                            aria-owns={item.anchortEl ? 'simple-menu' : null}
+                                            aria-haspopup='true'
+                                            onClick={(event) => {
+                                                item.anchortEl = event.currentTarget;
+                                                this.setState({
+                                                    ...this.state
+                                                })
+                                            }}
+                                        >
+                                            <ControlPointIcon style={{ color: 'white' }} />
+                                        </IconButton>
                                     </CardMedia>
 
+                                    <Menu id='simple-menu'
+                                        keepMounted
+                                        anchorEl={item.anchortEl}
+                                        open={Boolean(item.anchortEl)}
+                                        onClick={() => {
+                                            item.anchortEl = null;
+                                            this.setState({
+                                                ...this.state,
+                                                open: false
+                                            })
+                                        }}>
+                                        <MenuItem > Add to path </MenuItem>
+                                        <MenuItem > View path </MenuItem>
+                                        <MenuItem > Update path </MenuItem>
+                                        <MenuItem > Clear path </MenuItem>
+                                    </Menu>
                                     <div
                                         className="card-header"
                                         key={item.name}
@@ -109,6 +145,7 @@ export default class Favorite extends Component {
 
                                     <CardActions key="action"
                                         className="card-actions"
+                                        style={{ padding: '0 0 5px 0' }}
                                     >
                                         <IconButton aria-label="add to favorites"
                                             onClick={() => {
@@ -126,7 +163,7 @@ export default class Favorite extends Component {
                                                     ...this.state
                                                 })
                                             }}>
-                                            <ExpandMoreIcon />
+                                            {item.expand ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                                         </IconButton>
                                     </CardActions>
 
@@ -160,40 +197,3 @@ export default class Favorite extends Component {
         )
     }
 }
-
-
-/*
-                                        action={
-                                            <div className='ethar'>
-                                                <IconButton
-                                                    aria-owns={this.state.anchortEl ? 'simple-menu' : null}
-                                                    aria-haspopup='true'
-                                                    onClick={(event) => {
-                                                        this.setState({
-                                                            ...this.state,
-                                                            anchortEl: event.currentTarget
-                                                        })
-                                                    }}
-                                                >
-                                                    <MoreVertIcon />
-                                                </IconButton>
-
-                                                <Menu id='simple-menu'
-                                                    keepMounted
-                                                    anchorEl={this.state.anchortEl}
-                                                    open={Boolean(this.state.anchortEl)}
-                                                    onClick={() => {
-                                                        this.setState({
-                                                            ...this.state,
-                                                            anchorEl: null,
-                                                            open: false
-                                                        })
-                                                    }}>
-                                                    <MenuItem > Add to path </MenuItem>
-                                                    <MenuItem > View path </MenuItem>
-                                                    <MenuItem > Update path </MenuItem>
-                                                    <MenuItem > Clear path </MenuItem>
-                                                </Menu>
-                                            </div>
-                                        }
-                                        */
