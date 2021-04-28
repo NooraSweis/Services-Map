@@ -74,7 +74,7 @@ export default class Favorite extends Component {
                 {
                     this.state.items.length !== 0 ?
                         this.state.items.map((item, i) => (
-                            <Grid style={{ height: '100%' }}>
+                            <Grid>
                                 <Card className="root" key={i}>
                                     <CardMedia className='media' key="media">
                                         <img style={{ width: "100%", height: "150px" }}
@@ -86,10 +86,10 @@ export default class Favorite extends Component {
                                     <div
                                         className="card-header"
                                         key={item.name}
+                                        style={{ fontSize: '1.2rem' }}
                                     >{item.name}</div>
 
                                     <CardActions key="action"
-                                        style={{ padding: '0' }}
                                         className="card-actions"
                                     >
                                         <IconButton aria-label="add to favorites">
@@ -128,7 +128,9 @@ export default class Favorite extends Component {
                             </Grid>
                         ))
                         :
-                        <div className="no-approval-data"><p>WAITING!</p></div>
+                        <div className="no-approval-data" id="no-favorites">
+                            <p>Do you have favorite items?<br />PLEASE WAIT...!</p>
+                        </div>
                 }
             </div>
         )
