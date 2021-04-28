@@ -8,17 +8,6 @@ import EditServiceDetails from './EditServiceDetails';
 import fire, { auth, firestore } from '../config';
 
 var urlser = '';
-var myItem = {
-    id: '',
-    name: '',
-    email: '',
-    phone: '',
-    serviceImg: '',
-    status: '',
-    url: '',
-    address: '',
-    description: ''
-};
 
 class SPprofile extends Component {
     constructor(props) {
@@ -28,7 +17,7 @@ class SPprofile extends Component {
             email: '', password: '', phone: '', serviceType: '', description: '',
             newName: '', newpassword: '', newConf: '', newPhone: '', newType: '',
             newDescription: '', arr: [], numberOfServices: 0, search: '',
-            open: false, editDialogOpen: false
+            open: false
         };
         this.changeName = this.changeName.bind(this);
         this.changeEmail = this.changeEmail.bind(this);
@@ -241,28 +230,17 @@ class SPprofile extends Component {
                         <input type='search' placeholder='Search' className='search' id='search' name='search' onChange={this.searching} />
                     </div>
 
-                    <StaticDialog
-                        isOpen={this.state.editDialogOpen}
-                        title="Service Details"
-                        showCloseIcon={true}
-                        onAfterClose={() => {
-                            this.setState({ ...this.state, editDialogOpen: false });
-                        }}
-                    >
-                        <EditServiceDetails item={myItem} userID={this.state.id}
-                            numberOfServices={this.state.numberOfServices + 1} />
-                    </StaticDialog>
-
                     <div className="sp-profile-display-all-services">
                         {
                             this.state.serviceList !== 0 ?
                                 this.state.serviceList.map((item, index) => (
                                     (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
                                         (<div className='showServices' key={index}
-                                            onClick={() => {
-                                                myItem = item;
-                                                console.log(myItem)
-                                                this.setState({ ...this.state, editDialogOpen: true })
+                                            onClick={async () => {
+                                                await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices + 1} />, {
+                                                    title: 'Service Details',
+                                                    showCloseIcon: true,
+                                                });
                                             }}
                                             style={{
                                                 backgroundImage: "url(" + item.url + ")", backgroundSize: '100% 100%',
