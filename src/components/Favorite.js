@@ -30,6 +30,7 @@ export default class Favorite extends Component {
     componentDidUpdate() {
         console.log(this.state)
     }
+
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
@@ -41,6 +42,7 @@ export default class Favorite extends Component {
                 console.log(userID);
                 firestore.collection("Favorite").where("user_ID", "==", userID.toString()).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
+                        var docID = doc.id;
                         console.log(doc.data().service_ID)
                         firestore.collection("services").doc(doc.data().service_ID).get().then((item) => {
                             this.setState({
@@ -48,6 +50,9 @@ export default class Favorite extends Component {
                                 items: [
                                     ...this.state.items,
                                     {
+                                        docID: docID,
+                                        service_ID: item.id,
+                                        user_ID: userID,
                                         name: item.data().name,
                                         description: item.data().description,
                                         address: item.data().address,
@@ -55,7 +60,8 @@ export default class Favorite extends Component {
                                         email: item.data().email,
                                         status: item.data().status,
                                         serviceImg: item.data().serviceImg,
-                                        expand: false
+                                        expand: false,
+                                        red: true
                                     }
                                 ]
                             })
@@ -65,6 +71,18 @@ export default class Favorite extends Component {
             }).then(() => {
                 console.log(this.state.items)
             })
+        }
+    }
+
+    deleteOrAddToFavorites(red, sID, uID, docID) {
+        console.log(red + " " + sID + " " + uID + " " + docID)
+        if (red) {
+            firestore.collection("Favorite").doc(docID).set({
+                service_ID: sID,
+                user_ID: uID
+            })
+        } else {
+            firestore.collection("Favorite").doc(docID).delete();
         }
     }
 
@@ -92,8 +110,14 @@ export default class Favorite extends Component {
                                     <CardActions key="action"
                                         className="card-actions"
                                     >
-                                        <IconButton aria-label="add to favorites">
-                                            <FavoriteIcon />
+                                        <IconButton aria-label="add to favorites"
+                                            onClick={() => {
+                                                item.red = !item.red;
+                                                this.setState({ ...this.state });
+                                                this.deleteOrAddToFavorites(item.red, item.service_ID, item.user_ID, item.docID);
+                                            }}
+                                        >
+                                            <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />
                                         </IconButton>
                                         <IconButton
                                             onClick={() => {
