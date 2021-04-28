@@ -10,7 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import BusinessIcon from '@material-ui/icons/Business';
-import EmailIcon from '@material-ui/icons/Email';
+import PeopleIcon from '@material-ui/icons/People';
 import CallIcon from '@material-ui/icons/Call';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
@@ -46,26 +46,35 @@ export default class Favorite extends Component {
                         var docID = doc.id;
                         console.log(doc.data().service_ID)
                         firestore.collection("services").doc(doc.data().service_ID).get().then((item) => {
-                            this.setState({
-                                ...this.state,
-                                items: [
-                                    ...this.state.items,
-                                    {
-                                        docID: docID,
-                                        service_ID: item.id,
-                                        user_ID: userID,
-                                        name: item.data().name,
-                                        description: item.data().description,
-                                        address: item.data().address,
-                                        phone: item.data().phone,
-                                        email: item.data().email,
-                                        status: item.data().status,
-                                        serviceImg: item.data().serviceImg,
-                                        expand: false,
-                                        red: true,
-                                        anchortEl: null
-                                    }
-                                ]
+                            var provider_name = "";
+                            firestore.collection("User").where("email", '==', item.data().email).get().then((providerSnapshot) => {
+                                providerSnapshot.forEach((provider) => {
+                                    provider_name = provider.data().name;
+                                    console.log(provider_name);
+                                })
+                            }).then(() => {
+                                this.setState({
+                                    ...this.state,
+                                    items: [
+                                        ...this.state.items,
+                                        {
+                                            docID: docID,
+                                            service_ID: item.id,
+                                            user_ID: userID,
+                                            prov_name: provider_name,
+                                            name: item.data().name,
+                                            description: item.data().description,
+                                            address: item.data().address,
+                                            phone: item.data().phone,
+                                            email: item.data().email,
+                                            status: item.data().status,
+                                            serviceImg: item.data().serviceImg,
+                                            expand: false,
+                                            red: true,
+                                            anchortEl: null
+                                        }
+                                    ]
+                                })
                             })
                         })
                     })
@@ -171,8 +180,8 @@ export default class Favorite extends Component {
                                         unmountOnExit key="collapse">
                                         <CardContent key="content">
                                             <div>{item.description}</div>
-                                            <div><EmailIcon style={{ marginLeft: '5px' }} />
-                                                <div>{item.email} </div>
+                                            <div><PeopleIcon style={{ marginLeft: '5px' }} />
+                                                <div>{item.prov_name} </div>
                                             </div>
                                             <div><CallIcon style={{ marginLeft: '5px' }} />
                                                 <div>{item.phone} </div>

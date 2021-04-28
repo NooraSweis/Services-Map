@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import BusinessIcon from '@material-ui/icons/Business';
-import EmailIcon from '@material-ui/icons/Email';
+import PeopleIcon from '@material-ui/icons/People';
 import CallIcon from '@material-ui/icons/Call';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
@@ -43,25 +43,34 @@ class Home extends Component {
             }
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    console.log(doc)
-                    this.setState({
-                        ...this.state,
-                        items: [
-                            ...this.state.items,
-                            {
-                                service_ID: doc.id,
-                                name: doc.data().name,
-                                description: doc.data().description,
-                                address: doc.data().address,
-                                phone: doc.data().phone,
-                                email: doc.data().email,
-                                status: doc.data().status,
-                                serviceImg: doc.data().serviceImg,
-                                expand: false,
-                                red: true,
-                                anchortEl: null
-                            }
-                        ]
+                    var provider_name = "";
+                    firestore.collection("User").where("email", '==', doc.data().email).get().then((providerSnapshot) => {
+                        providerSnapshot.forEach((provider) => {
+                            provider_name = provider.data().name;
+                            console.log(provider_name);
+                        })
+                    }).then(() => {
+                        this.setState({
+                            ...this.state,
+                            items: [
+                                ...this.state.items,
+                                {
+                                    service_ID: doc.id,
+                                    name: doc.data().name,
+                                    prov_name: provider_name,
+                                    description: doc.data().description,
+                                    address: doc.data().address,
+                                    phone: doc.data().phone,
+                                    email: doc.data().email,
+                                    status: doc.data().status,
+                                    serviceImg: doc.data().serviceImg,
+                                    expand: false,
+                                    red: false,
+                                    anchortEl: null,
+                                    favDocID: ''
+                                }
+                            ]
+                        })
                     })
                 });
             }).then(() => {
@@ -71,7 +80,10 @@ class Home extends Component {
     }
 
     deleteOrAddToFavorites(red, sID, docID) {
-        console.log(red + " " + sID + " " + userID + " " + docID)
+        console.log(red + " " + sID + " " + userID + " " + docID);
+        if (docID === '') {
+
+        }
         if (red) {
             firestore.collection("Favorite").doc(docID).set({
                 service_ID: sID,
@@ -152,7 +164,7 @@ class Home extends Component {
                                                 onClick={() => {
                                                     item.red = !item.red;
                                                     this.setState({ ...this.state });
-                                                    this.deleteOrAddToFavorites(item.red, item.service_ID, item.docID);
+                                                    this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
                                                 }}
                                             >
                                                 <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />
@@ -172,8 +184,8 @@ class Home extends Component {
                                             unmountOnExit key="collapse">
                                             <CardContent key="content">
                                                 <div>{item.description}</div>
-                                                <div><EmailIcon style={{ marginLeft: '5px' }} />
-                                                    <div>{item.email} </div>
+                                                <div><PeopleIcon style={{ marginLeft: '5px' }} />
+                                                    <div>{item.prov_name} </div>
                                                 </div>
                                                 <div><CallIcon style={{ marginLeft: '5px' }} />
                                                     <div>{item.phone} </div>
