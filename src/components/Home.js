@@ -27,10 +27,6 @@ class Home extends Component {
         this.getData();
     }
 
-    componentDidUpdate() {
-        console.log(this.state)
-    }
-
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
@@ -47,50 +43,68 @@ class Home extends Component {
                     firestore.collection("User").where("email", '==', doc.data().email).get().then((providerSnapshot) => {
                         providerSnapshot.forEach((provider) => {
                             provider_name = provider.data().name;
-                            console.log(provider_name);
                         })
                     }).then(() => {
-                        this.setState({
-                            ...this.state,
-                            items: [
-                                ...this.state.items,
-                                {
-                                    service_ID: doc.id,
-                                    name: doc.data().name,
-                                    prov_name: provider_name,
-                                    description: doc.data().description,
-                                    address: doc.data().address,
-                                    phone: doc.data().phone,
-                                    email: doc.data().email,
-                                    status: doc.data().status,
-                                    serviceImg: doc.data().serviceImg,
-                                    expand: false,
-                                    red: false,
-                                    anchortEl: null,
-                                    favDocID: ''
-                                }
-                            ]
-                        })
+                        var isFavorite = false;
+                        var favDocID = '';
+                        firestore.collection("Favorite")
+                            .where("service_ID", '==', doc.id)
+                            .where("user_ID", '==', userID)
+                            .get().then((favSnapshot) => {
+                                isFavorite = !favSnapshot.empty;
+                                favSnapshot.forEach((fav) => {
+                                    favDocID = fav.id;
+                                })
+                            })
+                            .then(() => {
+                                this.setState({
+                                    ...this.state,
+                                    items: [
+                                        ...this.state.items,
+                                        {
+                                            service_ID: doc.id,
+                                            name: doc.data().name,
+                                            prov_name: provider_name,
+                                            description: doc.data().description,
+                                            address: doc.data().address,
+                                            phone: doc.data().phone,
+                                            email: doc.data().email,
+                                            status: doc.data().status,
+                                            serviceImg: doc.data().serviceImg,
+                                            expand: false,
+                                            red: isFavorite,
+                                            anchortEl: null,
+                                            favDocID: favDocID
+                                        }
+                                    ]
+                                })
+                            })
                     })
                 });
-            }).then(() => {
-                console.log(this.state.items)
             })
         }
     }
 
     deleteOrAddToFavorites(red, sID, docID) {
-        console.log(red + " " + sID + " " + userID + " " + docID);
-        if (docID === '') {
-
-        }
         if (red) {
-            firestore.collection("Favorite").doc(docID).set({
-                service_ID: sID,
-                user_ID: userID
-            })
+            (docID) ?
+                firestore.collection("Favorite").doc(docID).set({
+                    service_ID: sID,
+                    user_ID: userID
+                }).then(() => {
+                    return docID;
+                })
+                :
+                firestore.collection("Favorite").add({
+                    service_ID: sID,
+                    user_ID: userID
+                }).then((doc) => {
+                    return doc.id;
+                })
         } else {
-            firestore.collection("Favorite").doc(docID).delete();
+            firestore.collection("Favorite").doc(docID).delete().then(() => {
+                return docID;
+            });
         }
     }
 
@@ -162,9 +176,13 @@ class Home extends Component {
                                         >
                                             <IconButton aria-label="add to favorites"
                                                 onClick={() => {
-                                                    item.red = !item.red;
-                                                    this.setState({ ...this.state });
-                                                    this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
+                                                    if (auth.currentUser) {
+                                                        item.red = !item.red;
+                                                        this.setState({ ...this.state });
+                                                        item.favDocID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
+                                                    } else {
+                                                        alert("Sign in to add a favorite item!")
+                                                    }
                                                 }}
                                             >
                                                 <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />

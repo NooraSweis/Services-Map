@@ -28,10 +28,6 @@ export default class Favorite extends Component {
         this.getData();
     }
 
-    componentDidUpdate() {
-        console.log(this.state)
-    }
-
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
@@ -40,17 +36,14 @@ export default class Favorite extends Component {
                     userID = doc.id;
                 })
             }).then(() => {
-                console.log(userID);
                 firestore.collection("Favorite").where("user_ID", "==", userID.toString()).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         var docID = doc.id;
-                        console.log(doc.data().service_ID)
                         firestore.collection("services").doc(doc.data().service_ID).get().then((item) => {
                             var provider_name = "";
                             firestore.collection("User").where("email", '==', item.data().email).get().then((providerSnapshot) => {
                                 providerSnapshot.forEach((provider) => {
                                     provider_name = provider.data().name;
-                                    console.log(provider_name);
                                 })
                             }).then(() => {
                                 this.setState({
@@ -79,14 +72,11 @@ export default class Favorite extends Component {
                         })
                     })
                 });
-            }).then(() => {
-                console.log(this.state.items)
             })
         }
     }
 
     deleteOrAddToFavorites(red, sID, uID, docID) {
-        console.log(red + " " + sID + " " + uID + " " + docID)
         if (red) {
             firestore.collection("Favorite").doc(docID).set({
                 service_ID: sID,
