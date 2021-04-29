@@ -32,8 +32,10 @@ class Login_Fields extends Component {
                 fire.auth().signInWithEmailAndPassword(this.state.email.trim(), this.state.password).then((u) => {
                     fire.firestore().collection('User').where('email', '==', this.state.email.trim()).get().then((snapshot) => {
                         snapshot.forEach((doc) => {
+                            localStorage.setItem('user name',doc.data().name);
                             this.props.login({ type: 'LOGIN' })
                             this.props.position({ type: doc.data().type })
+                            console.log(localStorage.getItem('user name'))
                             console.log("successfully login")
                         })
                     }).then(() => {

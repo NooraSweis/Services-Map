@@ -116,14 +116,10 @@ class SPprofile extends Component {
         }
     }
 
-    /*componentWillUnmount() {
-        this.setState({ name: '', email: '', password: '', phone: '', serviceType: '', description: '' });
-    }*/
     componentWillUnmount() {
-        this.setState = (state,callback)=>{
-            return;
-        };
+        this.setState({ name: '', email: '', password: '', phone: '', serviceType: '', description: '' });
     }
+ 
     save = (e) => {
         e.preventDefault();
         const newName = this.state.newName;

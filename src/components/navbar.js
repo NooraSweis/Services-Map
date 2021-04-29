@@ -21,6 +21,7 @@ class Navbar extends Component {
 					this.setState({
 						...this.state, userName: doc.data().name
 					})
+					
 				})
 			})
 			
@@ -59,7 +60,7 @@ class Navbar extends Component {
 					<NavLink exact to="/" className="item">Home</NavLink>
 					<NavLink to="/Profile" className="item">Profile</NavLink>
 					<NavLink to="/Map" className="item">Map</NavLink>
-					{!this.props.isLoggedIn ? (
+					{this.props.isLoggedIn==='false' ? (
 						<NavLink to="/SignIn" className="item">
 							Sign In
 						</NavLink>
@@ -68,9 +69,9 @@ class Navbar extends Component {
 					<NavLink to="/about" className="item">
 						About
           </NavLink>
-					{this.props.isLoggedIn ? (
+					{this.props.isLoggedIn==='true' ? (
 						<div className="dropdown" id="List">
-							<button className="item">{this.state.userName}</button>
+							<button className="item">{this.props.user}</button>
 							{this.props.position === "ADMIN" ? (
 								<div className="dropdown-content">
 									<NavLink to="/Favorite" className="admin-item">Favorates</NavLink>
@@ -100,7 +101,8 @@ class Navbar extends Component {
 function mapStateToProps(state) {
 	return {
 		isLoggedIn: state.isLoggedIn,
-		position: state.position
+		position: state.position,
+		user: state.userName
 	};
 }
 function mapDispatchToProps(dispatch) {

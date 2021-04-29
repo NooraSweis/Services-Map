@@ -30,11 +30,7 @@ class Home extends Component {
     componentDidUpdate() {
         console.log(this.state)
     }
-    componentWillUnmount() {
-        this.setState = (state,callback)=>{
-            return;
-        };
-    }
+  
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
