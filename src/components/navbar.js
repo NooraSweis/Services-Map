@@ -5,13 +5,14 @@ import { connect } from "react-redux";
 import fire from "./config";
 
 class Navbar extends Component {
-	state = {
-		isLoggedIn: this.props.isLoggedIn,
+	constructor(props){
+		super(props);
+		this.state = {
+			isLoggedIn: this.props.isLoggedIn,
 		position: this.props.position,
-		userName: this.props.user
-	};
-
-
+		userName:this.props.isLoggedIn
+		}
+	}
 	getUserData() {
 		// user name
 		const user = fire.auth().currentUser;
@@ -27,7 +28,6 @@ class Navbar extends Component {
 			
 		}
 	}
-
 	componentDidMount() {
 		this.props.history.listen((location) => {
 			document.querySelector("#nav-toggle").checked = false;
@@ -39,12 +39,14 @@ class Navbar extends Component {
 		//		console.log(user);
 		fire.auth().signOut().then(() => {
 			this.props.logout({ type: 'LOGOUT' })
+			localStorage.clear();
 			window.location.reload(false);
 		}).catch((error) => {
 			// An error happened.
 			console.log(error.toString);
 		});
 	};
+
 	render() {
 		this.getUserData();
 		return (
@@ -55,13 +57,12 @@ class Navbar extends Component {
 					src="https://i.ibb.co/Dg4r5Gt/logo.png"
 					alt="LOGO"
 				/>
-
 				<ul className="nav-list">
 					<NavLink exact to="/" className="item">Home</NavLink>
 					<NavLink to="/Profile" className="item">Profile</NavLink>
 					<NavLink to="/Map" className="item">Map</NavLink>
-					{console.log(this.props.isLoggedIn)}					
-					{this.props.isLoggedIn!='true' ? (
+										
+					{!this.props.isLoggedIn ? (
 						<NavLink to="/SignIn" className="item">
 							Sign In
 						</NavLink>
@@ -70,7 +71,7 @@ class Navbar extends Component {
 					<NavLink to="/about" className="item">
 						About
           			</NavLink>
-					{this.props.isLoggedIn=='true' ? (
+					{this.props.isLoggedIn ? (
 						<div className="dropdown" id="List">
 							<button className="item">{this.props.user}</button>
 							{this.props.position === "ADMIN" ? (

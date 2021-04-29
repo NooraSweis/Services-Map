@@ -10,13 +10,11 @@ const reducer = (state = initState, action) => {
       return { ...state, isLoggedIn: localStorage.getItem('isLoggedIn'),userName:localStorage.getItem('user name')}
    }
       
-   else if (action.type === 'LOGOUT') {
-      localStorage.setItem('user name','')
-      localStorage.setItem('isLoggedIn',false)
-      localStorage.setItem('position','client-out')
-      return { isLoggedIn: localStorage.getItem('isLoggedIn'),
-               userName:localStorage.getItem('user name'),
-               position: localStorage.getItem('position') }
+   else if (action.type === 'LOGOUT') { 
+      localStorage.setItem('isLoggedIn',null);
+      localStorage.setItem('position','client-out');
+      localStorage.setItem('user name',''); 
+      return {  initState}
    }
    else if (action.type === 'client-in') {
       localStorage.setItem('position','client-in');

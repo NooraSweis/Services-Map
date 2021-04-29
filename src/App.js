@@ -27,18 +27,13 @@ constructor(props){
 	this.state = {
 		user: firebase.auth().currentUser
 	}
-	if(localStorage.getItem('isLoggedIn')==null){
-		localStorage.setItem('user name','')
-		localStorage.setItem('isLoggedIn',false)
-		localStorage.setItem('position','client-out')
-	  }
 }
 	render() {
+
 		return (
 			<BrowserRouter>
 				<Navbar />
 				<Switch>
-					{console.log(this.props.isLoggedIn)}
 					<Route exact path='/' component={Home} />
 					<Route exact path='/Profile' component={Profile} />
 					<Route exact path='/Map' component={Map} />
@@ -46,10 +41,10 @@ constructor(props){
 					<Route exact path='/Show-SP-Fields' component={Show_SP_Fields} />
 					<Route exact path='/Show-Client-Fields' component={Show_client_Fields} />
 					<Route exact path='/SignIn' render={() => (
-						this.props.isLoggedIn!='true' ? <SignIn /> : <Redirect to='/Profile' />
+						!this.props.isLoggedIn ? <SignIn /> : <Redirect to='/Profile' />
 					)} />
 					<Route exact path='/About' component={About} />
-					{this.props.isLoggedIn=='true' ?
+					{this.props.isLoggedIn?
 						<Route exact path='/Favorite' component={Favorite} /> : null
 					}
 					{this.props.position === "ADMIN" ? <Route exact path='/AccountApproval' component={AccountApproval} /> : null}
