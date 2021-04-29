@@ -1,20 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import './style/NotFound.css';
 
 const NotFound = () => (
-    <div style={{
-        textAlign: 'center',
-        color: 'red',
-        border: '4px solid wheat',
-        margin: '10% 6% 0 6%',
-        paddingBottom: '10px',
-        fontFamily: '-moz-initial'
-    }}>
-        <h1>404 <br /> Ooops, Page Not Found!</h1>
-        <Link to="/">
-            Go Home
-        </Link>
+    <div>
+        <img className="page-not-found404"
+            src="https://i.ibb.co/RQ2jRMd/error404-1280x762.jpg"
+            alt="404"
+        />
     </div>
 );
 
 export default NotFound;
+
+/*
+        <div className="page-not-found404-goToHome">
+            <h1>404 <br /> Ooops, Page Not Found!</h1>
+            <Link to="/">
+                Go Home
+        </Link>
+        </div>
+*/

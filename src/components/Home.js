@@ -27,10 +27,6 @@ class Home extends Component {
         this.getData();
     }
 
-    componentDidUpdate() {
-        console.log(this.state)
-    }
-  
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
@@ -124,11 +120,11 @@ class Home extends Component {
                 <div className="outerDiv-favorites" >
                     {
                         this.state.items.length !== 0 ?
-                            this.state.items.map((item, i) => (
+                            this.state.items.map((item, index) => (
                                 (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
-                                    <Card className="root" key={i}>
+                                    <Card className="root" key={index}>
                                         <CardMedia style={{ position: 'relative' }}
-                                            className='media' key="media">
+                                            className='media'>
                                             <img style={{ width: "100%", height: "150px", zIndex: '-1' }}
                                                 src={"https://firebasestorage.googleapis.com/v0/b/services-map-306613.appspot.com/o/" + item.serviceImg + "?alt=media&token=15d6d649-3451-415a-985a-994a33e7a620"}
                                                 alt="SERVICE"
@@ -170,11 +166,10 @@ class Home extends Component {
                                         </Menu>
                                         <div
                                             className="card-header"
-                                            key={item.name}
                                             style={{ fontSize: '1.2rem' }}
                                         >{item.name}</div>
 
-                                        <CardActions key="action"
+                                        <CardActions
                                             className="card-actions"
                                             style={{ padding: '0 0 5px 0' }}
                                         >
@@ -203,8 +198,8 @@ class Home extends Component {
                                         </CardActions>
 
                                         <Collapse in={item.expand} timeout="auto"
-                                            unmountOnExit key="collapse">
-                                            <CardContent key="content">
+                                            unmountOnExit>
+                                            <CardContent>
                                                 <div>{item.description}</div>
                                                 <div><PeopleIcon style={{ marginLeft: '5px' }} />
                                                     <div>{item.prov_name} </div>
