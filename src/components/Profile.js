@@ -12,7 +12,9 @@ class Profile extends Component {
   }
 
   render() {
-    const position = this.props.position;
+    var position = this.props.position;
+    if(position==null)
+    position='client-out';
     switch (position) {
       case 'client-out':
         return (

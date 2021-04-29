@@ -27,7 +27,7 @@ constructor(props){
 	this.state = {
 		user: firebase.auth().currentUser
 	}
-	if(localStorage.getItem('isLoggedIn')===null){
+	if(localStorage.getItem('isLoggedIn')==null){
 		localStorage.setItem('user name','')
 		localStorage.setItem('isLoggedIn',false)
 		localStorage.setItem('position','client-out')
