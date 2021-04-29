@@ -27,11 +27,7 @@ class App extends Component {
 		this.state = {
 			user: firebase.auth().currentUser
 		}
-		if (localStorage.getItem('isLoggedIn') == null) {
-			localStorage.setItem('user name', '')
-			localStorage.setItem('isLoggedIn', false)
-			localStorage.setItem('position', 'client-out')
-		}
+		
 	}
 
 	render() {
