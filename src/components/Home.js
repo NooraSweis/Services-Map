@@ -27,6 +27,16 @@ class Home extends Component {
         this.getData();
     }
 
+    componentDidUpdate() {
+        const user = auth.currentUser;
+        if (!user) {
+            var elements = document.getElementsByClassName('favIcon');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.color = "#808080";
+            }
+        }
+    }
+
     getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
@@ -184,7 +194,7 @@ class Home extends Component {
                                                     }
                                                 }}
                                             >
-                                                <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />
+                                                <FavoriteIcon className="favIcon" style={{ color: item.red ? 'red' : '#808080' }} />
                                             </IconButton>
                                             <IconButton
                                                 onClick={() => {
