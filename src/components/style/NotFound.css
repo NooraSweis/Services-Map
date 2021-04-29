@@ -1,20 +1,15 @@
-.page-not-found404 {
-    width: 100%;
-    max-height: 100%;
-    min-height: 100%;
-    position: fixed;
-}
-
-.page-not-found404-goToHome {
-    position: fixed;
+.error-404 {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    margin: auto;
+    width: 40%;
+    border-radius: 50%;
+    box-shadow: 1px 1px 20px 5px yellow;
+    margin-top: 90px;
+    margin-bottom: 20px;
 }
 
-@media screen and (max-width: 450px) {
-    .page-not-found404 {
-        content: url("https://i.ibb.co/0G0mZXr/errod404-320x460.jpg");
+@media screen and (max-width: 750px) {
+    .error-404 {
+        width: 70%;
     }
 }
