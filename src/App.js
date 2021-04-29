@@ -22,12 +22,18 @@ import { connect } from 'react-redux';
 import NotFound from './components/NotFound';
 
 class App extends Component {
-constructor(props){
-	super(props);
-	this.state = {
-		user: firebase.auth().currentUser
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: firebase.auth().currentUser
+		}
+		if (localStorage.getItem('isLoggedIn') == null) {
+			localStorage.setItem('user name', '')
+			localStorage.setItem('isLoggedIn', false)
+			localStorage.setItem('position', 'client-out')
+		}
 	}
-}
+
 	render() {
 
 		return (
@@ -55,8 +61,7 @@ constructor(props){
 				</Switch>
 			</BrowserRouter>
 		);
-	}
-}
+}}
 function mapStateToProps(state) {
 	return {
 		isLoggedIn: state.isLoggedIn,

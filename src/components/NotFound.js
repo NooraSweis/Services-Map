@@ -2,21 +2,13 @@ import React from 'react';
 import './style/NotFound.css';
 
 const NotFound = () => (
-    <div>
-        <img className="page-not-found404"
-            src="https://i.ibb.co/RQ2jRMd/error404-1280x762.jpg"
+    <div style={{ textAlign: 'center' }}>
+        <img className="error-404"
+            src="https://i.ibb.co/8mWZ0LB/error404.gif"
             alt="404"
         />
+        <a href="/">Go Home?</a>
     </div>
 );
 
 export default NotFound;
-
-/*
-        <div className="page-not-found404-goToHome">
-            <h1>404 <br /> Ooops, Page Not Found!</h1>
-            <Link to="/">
-                Go Home
-        </Link>
-        </div>
-*/

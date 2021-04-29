@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./navbar.css";
-import { NavLink, withRouter } from "react-router-dom";
+import { Link, NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import fire from "./config";
 
@@ -22,10 +22,10 @@ class Navbar extends Component {
 					this.setState({
 						...this.state, userName: doc.data().name
 					})
-					
+
 				})
 			})
-			
+
 		}
 	}
 	componentDidMount() {
@@ -52,11 +52,13 @@ class Navbar extends Component {
 		return (
 			<div className="navbar">
 				<input id="nav-toggle" type="checkbox" />
-				<img
-					className="logo"
-					src="https://i.ibb.co/Dg4r5Gt/logo.png"
-					alt="LOGO"
-				/>
+				<Link to="/">
+					<img
+						className="logo"
+						src="https://i.ibb.co/Dg4r5Gt/logo.png"
+						alt="LOGO"
+					/>
+				</Link>
 				<ul className="nav-list">
 					<NavLink exact to="/" className="item">Home</NavLink>
 					<NavLink to="/Profile" className="item">Profile</NavLink>
