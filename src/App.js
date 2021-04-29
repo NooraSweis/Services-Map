@@ -46,10 +46,10 @@ constructor(props){
 					<Route exact path='/Show-SP-Fields' component={Show_SP_Fields} />
 					<Route exact path='/Show-Client-Fields' component={Show_client_Fields} />
 					<Route exact path='/SignIn' render={() => (
-						!this.props.isLoggedIn ? <SignIn /> : <Redirect to='/Profile' />
+						this.props.isLoggedIn!='true' ? <SignIn /> : <Redirect to='/Profile' />
 					)} />
 					<Route exact path='/About' component={About} />
-					{this.props.isLoggedIn ?
+					{this.props.isLoggedIn=='true' ?
 						<Route exact path='/Favorite' component={Favorite} /> : null
 					}
 					{this.props.position === "ADMIN" ? <Route exact path='/AccountApproval' component={AccountApproval} /> : null}
