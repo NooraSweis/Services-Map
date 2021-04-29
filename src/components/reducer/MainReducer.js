@@ -1,7 +1,7 @@
 const initState = {
    isLoggedIn: localStorage.getItem('isLoggedIn'),
    position: localStorage.getItem('position'),
-   userName: localStorage.getItem('user name')
+   userName: localStorage.getItem('user name'),
 }
 const reducer = (state = initState, action) => {
    if (action.type === 'LOGIN')

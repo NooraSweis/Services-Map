@@ -22,16 +22,25 @@ import { connect } from 'react-redux';
 import NotFound from './components/NotFound';
 
 class App extends Component {
-
-	state = {
+constructor(props){
+	super(props);
+	this.state = {
 		user: firebase.auth().currentUser
 	}
+	if(localStorage.getItem('isLoggedIn')===null){
+	  localStorage.setItem('user name','')
+      localStorage.setItem('isLoggedIn',false)
+      localStorage.setItem('position','client-out')
+	}
+}
+	
 
 	render() {
 		return (
 			<BrowserRouter>
 				<Navbar />
 				<Switch>
+					{console.log(this.props.isLoggedIn)}
 					<Route exact path='/' component={Home} />
 					<Route exact path='/Profile' component={Profile} />
 					<Route exact path='/Map' component={Map} />
