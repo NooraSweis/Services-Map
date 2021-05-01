@@ -13,6 +13,8 @@ import CallIcon from '@material-ui/icons/Call';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
+import { CustomDialog } from "react-st-modal";
+import MapDialog from './map/MapDialog';
 
 var userID = "";
 
@@ -20,11 +22,14 @@ class Home extends Component {
 
     state = {
         items: [],
-        search: ''
+        search: '',
+        latitude: null,
+        longitude: null
     }
 
     componentDidMount() {
         this.getData();
+        this.getLocation();
     }
 
     componentDidUpdate() {
@@ -35,6 +40,24 @@ class Home extends Component {
                 elements[i].style.color = "#808080";
             }
         }
+    }
+
+    getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+
+    showPosition = (position) => {
+        this.setState({
+            ...this.state,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+        console.log("Latitude: " + position.coords.latitude +
+            " Longitude: " + position.coords.longitude);
     }
 
     getData() {
@@ -50,9 +73,12 @@ class Home extends Component {
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     var provider_name = "";
+                    var provLat = null, provLng = null;
                     firestore.collection("User").where("email", '==', doc.data().email).get().then((providerSnapshot) => {
                         providerSnapshot.forEach((provider) => {
                             provider_name = provider.data().name;
+                            provLat = provider.data().latitude;
+                            provLng = provider.data().longitude;
                         })
                     }).then(() => {
                         var isFavorite = false;
@@ -84,7 +110,9 @@ class Home extends Component {
                                             expand: false,
                                             red: isFavorite,
                                             anchortEl: null,
-                                            favDocID: favDocID
+                                            favDocID: favDocID,
+                                            provLat: provLat,
+                                            provLng: provLng
                                         }
                                     ]
                                 })
@@ -220,7 +248,21 @@ class Home extends Component {
                                                 <div><BusinessIcon style={{ marginLeft: '5divx' }} />
                                                     <div>{item.address} </div>
                                                 </div>
-                                                <CardActions >
+                                                <CardActions onClick={this.state.latitude ?
+                                                    (async () => {
+                                                        await CustomDialog(<MapDialog
+                                                            points={[
+                                                                { lat: this.state.latitude, lng: this.state.longitude },
+                                                                { lat: item.provLat, lng: item.provLng }
+                                                            ]}
+                                                        />, {
+                                                            title: 'Routing',
+                                                            showCloseIcon: true,
+                                                        });
+                                                    })
+                                                    :
+                                                    () => alert("Please allow to access your location")
+                                                }>
                                                     <IconButton id='btn' className='button'>Show Path</IconButton>
                                                 </CardActions>
                                             </CardContent>
