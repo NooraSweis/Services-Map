@@ -17,8 +17,11 @@ import { CustomDialog } from "react-st-modal";
 import MapDialog from './map/MapDialog';
 import UpdatePathDialog from './Profiles/UpdatePathDialog';
 import firebase from 'firebase/app';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 var userID = "";
+const MySwal = withReactContent(Swal);
 
 class Home extends Component {
 
@@ -168,6 +171,23 @@ class Home extends Component {
         })
     }
 
+    clearPath() {
+        this.setState({
+            ...this.state,
+            path: []
+        })
+        firestore.collection("User").doc(userID).update({
+            path: []
+        }).then(() => {
+            MySwal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Your path is EMPTY now!',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        })
+    }
     render() {
         return (
             <div>
@@ -252,7 +272,7 @@ class Home extends Component {
                                                 }
                                             }
                                             }> Update path </MenuItem>
-                                            <MenuItem > Clear path </MenuItem>
+                                            <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
                                         </Menu>
                                         <div
                                             className="card-header"

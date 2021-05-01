@@ -10,8 +10,9 @@ export default function UpdatePath(props) {
     const [items, setItems] = useState(props.points);
 
     const update = (index) => {
-        var newItems = items.splice(index, 1);
-        setItems(newItems);
+        items.splice(index, 1);
+        setItems(items);
+        console.log(items)
     }
 
     const close = () => {
