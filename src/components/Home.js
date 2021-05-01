@@ -15,6 +15,7 @@ import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
 import { CustomDialog } from "react-st-modal";
 import MapDialog from './map/MapDialog';
+import UpdatePathDialog from './Profiles/UpdatePathDialog';
 import firebase from 'firebase/app';
 
 var userID = "";
@@ -153,21 +154,18 @@ class Home extends Component {
         }
     }
 
-    addToPath(arr) {
-        for (let i = 0; i < arr.length; i++) {
-            console.log(arr[i])
-            console.log(arr.length)
-            this.setState({
-                ...this.state,
-                path: [
-                    ...this.state.path,
-                    arr[i]
-                ]
-            })
-            firestore.collection("User").doc(userID + "").update({
-                path: firebase.firestore.FieldValue.arrayUnion(arr[i])
-            })
-        }
+    addToPath(point) {
+        console.log(point)
+        this.setState({
+            ...this.state,
+            path: [
+                ...this.state.path,
+                point
+            ]
+        })
+        firestore.collection("User").doc(userID).update({
+            path: firebase.firestore.FieldValue.arrayUnion(point)
+        })
     }
 
     render() {
@@ -222,26 +220,38 @@ class Home extends Component {
                                                 })
                                             }}>
                                             <MenuItem onClick={() => {
-                                                this.state.path.length === 0 ?
-                                                    this.addToPath([
-                                                        { lat: this.state.latitude, lng: this.state.longitude },
-                                                        { lat: item.provLat, lng: item.provLng }
-                                                    ])
-                                                    :
-                                                    this.addToPath([
-                                                        { lat: item.provLat, lng: item.provLng }
-                                                    ])
+                                                this.addToPath(
+                                                    { lat: item.provLat, lng: item.provLng, name: item.name }
+                                                )
                                             }}> Add to path </MenuItem>
                                             <MenuItem onClick={async () => {
                                                 console.log(this.state.path)
                                                 await CustomDialog(<MapDialog
                                                     points={this.state.path}
+                                                    lat={this.state.latitude}
+                                                    lng={this.state.longitude}
                                                 />, {
                                                     title: 'Routing',
                                                     showCloseIcon: true,
                                                 });
                                             }} > View path </MenuItem>
-                                            <MenuItem > Update path </MenuItem>
+                                            <MenuItem onClick={async () => {
+                                                console.log(this.state.path)
+                                                const result = await CustomDialog(<UpdatePathDialog
+                                                    points={this.state.path}
+                                                    userID={userID}
+                                                />, {
+                                                    title: 'UPDATE PATH',
+                                                    showCloseIcon: true,
+                                                })
+                                                if (result) {
+                                                    this.setState({
+                                                        ...this.state,
+                                                        path: result
+                                                    })
+                                                }
+                                            }
+                                            }> Update path </MenuItem>
                                             <MenuItem > Clear path </MenuItem>
                                         </Menu>
                                         <div

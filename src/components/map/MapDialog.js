@@ -28,8 +28,7 @@ class MapDialog extends Component {
         for (let i = 0; i < this.props.points.length; i++) {
             myWayPoints.push(L.latLng(this.props.points[i].lat, this.props.points[i].lng))
         }
-        console.log(this.props.points)
-        console.log(myWayPoints)
+        this.props.points.unshift({ lat: this.props.lat, lng: this.props.lng })
     }
     componentDidUpdate() {
         const { map } = this.state;
@@ -49,7 +48,7 @@ class MapDialog extends Component {
     render() {
         return (
             <center>
-                <MapContainer className="leaflet-home" center={[0, 0]}
+                <MapContainer className="leaflet-home" center={[this.props.lat, this.props.lng]}
                     zoom={15} scrollWheelZoom={false}
                     whenCreated={(map) => this.setState({ map })}>
                     <TileLayer
