@@ -17,8 +17,9 @@ import { CustomDialog } from "react-st-modal";
 import MapDialog from './map/MapDialog';
 import UpdatePathDialog from './Profiles/UpdatePathDialog';
 import firebase from 'firebase/app';
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import L from 'leaflet';
 
 var userID = "";
 const MySwal = withReactContent(Swal);
@@ -158,17 +159,36 @@ class Home extends Component {
     }
 
     addToPath(point) {
-        console.log(point)
-        this.setState({
-            ...this.state,
-            path: [
-                ...this.state.path,
-                point
-            ]
-        })
-        firestore.collection("User").doc(userID).update({
-            path: firebase.firestore.FieldValue.arrayUnion(point)
-        })
+        if (userID) {
+            this.setState({
+                ...this.state,
+                path: [
+                    ...this.state.path,
+                    point
+                ]
+            })
+            var ref = firestore.collection("User").doc(userID + "");
+            ref.update({
+                path: firebase.firestore.FieldValue.arrayUnion(point)
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Added',
+                    width: 400,
+                    showConfirmButton: false,
+                    timer: 1200
+                })
+            })
+        } else {
+            MySwal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Sign in first!',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        }
     }
 
     clearPath() {
@@ -188,6 +208,31 @@ class Home extends Component {
             })
         })
     }
+
+    showPath(item) {
+        console.log(this.state.latitude + " " + this.state.longitude)
+        console.log(item.provLat + " " + item.provLng)
+        this.state.latitude ?
+            CustomDialog(<MapDialog
+                points={[
+                    L.latLng(item.provLat, item.provLng)
+                ]}
+                lat={this.state.latitude}
+                lng={this.state.longitude}
+            />, {
+                title: 'Routing',
+                showCloseIcon: true,
+            })
+            :
+            MySwal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Please allow to access your location!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+    }
+
     render() {
         return (
             <div>
@@ -320,21 +365,7 @@ class Home extends Component {
                                                 <div><BusinessIcon style={{ marginLeft: '5divx' }} />
                                                     <div>{item.address} </div>
                                                 </div>
-                                                <CardActions onClick={this.state.latitude ?
-                                                    (async () => {
-                                                        await CustomDialog(<MapDialog
-                                                            points={[
-                                                                { lat: this.state.latitude, lng: this.state.longitude },
-                                                                { lat: item.provLat, lng: item.provLng }
-                                                            ]}
-                                                        />, {
-                                                            title: 'Routing',
-                                                            showCloseIcon: true,
-                                                        });
-                                                    })
-                                                    :
-                                                    () => alert("Please allow to access your location")
-                                                }>
+                                                <CardActions onClick={() => { this.showPath(item) }}>
                                                     <IconButton id='btn' className='button'>Show Path</IconButton>
                                                 </CardActions>
                                             </CardContent>

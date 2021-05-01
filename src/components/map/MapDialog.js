@@ -25,10 +25,10 @@ class MapDialog extends Component {
     };
 
     componentDidMount() {
-        for (let i = 0; i < this.props.points.length; i++) {
-            myWayPoints.push(L.latLng(this.props.points[i].lat, this.props.points[i].lng))
-        }
-        this.props.points.unshift({ lat: this.props.lat, lng: this.props.lng })
+        this.props.points.unshift(L.latLng(this.props.lat, this.props.lng));
+
+        console.log(this.props.points)
+        console.log(myWayPoints)
     }
     componentDidUpdate() {
         const { map } = this.state;
@@ -41,7 +41,7 @@ class MapDialog extends Component {
             }
             L.Routing.control({
                 createMarker: function () { return null; },
-                waypoints: myWayPoints
+                waypoints: this.props.points
             }).addTo(map);
         }
     }
