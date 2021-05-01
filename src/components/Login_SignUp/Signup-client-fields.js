@@ -29,7 +29,8 @@ class Signup_client_Fields extends Component {
                     email: email,
                     name: name,
                     password: password,
-                    type: 'client-in'
+                    type: 'client-in',
+                    path: []
                 })
                     .then((u) => {
                         var user = fire.auth().currentUser;

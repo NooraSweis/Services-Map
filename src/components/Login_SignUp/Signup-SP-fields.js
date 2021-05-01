@@ -61,7 +61,8 @@ class Signup_SP_Fields extends Component {
                 latitude: latitude,
                 longitude: longitude,
                 numberOfServices: 0,
-                type: 'SP'
+                type: 'SP',
+                path: []
             }).then(() => {
                 loading = false;
                 this.setState({ ...this.setState })

@@ -15,6 +15,7 @@ import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
 import { CustomDialog } from "react-st-modal";
 import MapDialog from './map/MapDialog';
+import firebase from 'firebase/app';
 
 var userID = "";
 
@@ -24,7 +25,8 @@ class Home extends Component {
         items: [],
         search: '',
         latitude: null,
-        longitude: null
+        longitude: null,
+        path: []
     }
 
     componentDidMount() {
@@ -67,7 +69,12 @@ class Home extends Component {
                 firestore.collection("User").where("email", "==", user.email).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         userID = doc.id;
+                        this.setState({
+                            path: doc.data().path
+                        })
                     })
+                }).then(() => {
+                    console.log(this.state.path)
                 })
             }
             firestore.collection("services").get().then((querySnapshot) => {
@@ -146,6 +153,23 @@ class Home extends Component {
         }
     }
 
+    addToPath(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            console.log(arr[i])
+            console.log(arr.length)
+            this.setState({
+                ...this.state,
+                path: [
+                    ...this.state.path,
+                    arr[i]
+                ]
+            })
+            firestore.collection("User").doc(userID + "").update({
+                path: firebase.firestore.FieldValue.arrayUnion(arr[i])
+            })
+        }
+    }
+
     render() {
         return (
             <div>
@@ -197,8 +221,26 @@ class Home extends Component {
                                                     open: false
                                                 })
                                             }}>
-                                            <MenuItem > Add to path </MenuItem>
-                                            <MenuItem > View path </MenuItem>
+                                            <MenuItem onClick={() => {
+                                                this.state.path.length === 0 ?
+                                                    this.addToPath([
+                                                        { lat: this.state.latitude, lng: this.state.longitude },
+                                                        { lat: item.provLat, lng: item.provLng }
+                                                    ])
+                                                    :
+                                                    this.addToPath([
+                                                        { lat: item.provLat, lng: item.provLng }
+                                                    ])
+                                            }}> Add to path </MenuItem>
+                                            <MenuItem onClick={async () => {
+                                                console.log(this.state.path)
+                                                await CustomDialog(<MapDialog
+                                                    points={this.state.path}
+                                                />, {
+                                                    title: 'Routing',
+                                                    showCloseIcon: true,
+                                                });
+                                            }} > View path </MenuItem>
                                             <MenuItem > Update path </MenuItem>
                                             <MenuItem > Clear path </MenuItem>
                                         </Menu>

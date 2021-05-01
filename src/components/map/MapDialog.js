@@ -18,31 +18,38 @@ const targetIcon = new L.icon({
     iconSize: [40, 40]
 });
 
+var myWayPoints = [];
 class MapDialog extends Component {
     state = {
         map: null
     };
 
+    componentDidMount() {
+        for (let i = 0; i < this.props.points.length; i++) {
+            myWayPoints.push(L.latLng(this.props.points[i].lat, this.props.points[i].lng))
+        }
+        console.log(this.props.points)
+        console.log(myWayPoints)
+    }
     componentDidUpdate() {
         const { map } = this.state;
-        if (map) {
+        if (map && this.props.points[0]) {
             L.marker([this.props.points[0].lat, this.props.points[0].lng], { icon: startIcon })
                 .addTo(map);
-            L.marker([this.props.points[1].lat, this.props.points[1].lng], { icon: targetIcon })
-                .addTo(map);
+            for (let i = 1; i < this.props.points.length; i++) {
+                L.marker([this.props.points[i].lat, this.props.points[i].lng], { icon: targetIcon })
+                    .addTo(map);
+            }
             L.Routing.control({
                 createMarker: function () { return null; },
-                waypoints: [
-                    L.latLng(this.props.points[0].lat, this.props.points[0].lng),
-                    L.latLng(this.props.points[1].lat, this.props.points[1].lng)
-                ]
+                waypoints: myWayPoints
             }).addTo(map);
         }
     }
     render() {
         return (
             <center>
-                <MapContainer className="leaflet-home" center={[this.props.points[0].lat, this.props.points[0].lng]}
+                <MapContainer className="leaflet-home" center={[0, 0]}
                     zoom={15} scrollWheelZoom={false}
                     whenCreated={(map) => this.setState({ map })}>
                     <TileLayer

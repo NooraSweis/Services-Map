@@ -70,7 +70,8 @@ class AccountApproval extends Component {
                                             latitude: user.latitude,
                                             longitude: user.longitude,
                                             numberOfServices: 0,
-                                            type: 'SP'
+                                            type: 'SP',
+                                            path: []
                                         }).then(() => {
                                             firestore.collection('Places').add({
                                                 name: user.name,
