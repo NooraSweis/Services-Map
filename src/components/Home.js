@@ -20,6 +20,7 @@ import firebase from 'firebase/app';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import L from 'leaflet';
+import 'leaflet-routing-machine';
 
 var userID = "";
 const MySwal = withReactContent(Swal);
@@ -35,8 +36,8 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getData();
         this.getLocation();
+        this.getData();
     }
 
     componentDidUpdate() {
@@ -47,6 +48,7 @@ class Home extends Component {
                 elements[i].style.color = "#808080";
             }
         }
+        console.log(this.state.items)
     }
 
     getLocation = () => {
@@ -85,54 +87,69 @@ class Home extends Component {
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     var provider_name = "";
-                    var provLat = null, provLng = null;
+                    var provLat = null, provLng = null, distance = null;
                     firestore.collection("User").where("email", '==', doc.data().email).get().then((providerSnapshot) => {
                         providerSnapshot.forEach((provider) => {
                             provider_name = provider.data().name;
                             provLat = provider.data().latitude;
                             provLng = provider.data().longitude;
                         })
-                    }).then(() => {
-                        var isFavorite = false;
-                        var favDocID = '';
-                        firestore.collection("Favorite")
-                            .where("service_ID", '==', doc.id)
-                            .where("user_ID", '==', userID)
-                            .get().then((favSnapshot) => {
-                                isFavorite = !favSnapshot.empty;
-                                favSnapshot.forEach((fav) => {
-                                    favDocID = fav.id;
-                                })
-                            })
-                            .then(() => {
-                                this.setState({
-                                    ...this.state,
-                                    items: [
-                                        ...this.state.items,
-                                        {
-                                            service_ID: doc.id,
-                                            name: doc.data().name,
-                                            prov_name: provider_name,
-                                            description: doc.data().description,
-                                            address: doc.data().address,
-                                            phone: doc.data().phone,
-                                            email: doc.data().email,
-                                            status: doc.data().status,
-                                            serviceImg: doc.data().serviceImg,
-                                            expand: false,
-                                            red: isFavorite,
-                                            anchortEl: null,
-                                            favDocID: favDocID,
-                                            provLat: provLat,
-                                            provLng: provLng
-                                        }
-                                    ]
-                                })
-                            })
                     })
-                });
+                        .then(() => {
+                            if (this.state.latitude) {
+                                let y = provLat - this.state.latitude;
+                                let x = provLng - this.state.longitude;
+                                distance = Math.sqrt(x * x + y * y);
+                            }
+                        })
+                        .then(() => {
+                            var isFavorite = false;
+                            var favDocID = '';
+                            firestore.collection("Favorite")
+                                .where("service_ID", '==', doc.id)
+                                .where("user_ID", '==', userID)
+                                .get().then((favSnapshot) => {
+                                    isFavorite = !favSnapshot.empty;
+                                    favSnapshot.forEach((fav) => {
+                                        favDocID = fav.id;
+                                    })
+                                })
+                                .then(() => {
+                                    this.sortItems();
+                                    this.setState({
+                                        ...this.state,
+                                        items: [
+                                            ...this.state.items,
+                                            {
+                                                service_ID: doc.id,
+                                                name: doc.data().name,
+                                                prov_name: provider_name,
+                                                description: doc.data().description,
+                                                address: doc.data().address,
+                                                phone: doc.data().phone,
+                                                email: doc.data().email,
+                                                status: doc.data().status,
+                                                serviceImg: doc.data().serviceImg,
+                                                expand: false,
+                                                red: isFavorite,
+                                                anchortEl: null,
+                                                favDocID: favDocID,
+                                                provLat: provLat,
+                                                provLng: provLng,
+                                                distance: distance
+                                            }
+                                        ]
+                                    })
+                                })
+                        })
+                })
             })
         }
+    }
+
+    sortItems = () => {
+        let items = this.state.items;
+        items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))
     }
 
     deleteOrAddToFavorites(red, sID, docID) {
