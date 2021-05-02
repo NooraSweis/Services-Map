@@ -158,18 +158,20 @@ class Home extends Component {
         }
     }
 
-    addToPath(point) {
+    addToPath = (point) => {
         if (userID) {
-            this.setState({
-                ...this.state,
-                path: [
-                    ...this.state.path,
-                    point
-                ]
-            })
+
             var ref = firestore.collection("User").doc(userID + "");
             ref.update({
                 path: firebase.firestore.FieldValue.arrayUnion(point)
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: [
+                        ...this.state.path,
+                        point
+                    ]
+                })
             }).then(() => {
                 MySwal.fire({
                     position: 'center',
@@ -198,7 +200,9 @@ class Home extends Component {
                 this.setState({
                     ...this.state,
                     path: result
-                })
+                }, () => {
+                    this.forceUpdate();
+                });
             }
         } else {
             this.signAlert();
