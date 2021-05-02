@@ -11,9 +11,9 @@ export default function UpdatePath(props) {
     const [items, setItems] = useState(props.points);
     const [value, setValue] = useState(0);
 
-    const update = (index) => {
+    const update = (index, name) => {
         MySwal.fire({
-            title: 'Are you sure?',
+            title: name,
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
@@ -46,7 +46,7 @@ export default function UpdatePath(props) {
         <center className="outercenter">
             {items.length !== 0 ?
                 items.map((item, index) => (
-                    <div onClick={() => { update(index) }} className="update-path-item" key={index}>
+                    <div onClick={() => { update(index, item.name) }} className="update-path-item" key={index}>
                         <RemoveIcon style={{ color: 'red' }} />
                         <div className="update-path-item-name">{item.name}</div>
                     </div>
@@ -54,7 +54,7 @@ export default function UpdatePath(props) {
                 :
                 <div>
                     <div>Looks like you didn't add services to your path?</div>
-                    <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" playing={true}/>
+                    <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" playing={true} />
                 </div>
             }
         </center>

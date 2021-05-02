@@ -211,12 +211,13 @@ class Home extends Component {
 
     clearPath() {
         if (userID) {
-            this.setState({
-                ...this.state,
-                path: []
-            })
             firestore.collection("User").doc(userID).update({
                 path: []
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: []
+                })
             }).then(() => {
                 MySwal.fire({
                     position: 'center',
