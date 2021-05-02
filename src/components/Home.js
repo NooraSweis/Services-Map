@@ -13,15 +13,21 @@ import CallIcon from '@material-ui/icons/Call';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
+import { connect } from "react-redux";
 
 var userID = "";
 
 class Home extends Component {
-
-    state = {
-        items: [],
-        search: ''
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            search: '',
+            second:''
+        }
+        this.addToHistory=this.addToHistory.bind(this);
     }
+    
 
     componentDidMount() {
         this.getData();
@@ -107,15 +113,35 @@ class Home extends Component {
             });
         }
     }
-
+    addToHistory=()=>{
+            firestore.collection('history').add({
+                userID:userID,
+                search:this.state.search
+             }).then(()=>{
+                 console.log('added')
+             })
+    }
+    componentWillUnmount() {
+        // fix Warning: Can't perform a React state update on an unmounted component
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
     render() {
         return (
             <div>
                 <input type='search' placeholder='Search' className='search' id='home-search'
                     onChange={(e) => {
                         this.setState({
-                            ...this.state, search: e.target.value.toString()
+                            ...this.state, search: e.target.value.toString(),second:0
                         })
+                        this.myInterval = setInterval(() => {
+                            this.setState({...this.state, second:this.state.second+1});
+                            if(this.state.second===5 && this.props.isLoggedIn && this.state.search!=='')
+                            {this.addToHistory();
+                            console.log(this.state.search)}
+                        },1000)
+                         
                     }} />
                 <div className="outerDiv-favorites" >
                     {
@@ -228,5 +254,9 @@ class Home extends Component {
         );
     }
 }
-
-export default Home;
+function mapStateToProps(state) {
+	return {
+		isLoggedIn: state.isLoggedIn,
+	};
+}
+export default connect(mapStateToProps)(Home);

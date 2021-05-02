@@ -48,10 +48,15 @@ class MainComp extends Component {
             })
         }
     }
-    componentWillUnmount() {
+    /*componentWillUnmount() {
         this.setState({ name: '', email: '', password: '' });
+    }*/
+    componentWillUnmount() {
+        // fix Warning: Can't perform a React state update on an unmounted component
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
-
     save = (e) => {
         e.preventDefault();
         const newName = this.state.newName;
