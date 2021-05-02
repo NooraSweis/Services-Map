@@ -9,6 +9,7 @@
   flex-direction: row;
   height: 100%;
   padding: 10px;
+  cursor: pointer;
 }
 
 .update-path-item-name {

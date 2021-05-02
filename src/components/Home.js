@@ -16,6 +16,7 @@ import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
 import { connect } from "react-redux";
 
 var userID = "";
+const MySwal = withReactContent(Swal);
 
 class Home extends Component {
     constructor(props){
@@ -23,14 +24,46 @@ class Home extends Component {
         this.state = {
             items: [],
             search: '',
-            second:''
+            second:'',
+            latitude: null,
+        longitude: null,
+        path: []
         }
         this.addToHistory=this.addToHistory.bind(this);
     }
-    
 
     componentDidMount() {
+        this.getLocation();
         this.getData();
+    }
+
+    componentDidUpdate() {
+        const user = auth.currentUser;
+        if (!user) {
+            var elements = document.getElementsByClassName('favIcon');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.color = "#808080";
+            }
+        }
+        console.log(this.state.items)
+    }
+
+    getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+
+    showPosition = (position) => {
+        this.setState({
+            ...this.state,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+        console.log("Latitude: " + position.coords.latitude +
+            " Longitude: " + position.coords.longitude);
     }
 
     getData() {
@@ -40,55 +73,80 @@ class Home extends Component {
                 firestore.collection("User").where("email", "==", user.email).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         userID = doc.id;
+                        this.setState({
+                            path: doc.data().path
+                        })
                     })
+                }).then(() => {
+                    console.log(this.state.path)
                 })
             }
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     var provider_name = "";
+                    var provLat = null, provLng = null, distance = null;
                     firestore.collection("User").where("email", '==', doc.data().email).get().then((providerSnapshot) => {
                         providerSnapshot.forEach((provider) => {
                             provider_name = provider.data().name;
+                            provLat = provider.data().latitude;
+                            provLng = provider.data().longitude;
                         })
-                    }).then(() => {
-                        var isFavorite = false;
-                        var favDocID = '';
-                        firestore.collection("Favorite")
-                            .where("service_ID", '==', doc.id)
-                            .where("user_ID", '==', userID)
-                            .get().then((favSnapshot) => {
-                                isFavorite = !favSnapshot.empty;
-                                favSnapshot.forEach((fav) => {
-                                    favDocID = fav.id;
-                                })
-                            })
-                            .then(() => {
-                                this.setState({
-                                    ...this.state,
-                                    items: [
-                                        ...this.state.items,
-                                        {
-                                            service_ID: doc.id,
-                                            name: doc.data().name,
-                                            prov_name: provider_name,
-                                            description: doc.data().description,
-                                            address: doc.data().address,
-                                            phone: doc.data().phone,
-                                            email: doc.data().email,
-                                            status: doc.data().status,
-                                            serviceImg: doc.data().serviceImg,
-                                            expand: false,
-                                            red: isFavorite,
-                                            anchortEl: null,
-                                            favDocID: favDocID
-                                        }
-                                    ]
-                                })
-                            })
                     })
-                });
+                        .then(() => {
+                            if (this.state.latitude) {
+                                let y = provLat - this.state.latitude;
+                                let x = provLng - this.state.longitude;
+                                distance = Math.sqrt(x * x + y * y);
+                            }
+                        })
+                        .then(() => {
+                            var isFavorite = false;
+                            var favDocID = '';
+                            firestore.collection("Favorite")
+                                .where("service_ID", '==', doc.id)
+                                .where("user_ID", '==', userID)
+                                .get().then((favSnapshot) => {
+                                    isFavorite = !favSnapshot.empty;
+                                    favSnapshot.forEach((fav) => {
+                                        favDocID = fav.id;
+                                    })
+                                })
+                                .then(() => {
+                                    this.sortItems();
+                                    this.setState({
+                                        ...this.state,
+                                        items: [
+                                            ...this.state.items,
+                                            {
+                                                service_ID: doc.id,
+                                                name: doc.data().name,
+                                                prov_name: provider_name,
+                                                description: doc.data().description,
+                                                address: doc.data().address,
+                                                phone: doc.data().phone,
+                                                email: doc.data().email,
+                                                status: doc.data().status,
+                                                serviceImg: doc.data().serviceImg,
+                                                expand: false,
+                                                red: isFavorite,
+                                                anchortEl: null,
+                                                favDocID: favDocID,
+                                                provLat: provLat,
+                                                provLng: provLng,
+                                                distance: distance
+                                            }
+                                        ]
+                                    })
+                                })
+                        })
+                })
             })
         }
+    }
+
+    sortItems = () => {
+        let items = this.state.items;
+        items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))
     }
 
     deleteOrAddToFavorites(red, sID, docID) {
@@ -127,6 +185,120 @@ class Home extends Component {
             return;
         };
     }
+
+    addToPath = (point) => {
+        if (userID) {
+
+            var ref = firestore.collection("User").doc(userID + "");
+            ref.update({
+                path: firebase.firestore.FieldValue.arrayUnion(point)
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: [
+                        ...this.state.path,
+                        point
+                    ]
+                })
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Added',
+                    width: 400,
+                    showConfirmButton: false,
+                    timer: 1200
+                })
+            })
+        } else {
+            this.signAlert();
+        }
+    }
+
+    updatePath() {
+        if (userID) {
+            const result = CustomDialog(<UpdatePathDialog
+                points={this.state.path}
+                userID={userID}
+            />, {
+                title: 'UPDATE PATH',
+                showCloseIcon: true,
+            })
+            if (result) {
+                this.setState({
+                    ...this.state,
+                    path: result
+                }, () => {
+                    this.forceUpdate();
+                });
+            }
+        } else {
+            this.signAlert();
+        }
+    }
+
+    clearPath() {
+        if (userID) {
+            firestore.collection("User").doc(userID).update({
+                path: []
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: []
+                })
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your path is EMPTY now!',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
+        } else {
+            this.signAlert();
+        }
+    }
+
+    showPath(item) {
+        let p = [];
+        for (let i = 0; i < this.state.path.length; i++) {
+            p[i] = L.latLng(this.state.path[i].lat, this.state.path[i].lng);
+        }
+        this.state.latitude ?
+            CustomDialog(<MapDialog
+                points={
+                    item ?
+                        [L.latLng(item.provLat, item.provLng)]
+                        :
+                        p
+                }
+                lat={this.state.latitude}
+                lng={this.state.longitude}
+            />, {
+                title: 'Routing',
+                showCloseIcon: true,
+            })
+            :
+            MySwal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'Please allow to access your location!',
+                showConfirmButton: false,
+                timer: 3000
+            })
+    }
+
+    signAlert() {
+        MySwal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Sign in to find more!',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    }
+
     render() {
         return (
             <div>
@@ -185,10 +357,15 @@ class Home extends Component {
                                                     open: false
                                                 })
                                             }}>
-                                            <MenuItem > Add to path </MenuItem>
-                                            <MenuItem > View path </MenuItem>
-                                            <MenuItem > Update path </MenuItem>
-                                            <MenuItem > Clear path </MenuItem>
+                                            <MenuItem onClick={() => {
+                                                this.addToPath(
+                                                    { lat: item.provLat, lng: item.provLng, name: item.name }
+                                                )
+                                            }}> Add to path </MenuItem>
+                                            <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
+                                            <MenuItem onClick={() => { this.updatePath() }}
+                                            > Update path </MenuItem>
+                                            <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
                                         </Menu>
                                         <div
                                             className="card-header"
@@ -201,16 +378,16 @@ class Home extends Component {
                                         >
                                             <IconButton aria-label="add to favorites"
                                                 onClick={() => {
-                                                    if (auth.currentUser) {
+                                                    if (userID) {
                                                         item.red = !item.red;
                                                         this.setState({ ...this.state });
                                                         item.favDocID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
                                                     } else {
-                                                        alert("Sign in to add a favorite item!")
+                                                        this.signAlert();
                                                     }
                                                 }}
                                             >
-                                                <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />
+                                                <FavoriteIcon className="favIcon" style={{ color: item.red ? 'red' : '#808080' }} />
                                             </IconButton>
                                             <IconButton
                                                 onClick={() => {
@@ -236,7 +413,7 @@ class Home extends Component {
                                                 <div><BusinessIcon style={{ marginLeft: '5divx' }} />
                                                     <div>{item.address} </div>
                                                 </div>
-                                                <CardActions >
+                                                <CardActions onClick={() => { this.showPath(item) }}>
                                                     <IconButton id='btn' className='button'>Show Path</IconButton>
                                                 </CardActions>
                                             </CardContent>
