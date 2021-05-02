@@ -1,27 +1,47 @@
 import RemoveIcon from '@material-ui/icons/Remove';
 import React, { useState } from 'react';
-import { useDialog } from 'react-st-modal';
 import { firestore } from '../config';
 import "../style/UpdatePathDialog.css";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function UpdatePath(props) {
 
-    const dialog = useDialog();
+    const MySwal = withReactContent(Swal);
     const [items, setItems] = useState(props.points);
+    const [value, setValue] = useState(0);
 
     const update = (index) => {
-        items.splice(index, 1);
-        setItems(items);
-        console.log(items)
-    }
-
-    const close = () => {
-        firestore.collection("User").doc(props.userID).update({
-            path: items
-        }).then(() => {
-            dialog.close(items);
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                items.splice(index, 1);
+                setItems(items);
+                console.log(items)
+                setValue(value + 1);
+                firestore.collection("User").doc(props.userID).update({
+                    path: items
+                }).then(() => {
+                    MySwal.fire({
+                        title: 'Deleted!',
+                        icon: 'success',
+                        showCancelButton: false,
+                        showCloseButton: false,
+                        showConfirmButton: false,
+                        timer: 1100
+                    })
+                })
+            }
         })
     }
+
     return (
         <center className="outercenter">
             {items.length !== 0 ?
@@ -32,10 +52,11 @@ export default function UpdatePath(props) {
                     </div>
                 ))
                 :
-                null
+                <div>
+                    <div>Looks like you didn't add services to your path?</div>
+                    <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" playing={true}/>
+                </div>
             }
-            <br />
-            <button onClick={() => { close() }} className="update-path-btn">Update</button>
         </center>
     );
 }

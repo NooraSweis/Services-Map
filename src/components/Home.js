@@ -181,42 +181,65 @@ class Home extends Component {
                 })
             })
         } else {
-            MySwal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Sign in first!',
-                showConfirmButton: false,
-                timer: 2000
+            this.signAlert();
+        }
+    }
+
+    updatePath() {
+        if (userID) {
+            const result = CustomDialog(<UpdatePathDialog
+                points={this.state.path}
+                userID={userID}
+            />, {
+                title: 'UPDATE PATH',
+                showCloseIcon: true,
             })
+            if (result) {
+                this.setState({
+                    ...this.state,
+                    path: result
+                })
+            }
+        } else {
+            this.signAlert();
         }
     }
 
     clearPath() {
-        this.setState({
-            ...this.state,
-            path: []
-        })
-        firestore.collection("User").doc(userID).update({
-            path: []
-        }).then(() => {
-            MySwal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Your path is EMPTY now!',
-                showConfirmButton: false,
-                timer: 2000
+        if (userID) {
+            this.setState({
+                ...this.state,
+                path: []
             })
-        })
+            firestore.collection("User").doc(userID).update({
+                path: []
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your path is EMPTY now!',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
+        } else {
+            this.signAlert();
+        }
     }
 
     showPath(item) {
-        console.log(this.state.latitude + " " + this.state.longitude)
-        console.log(item.provLat + " " + item.provLng)
+        let p = [];
+        for (let i = 0; i < this.state.path.length; i++) {
+            p[i] = L.latLng(this.state.path[i].lat, this.state.path[i].lng);
+        }
         this.state.latitude ?
             CustomDialog(<MapDialog
-                points={[
-                    L.latLng(item.provLat, item.provLng)
-                ]}
+                points={
+                    item ?
+                        [L.latLng(item.provLat, item.provLng)]
+                        :
+                        p
+                }
                 lat={this.state.latitude}
                 lng={this.state.longitude}
             />, {
@@ -231,6 +254,16 @@ class Home extends Component {
                 showConfirmButton: false,
                 timer: 3000
             })
+    }
+
+    signAlert() {
+        MySwal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Sign in to find more!',
+            showConfirmButton: false,
+            timer: 2000
+        })
     }
 
     render() {
@@ -289,34 +322,9 @@ class Home extends Component {
                                                     { lat: item.provLat, lng: item.provLng, name: item.name }
                                                 )
                                             }}> Add to path </MenuItem>
-                                            <MenuItem onClick={async () => {
-                                                console.log(this.state.path)
-                                                await CustomDialog(<MapDialog
-                                                    points={this.state.path}
-                                                    lat={this.state.latitude}
-                                                    lng={this.state.longitude}
-                                                />, {
-                                                    title: 'Routing',
-                                                    showCloseIcon: true,
-                                                });
-                                            }} > View path </MenuItem>
-                                            <MenuItem onClick={async () => {
-                                                console.log(this.state.path)
-                                                const result = await CustomDialog(<UpdatePathDialog
-                                                    points={this.state.path}
-                                                    userID={userID}
-                                                />, {
-                                                    title: 'UPDATE PATH',
-                                                    showCloseIcon: true,
-                                                })
-                                                if (result) {
-                                                    this.setState({
-                                                        ...this.state,
-                                                        path: result
-                                                    })
-                                                }
-                                            }
-                                            }> Update path </MenuItem>
+                                            <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
+                                            <MenuItem onClick={() => { this.updatePath() }}
+                                            > Update path </MenuItem>
                                             <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
                                         </Menu>
                                         <div
@@ -330,12 +338,12 @@ class Home extends Component {
                                         >
                                             <IconButton aria-label="add to favorites"
                                                 onClick={() => {
-                                                    if (auth.currentUser) {
+                                                    if (userID) {
                                                         item.red = !item.red;
                                                         this.setState({ ...this.state });
                                                         item.favDocID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
                                                     } else {
-                                                        alert("Sign in to add a favorite item!")
+                                                        this.signAlert();
                                                     }
                                                 }}
                                             >

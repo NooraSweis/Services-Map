@@ -18,7 +18,6 @@ const targetIcon = new L.icon({
     iconSize: [40, 40]
 });
 
-var myWayPoints = [];
 class MapDialog extends Component {
     state = {
         map: null
@@ -26,10 +25,8 @@ class MapDialog extends Component {
 
     componentDidMount() {
         this.props.points.unshift(L.latLng(this.props.lat, this.props.lng));
-
-        console.log(this.props.points)
-        console.log(myWayPoints)
     }
+
     componentDidUpdate() {
         const { map } = this.state;
         if (map && this.props.points[0]) {
@@ -48,14 +45,21 @@ class MapDialog extends Component {
     render() {
         return (
             <center>
-                <MapContainer className="leaflet-home" center={[this.props.lat, this.props.lng]}
-                    zoom={15} scrollWheelZoom={false}
-                    whenCreated={(map) => this.setState({ map })}>
-                    <TileLayer
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                </MapContainer>
+                {this.props.points.length >= 1 ?
+                    <MapContainer className="leaflet-home" center={[this.props.lat, this.props.lng]}
+                        zoom={15} scrollWheelZoom={false}
+                        whenCreated={(map) => this.setState({ map })}>
+                        <TileLayer
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                    </MapContainer>
+                    :
+                    <div>
+                        <div>Looks like you didn't add services to your path?</div>
+                        <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" playing={true} />
+                    </div>
+                }
             </center >
         );
     }
