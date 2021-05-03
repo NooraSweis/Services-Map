@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import '../style/MainCompProfile.css';
 import { secondaryApp } from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 class AddNewAdmin extends Component {
 
@@ -74,18 +78,36 @@ class AddNewAdmin extends Component {
                     type: 'ADMIN'
                 })
                     .then((u) => {
-                        alert("Added Successfully")
+                        MySwal.fire({
+                            position: 'center',
+                            imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                            imageWidth: 50,
+                            imageHeight: 50,
+                            text: 'New ADMIN added successfully ^_^',
+                            width: 400,
+                            showConfirmButton: false,
+                            timer: 1200
+                        })
                     })
-                    .catch((err) => {
-                        alert(err.toString());
-                    });
             })
                 .catch((err) => {
-                    alert(err.toString())
+                    this.alertError(err)
                 })
         } else {
-            alert("Password does not match");
+            this.alertError("Password does not match");
         }
+    }
+
+    alertError(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
     }
 
     render() {

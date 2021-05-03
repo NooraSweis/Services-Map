@@ -5,7 +5,10 @@ import L from 'leaflet';
 import '../map/Map.css';
 import fire from '../config';
 import { withRouter } from 'react-router';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 var markerIcon = new L.icon({
     iconUrl: 'https://i.ibb.co/VphkX1M/marker-48.png',
     iconSize: [45, 35],
@@ -23,6 +26,7 @@ class Signup_SP_Fields extends Component {
     state = {
         map: null
     };
+
     signUp = (e) => {
         e.preventDefault();
         loading = true;
@@ -35,20 +39,20 @@ class Signup_SP_Fields extends Component {
         const serviceType = document.querySelector('#serviceType').value;
         const description = document.querySelector('#description').value;
         if (latitude === null || longitude === null) {
-            alert("Please choose your location in the map");
+            this.alertError("Please choose your location in the map");
             return;
         }
         if (name.length < 2 || !(pass.match(/[0-9]/g)) || !(pass.match(/[a-z]/g)) || !(pass.match(/[A-Z]/g)) || pass.length < 8) {
             if (name.length < 2)
-                alert('name field is required and must be 3 or more characters long!')
+                this.alertError('name field is required and must be 3 or more characters long!')
             else
-                alert('password must be at least 8 characters , at least one capital and one small letter')
+                this.alertError('password must be at least 8 characters , at least one capital and one small letter')
         }
         else if (phone.length < 1 || serviceType.length < 1 || description.length < 1) {
-            alert('please fill all fields');
+            this.alertError('please fill all fields');
         }
         else if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-            alert('this email is invalid')
+            this.alertError('this email is invalid')
         }
         else if (pass === confirmPass) {
             fire.firestore().collection('AccountApproval').add({
@@ -67,12 +71,32 @@ class Signup_SP_Fields extends Component {
                 loading = false;
                 this.setState({ ...this.setState })
                 this.props.history.push("/");
-                alert("Done! Please wait for an Admin to approve the account :)")
+                MySwal.fire({
+                    position: 'center',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    text: 'Please wait for an Admin to approve the account :)',
+                    width: 400,
+                    showConfirmButton: true
+                })
             })
         }
         else {
-            alert("password does not match");
+            this.alertError("password does not match");
         }
+    }
+
+    alertError(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
     }
 
     componentDidUpdate(prevProps, prevState) {

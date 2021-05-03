@@ -6,7 +6,10 @@ import ServiceDetailsDialog from './ServiceDetailsDialog';
 import { CustomDialog, StaticDialog } from 'react-st-modal';
 import EditServiceDetails from './EditServiceDetails';
 import fire, { auth, firestore } from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 var urlser = '';
 
 class SPprofile extends Component {
@@ -119,7 +122,7 @@ class SPprofile extends Component {
     componentWillUnmount() {
         this.setState({ name: '', email: '', password: '', phone: '', serviceType: '', description: '' });
     }
- 
+
     save = (e) => {
         e.preventDefault();
         const newName = this.state.newName;
@@ -130,12 +133,12 @@ class SPprofile extends Component {
         const newDesc = this.state.newDescription;
         var x;
         if (newName.length < 2)
-            alert('name field is required and must be 3 or more characters long!')
+            this.alertError('name field is required and must be 3 or more characters long!')
         else if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
-            alert('password must be at least 8 characters , at least one capital and one small letter')
+            this.alertError('password must be at least 8 characters , at least one capital and one small letter')
         }
         else if (newPhone.length < 1 || newType.length < 1 || newDesc.length < 1)
-            alert('all fields are required')
+            this.alertError('all fields are required')
         else if (newpass === newconf) {
             fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
                 snap.forEach((doc) => {
@@ -147,14 +150,35 @@ class SPprofile extends Component {
                     var user = fire.auth().currentUser;
                     user.updatePassword(newpass);
                     this.setState({ ...this.state, read: true, newpassword: '', newConf: '', enabled: '' })
-                    console.log('your profile is updated')
+                    MySwal.fire({
+                        position: 'center',
+                        imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                        imageWidth: 50,
+                        imageHeight: 50,
+                        text: 'Updated!',
+                        width: 400,
+                        showConfirmButton: false,
+                        timer: 1200
+                    })
                 })
             })
                 .catch((err) => {
                     console.log("err " + err.toString())
                 })
         }
-        else { alert("password doesn't match") }
+        else { this.alertError("password doesn't match") }
+    }
+
+    alertError = (e) => {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
     }
 
     render() {

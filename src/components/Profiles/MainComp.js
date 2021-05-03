@@ -4,6 +4,10 @@ import '../style/MainCompProfile.css';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { CustomDialog } from 'react-st-modal';
 import fire from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 class MainComp extends Component {
     constructor(props) {
@@ -52,6 +56,31 @@ class MainComp extends Component {
         this.setState({ name: '', email: '', password: '' });
     }
 
+    alertError = (e) => {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
+    }
+
+    alertUpdated(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+            imageWidth: 50,
+            imageHeight: 50,
+            text: e,
+            width: 400,
+            showConfirmButton: false,
+            timer: 2500
+        })
+    }
+
     save = (e) => {
         e.preventDefault();
         const newName = this.state.newName;
@@ -63,7 +92,7 @@ class MainComp extends Component {
                 snap.forEach((doc) => {
                     x = doc.id;
                     fire.firestore().collection('User').doc(x).update({ name: newName });
-                    alert('your profile is updated');
+                    this.alertUpdated('Your profile is updated');
                     this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                 })
             })
@@ -75,9 +104,9 @@ class MainComp extends Component {
         else if (newName !== '' && (newpass !== '' || newconf !== '')) {
             if (newName.length < 2 || !(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
                 if (newName.length < 2)
-                    alert('name field is required and must be 3 or more characters long!')
+                    this.alertError('name field is required and must be 3 or more characters long!')
                 else
-                    alert('password must be at least 8 characters , at least one capital and one small letter')
+                    this.alertError('password must be at least 8 characters , at least one capital and one small letter')
             }
             else if (newpass === newconf) {
                 fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
@@ -86,7 +115,7 @@ class MainComp extends Component {
                         fire.firestore().collection('User').doc(x).update({ name: newName, password: newpass });
                         var user = fire.auth().currentUser;
                         user.updatePassword(newpass);
-                        alert('your profile is updated');
+                        this.alertUpdated('your profile is updated');
                         this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                     })
                 })
@@ -94,14 +123,14 @@ class MainComp extends Component {
                         console.log("err " + err.toString())
                     })
             }
-            else { alert("password doesn't match") }
+            else { this.alertError("password doesn't match") }
 
         }
         /*************************************************************/
         else if (newName === '' && (newpass !== '' || newconf !== '')) {
             if (!(newpass.match(/[0-9]/g)) || !(newpass.match(/[a-z]/g)) || !(newpass.match(/[A-Z]/g)) || newpass.length < 8) {
 
-                alert('password must be at least 8 characters , at least one capital and one small letter')
+                this.alertError('password must be at least 8 characters , at least one capital and one small letter')
             }
             else if (newpass === newconf) {
                 fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
@@ -110,7 +139,7 @@ class MainComp extends Component {
                         fire.firestore().collection('User').doc(x).update({ password: newpass });
                         var user = fire.auth().currentUser;
                         user.updatePassword(newpass);
-                        alert('your profile is updated');
+                        this.alertUpdated('your profile is updated');
                         this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                     })
                 })
@@ -118,26 +147,11 @@ class MainComp extends Component {
                         console.log("err " + err.toString())
                     })
             }
-            else { alert("password doesn't match") }
+            else { this.alertError("password doesn't match") }
         }
     }
 
     /******************************* */
-
-    handleChangeName = () => {
-
-        this.setState({
-            //  [event.target.value]: name,
-        })
-    }
-    handleChangeEmail = () => {
-
-    }
-    handleChangePassword = () => {
-
-    }
-    handleChangeConfirmPassword = () => {
-    }
 
     render() {
         return (

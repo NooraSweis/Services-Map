@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useDialog } from 'react-st-modal';
 import { firestore, storage } from '../config';
 import '../style/MainCompProfile.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 function EditServiceDetails(props) {
     const dialog = useDialog();
 
@@ -34,7 +37,7 @@ function EditServiceDetails(props) {
                     })
                 }).then(() => {
                     dialog.close();
-                    alert("Changed successfully")
+                    alertDone("Changed successfully")
                 })
             } else {
                 firestore.collection("services").doc(props.item.id).update({
@@ -44,13 +47,38 @@ function EditServiceDetails(props) {
                     status: status
                 }).then(() => {
                     dialog.close();
-                    alert("Changed successfully")
+                    alertDone("Changed successfully")
                 })
             }
         }
         else {
-            alert("All fields are required!")
+            alertError("All fields are required!")
         }
+    }
+
+    const alertError = (e) => {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
+    }
+
+    const alertDone = (e) => {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+            imageWidth: 50,
+            imageHeight: 50,
+            text: e,
+            width: 400,
+            showConfirmButton: false,
+            timer: 2500
+        })
     }
 
     const deleteItem = (e) => {
@@ -60,9 +88,9 @@ function EditServiceDetails(props) {
         firestore.collection("services").doc(props.item.id).delete().then(() => {
             setLoading(false);
             dialog.close();
-            alert("Service successfully deleted!");
+            alertDone("Service successfully deleted!");
         }).catch((error) => {
-            alert("Error removing service: ", error);
+            alertError("Error removing service: " + error);
         });
     }
 

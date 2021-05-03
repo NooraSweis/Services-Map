@@ -3,6 +3,10 @@ import "../style/AccountApproval.css";
 import { CustomDialog } from "react-st-modal";
 import ItemDialog from "./AcceptAccountDialog";
 import { firestore, thirdApp } from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 class AccountApproval extends Component {
 
@@ -42,6 +46,18 @@ class AccountApproval extends Component {
             });
             console.log(this.state.users);
         }
+    }
+
+    alertError(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
     }
 
     render() {
@@ -86,35 +102,44 @@ class AccountApproval extends Component {
                                                 }).then(() => {
                                                     // Delete user from approval
                                                     firestore.collection("AccountApproval").doc(user.id).delete().then(() => {
-                                                        alert('Email sent for the user')
-                                                        console.log("Document successfully deleted!");
+                                                        MySwal.fire({
+                                                            position: 'center',
+                                                            imageUrl: 'https://i.ibb.co/TcQ7sQX/email.gif',
+                                                            imageWidth: 100,
+                                                            imageHeight: 100,
+                                                            text: 'Email sent for the user',
+                                                            width: 400,
+                                                            showConfirmButton: false,
+                                                            timer: 2500
+                                                        })
                                                     })
                                                         .then(() => {
                                                             this.setState({ users: [] });
                                                         }).catch((error) => {
-                                                            console.error("Error removing document: ", error);
+                                                            this.alertError(error)
                                                         });
                                                 })
-                                                    .catch((err) => {
-                                                        alert(err.toString());
-                                                    })
                                             })
-                                            .catch((err) => {
-                                                alert(err.toString());
-                                            });
+                                    }).catch((err) => {
+                                        this.alertError(err)
                                     })
-                                        .catch((err) => {
-                                            alert(err.toString())
-                                        })
                                 }}>Accept</button>
                                 <button className="reject-item-btn" onClick={() => {
                                     firestore.collection("AccountApproval").doc(user.id).delete().then(() => {
-                                        alert('Request deleted')
-                                        console.log("Document successfully deleted!");
+                                        MySwal.fire({
+                                            position: 'center',
+                                            imageUrl: 'https://i.ibb.co/rFQKJgq/deleted.gif',
+                                            imageWidth: 100,
+                                            imageHeight: 100,
+                                            text: 'Request deleted!',
+                                            width: 400,
+                                            showConfirmButton: false,
+                                            timer: 2500
+                                        })
                                     }).then(() => {
                                         this.setState({ users: [] });
                                     }).catch((e) => {
-                                        alert(e);
+                                        this.alertError(e);
                                     })
                                 }}>Reject</button>
                             </div>

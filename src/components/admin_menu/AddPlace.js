@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css';
 import '../map/Map.css';
 import L from 'leaflet';
 import { firestore } from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 var latitude = null;
 var longitude = null;
@@ -12,6 +14,7 @@ var marker = null;
 var fixed_place_name = "";
 const markers = [];
 var deleted = false;
+const MySwal = withReactContent(Swal);
 
 class AddPlace extends Component {
     state = {
@@ -65,20 +68,41 @@ class AddPlace extends Component {
         fixed_place_name = event.target.value;
     }
 
-    handleButtonClick(event) {
+    alertError(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/tpNSyYT/location.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
+    }
+
+    handleButtonClick = (event) => {
         event.preventDefault();
         if (fixed_place_name === "") {
-            alert("Please give a name for our new location ;)")
+            this.alertError("Please give a name for our new location")
         } else
             if (latitude === null) {
-                alert("PLEASE choose a location")
+                this.alertError("PLEASE choose a location")
             } else {
                 firestore.collection('Places').add({
                     name: fixed_place_name,
                     latitude: latitude,
                     longitude: longitude
                 })
-                alert("DONE :D")
+                MySwal.fire({
+                    position: 'center',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 50,
+                    imageHeight: 50,
+                    text: 'DONE!',
+                    width: 400,
+                    showConfirmButton: false,
+                    timer: 1200
+                })
             }
     }
 

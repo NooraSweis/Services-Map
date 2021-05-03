@@ -3,6 +3,10 @@ import img from '../image/servicesDefault.png';
 import '../style/MainCompProfile.css';
 import { firestore, storage } from '../config';
 import { useDialog } from 'react-st-modal';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 function ServiceDetailsDialog(props) {
     const dialog = useDialog();
@@ -57,14 +61,35 @@ function ServiceDetailsDialog(props) {
                 setStatus("");
                 setLoading(false);
                 dialog.close(value.name ? value : null);
-                alert("Your service added successfully")
+                MySwal.fire({
+                    position: 'center',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 50,
+                    imageHeight: 50,
+                    text: 'Your service added successfully',
+                    width: 400,
+                    showConfirmButton: false,
+                    timer: 2500
+                })
             }).catch((err) => {
-                alert(err)
+                alertError(err)
             });
         }
         else {
-            alert('all fields are required !');
+            alertError('all fields are required !');
         }
+    }
+
+   const alertError = (e) => {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
     }
 
     return (

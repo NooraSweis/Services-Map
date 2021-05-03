@@ -30,10 +30,10 @@ export default function UpdatePath(props) {
                     path: items
                 }).then(() => {
                     MySwal.fire({
-                        title: 'Deleted!',
-                        icon: 'success',
-                        showCancelButton: false,
-                        showCloseButton: false,
+                        imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                        imageWidth: 50,
+                        imageHeight: 50,
+                        text: 'Deleted!',
                         showConfirmButton: false,
                         timer: 1100
                     })

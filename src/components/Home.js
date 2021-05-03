@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import lottie from 'lottie-web';
 
 var userID = "";
 const MySwal = withReactContent(Swal);
@@ -49,6 +50,13 @@ class Home extends Component {
             }
         }
         console.log(this.state.items)
+        lottie.loadAnimation({
+            container: document.querySelector("#no-home-data"),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('../loading.json')
+        })
     }
 
     getLocation = () => {
@@ -177,7 +185,6 @@ class Home extends Component {
 
     addToPath = (point) => {
         if (userID) {
-
             var ref = firestore.collection("User").doc(userID + "");
             ref.update({
                 path: firebase.firestore.FieldValue.arrayUnion(point)
@@ -192,8 +199,10 @@ class Home extends Component {
             }).then(() => {
                 MySwal.fire({
                     position: 'center',
-                    icon: 'success',
-                    title: 'Added',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 50,
+                    imageHeight: 50,
+                    text: 'Added',
                     width: 400,
                     showConfirmButton: false,
                     timer: 1200
@@ -271,7 +280,9 @@ class Home extends Component {
             :
             MySwal.fire({
                 position: 'center',
-                icon: 'warning',
+                imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+                imageWidth: 100,
+                imageHeight: 100,
                 title: 'Please allow to access your location!',
                 showConfirmButton: false,
                 timer: 3000
@@ -281,10 +292,12 @@ class Home extends Component {
     signAlert() {
         MySwal.fire({
             position: 'center',
-            icon: 'error',
+            imageUrl: 'https://i.ibb.co/NSZzpw2/no.gif',
+            imageWidth: 300,
+            imageHeight: 200,
             title: 'Sign in to find more!',
             showConfirmButton: false,
-            timer: 2000
+            timer: 2400
         })
     }
 
@@ -404,8 +417,7 @@ class Home extends Component {
                                     : null
                             ))
                             :
-                            <div className="no-approval-data" id="no-favorites">
-                                <p>PLEASE WAIT...!</p>
+                            <div className="no-approval-data" id="no-home-data">
                             </div>
                     }
                 </div>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { auth, firestore } from '../config';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 var user = auth.currentUser;
 var email = user ? user.email.toString() : "";
 var password = "";
@@ -49,7 +52,15 @@ class DeleteConfirmationDialog extends Component {
                     console.error(error);
                 })
         } else {
-            alert("Password is NOT correct")
+            MySwal.fire({
+                position: 'center',
+                imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+                imageWidth: 100,
+                imageHeight: 100,
+                text: 'Password is NOT correct',
+                width: 400,
+                showConfirmButton: true
+            })
         }
     }
 

@@ -2,7 +2,10 @@ import React from 'react';
 import { Component } from 'react';
 import fire from '../config';
 import { withRouter } from "react-router-dom";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 var loading = false;
 
 class Signup_client_Fields extends Component {
@@ -18,9 +21,9 @@ class Signup_client_Fields extends Component {
 
         if (name.length < 2 || !(password.match(/[0-9]/g)) || !(password.match(/[a-z]/g)) || !(password.match(/[A-Z]/g)) || password.length < 8) {
             if (name.length < 2)
-                alert('name field is required and must be 3 or more characters long!')
+                this.alertError('name field is required and must be 3 or more characters long!')
             else
-                alert('password must be at least 8 characters , at least one capital and one small letter')
+                this.alertError('password must be at least 8 characters, at least one capital and one small letter')
         }
 
         else if (password === confirmPass) {
@@ -38,24 +41,40 @@ class Signup_client_Fields extends Component {
                             loading = false;
                             this.setState({ ...this.setState });
                             this.props.history.push("/SignIn");
-                            alert('please check your email')
-                        })
-                            .catch((err) => {
-                                alert(err.toString());
+                            MySwal.fire({
+                                position: 'center',
+                                imageUrl: 'https://i.ibb.co/TcQ7sQX/email.gif',
+                                imageWidth: 100,
+                                imageHeight: 100,
+                                text: 'Please check your email',
+                                width: 400,
+                                showConfirmButton: false,
+                                timer: 3000
                             })
+                        })
                     })
-                    .catch((err) => {
-                        alert(err.toString());
-                    });
             })
                 .catch((err) => {
-                    alert(err.toString())
+                    this.alertError(err.toString())
                 })
         }
         else {
-            alert("password does not match");
+            this.alertError("password does not match");
         }
     }
+
+    alertError(e) {
+        MySwal.fire({
+            position: 'center',
+            imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+            imageWidth: 100,
+            imageHeight: 100,
+            text: e,
+            width: 400,
+            showConfirmButton: true
+        })
+    }
+
     render() {
         return (
             <div>
