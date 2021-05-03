@@ -13,6 +13,7 @@ import CallIcon from '@material-ui/icons/Call';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
+import { connect } from "react-redux";
 import { CustomDialog } from "react-st-modal";
 import MapDialog from './map/MapDialog';
 import UpdatePathDialog from './Profiles/UpdatePathDialog';
@@ -27,13 +28,19 @@ var userID = "";
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
-
-    state = {
-        items: [],
-        search: '',
-        latitude: null,
-        longitude: null,
-        path: []
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            search: '',
+            second:'',
+            latitude: null,
+            longitude: null,
+            path: [],
+            recommendation:[],
+            union:[]
+        }
+        this.addToHistory=this.addToHistory.bind(this);
     }
 
     componentDidMount() {
@@ -90,6 +97,71 @@ class Home extends Component {
                     })
                 }).then(() => {
                     console.log(this.state.path)
+                }).then(()=>{
+                    firestore.collection('history')
+                    .where('userID','==',userID).get().then((snap)=>{
+                        snap.forEach((doc)=>{
+                            firestore.collection('services').get().then((serviceData)=>{
+                                serviceData.forEach((service)=>{
+                                    if(service.data().name.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())
+                                    ||service.data().description.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())){
+                                        var provider_name = "";
+                                        var provLat = null, provLng = null, distance = null;
+                                        firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
+                                            providerSnapshot.forEach((provider) => {
+                                                provider_name = provider.data().name;
+                                                provLat = provider.data().latitude;
+                                                provLng = provider.data().longitude;
+                                            })
+                                        })
+                                        .then(() => {
+                                            if (this.state.latitude) {
+                                                let y = provLat - this.state.latitude;
+                                                let x = provLng - this.state.longitude;
+                                                distance = Math.sqrt(x * x + y * y);
+                                            }
+                                        })
+                                        .then(() => {
+                                            var isFavorite = false;
+                                            var favDocID = '';
+                                            firestore.collection("Favorite")
+                                                .where("service_ID", '==', service.id)
+                                                .where("user_ID", '==', userID)
+                                                .get().then((favSnapshot) => {
+                                                    isFavorite = !favSnapshot.empty;
+                                                    favSnapshot.forEach((fav) => {
+                                                        favDocID = fav.id;
+                                                    })
+                                                }).then(()=>{
+                                                    
+                                                    this.setState({...this.state,
+                                                        recommendation:[...this.state.recommendation,{
+                                                            service_ID: service.id,
+                                                            name: service.data().name,
+                                                            prov_name: provider_name,
+                                                            description: service.data().description,
+                                                            address: service.data().address,
+                                                            phone: service.data().phone,
+                                                            email: service.data().email,
+                                                            status: service.data().status,
+                                                            serviceImg: service.data().serviceImg,
+                                                            expand: false,
+                                                            red: isFavorite,
+                                                            anchortEl: null,
+                                                            favDocID: favDocID,
+                                                            provLat: provLat,
+                                                            provLng: provLng,
+                                                            distance: distance
+                                                         }]
+                                                    })
+                                                    this.sortRecommendation();
+                                              })
+                                            })
+                                    }
+                                })
+                            })
+                        })
+                    })
                 })
             }
             firestore.collection("services").get().then((querySnapshot) => {
@@ -123,7 +195,7 @@ class Home extends Component {
                                     })
                                 })
                                 .then(() => {
-                                    this.sortItems();
+                                    
                                     this.setState({
                                         ...this.state,
                                         items: [
@@ -148,6 +220,7 @@ class Home extends Component {
                                             }
                                         ]
                                     })
+                                   this.sortRecommendation();
                                 })
                         })
                 })
@@ -155,10 +228,31 @@ class Home extends Component {
         }
     }
 
-    sortItems = () => {
+    /*sortItems = () => {
         let items = this.state.items;
         items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))
-    }
+       // this.setState({...this.state,union:[...recommendation,...items]})
+    }*/
+    sortRecommendation = () => {
+        //let recommendation=this.state.recommendation;
+        this.setState({...this.state,recommendation:this.state.recommendation.sort((a,b) =>(a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))})
+            console.log(this.state.recommendation)
+            this.setState({...this.state,items:this.state.items.sort((a,b) =>(a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))})    
+            console.log(this.state.items)
+            const merged=[...this.state.recommendation,...this.state.items];
+            let set = new Set();
+            let unionArray = merged.filter(item => {
+                if (!set.has(item.service_ID)) {
+                  set.add(item.service_ID);
+                  return true;
+                }
+                return false;
+              }, set);
+              console.log(unionArray)
+            this.setState({...this.state,union:unionArray})
+            console.log(this.state.union)
+        }
+        
 
     deleteOrAddToFavorites(red, sID, docID) {
         if (red) {
@@ -181,6 +275,33 @@ class Home extends Component {
                 return docID;
             });
         }
+    }
+    addToHistory=()=>{
+        var isAdd=true;
+        firestore.collection('history').where('userID','==',userID).get().then((snap)=>{
+            snap.forEach((doc)=>{
+                if(doc.data().search===this.state.search)
+                  {
+                      isAdd=false;
+                  }
+            })
+        }).then(()=>{
+            if(isAdd){
+                firestore.collection('history').add({
+                    userID:userID,
+                    search:this.state.search
+                 }).then(()=>{
+                     console.log('added')
+                 })
+            }
+        })
+            
+    }
+    componentWillUnmount() {
+        // fix Warning: Can't perform a React state update on an unmounted component
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
     addToPath = (point) => {
@@ -307,13 +428,19 @@ class Home extends Component {
                 <input type='search' placeholder='Search' className='search' id='home-search'
                     onChange={(e) => {
                         this.setState({
-                            ...this.state, search: e.target.value.toString()
+                            ...this.state, search: e.target.value.toString(),second:0
                         })
+                        this.myInterval = setInterval(() => {
+                            this.setState({...this.state, second:this.state.second+1});
+                            if(this.state.second===5 && this.props.isLoggedIn && this.state.search!=='')
+                            {this.addToHistory();
+                            console.log(this.state.search)}
+                        },1000)
+                         
                     }} />
                 <div className="outerDiv-favorites" >
-                    {
-                        this.state.items.length !== 0 ?
-                            this.state.items.map((item, index) => (
+                    { this.state.union.length !== 0 ?
+                            this.state.union.map((item, index) => (
                                 (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
                                     <Card className="root" key={index}>
                                         <CardMedia style={{ position: 'relative' }}
@@ -419,11 +546,15 @@ class Home extends Component {
                             :
                             <div className="no-approval-data" id="no-home-data">
                             </div>
-                    }
-                </div>
+                      }
+                      </div>
             </div >
         );
     }
 }
-
-export default Home;
+function mapStateToProps(state) {
+	return {
+		isLoggedIn: state.isLoggedIn,
+	};
+}
+export default connect(mapStateToProps)(Home);

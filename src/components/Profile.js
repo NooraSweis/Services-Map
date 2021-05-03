@@ -10,7 +10,12 @@ class Profile extends Component {
   signIn = () => {
     this.props.history.push('/SignIn/');
   }
-
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state,callback)=>{
+        return;
+    };
+}
   render() {
     var position = this.props.position;
     if(position==null)
