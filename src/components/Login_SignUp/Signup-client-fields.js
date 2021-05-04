@@ -24,6 +24,8 @@ class Signup_client_Fields extends Component {
                 this.alertError('name field is required and must be 3 or more characters long!')
             else
                 this.alertError('password must be at least 8 characters, at least one capital and one small letter')
+            loading = false;
+            this.setState({ ...this.setState })
         }
 
         else if (password === confirmPass) {
@@ -56,10 +58,14 @@ class Signup_client_Fields extends Component {
             })
                 .catch((err) => {
                     this.alertError(err.toString())
+                    loading = false;
+                    this.setState({ ...this.setState })
                 })
         }
         else {
             this.alertError("password does not match");
+            loading = false;
+            this.setState({ ...this.setState })
         }
     }
 
