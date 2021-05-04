@@ -107,7 +107,7 @@ body {
   display: none;
   position: absolute;
   right: 5%;
-  top: 3%;
+  top: 2.5%;
   transform: translateY(-50%);
 }
 .navbar .icon-burger .line {
@@ -121,7 +121,6 @@ body {
 .navbar .nav-list button:focus {
   outline: none;
 }
-
 @media screen and (max-width: 820px) {
   .navbar .logo {
     float: none;
@@ -213,5 +212,10 @@ body {
     position: absolute;
     right: 5%;
     bottom: 12%;
+  }
+}
+@media screen and (min-width: 626px) {
+  .navbar .icon-burger {
+    top: 5%;
   }
 }

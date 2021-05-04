@@ -424,7 +424,7 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{paddingBottom:'60px',overflow:'hidden'}}>
                 <input type='search' placeholder='Search' className='search' id='home-search'
                     onChange={(e) => {
                         this.setState({
@@ -438,11 +438,11 @@ class Home extends Component {
                         },1000)
                          
                     }} />
-                <div className="outerDiv-favorites" >
+                <div className="outerDiv-favorites">
                     { this.state.union.length !== 0 ?
                             this.state.union.map((item, index) => (
                                 (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
-                                    <Card className="root" key={index}>
+                                    <Card className="root" key={index} >
                                         <CardMedia style={{ position: 'relative' }}
                                             className='media'>
                                             <img style={{ width: "100%", height: "150px", zIndex: '-1' }}
