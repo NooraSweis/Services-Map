@@ -14,19 +14,20 @@ body {
   background-attachment: fixed;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .navbar {
   overflow: hidden;
   background-color: white;
 }
+
 .active {
   background-color: #efb01c;
 }
+
 .navbar .logo {
   float: left;
   width: 12%;
@@ -35,6 +36,7 @@ body {
   /********************************/
   display: flexbox;
 }
+
 .navbar .nav-list {
   float: left;
   width: 60%;
@@ -46,6 +48,7 @@ body {
   /****************************/
   padding: 0;
 }
+
 .navbar .nav-list .item {
   padding: 1em;
   font-size: 16px;
@@ -54,6 +57,7 @@ body {
   text-decoration: none;
   width: auto;
 }
+
 .navbar .nav-list button {
   background: none;
   border: none;
@@ -61,6 +65,7 @@ body {
   justify-content: center;
   text-align: center;
 }
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -82,8 +87,7 @@ body {
 .dropdown-content .admin-item:hover {
   background-color: rgb(239, 174, 28);
   color: white;
-
-/**********************************/ 
+  /**********************************/
   transition: all .9s ease;
 }
 
@@ -94,8 +98,7 @@ body {
 .navbar .nav-list .item:hover:not(.active) {
   background-color: #666666;
   color: white;
-
-/***********************************/
+  /***********************************/
   transition: all .9s ease;
 }
 
@@ -103,6 +106,7 @@ body {
   position: absolute;
   top: -100px;
 }
+
 .navbar .icon-burger {
   display: none;
   position: absolute;
@@ -110,6 +114,7 @@ body {
   top: 3%;
   transform: translateY(-50%);
 }
+
 .navbar .icon-burger .line {
   width: 30px;
   height: 5px;
@@ -118,6 +123,7 @@ body {
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
 }
+
 .navbar .nav-list button:focus {
   outline: none;
 }
@@ -148,14 +154,13 @@ body {
     left: 0;
     right: 0;
     top: 35px;
-    bottom:100%;
+    bottom: 100%;
     flex-direction: column;
     width: auto;
     height: auto;
     background-color: rgba(0, 0, 0, 0.8);
     overflow: hidden;
     transition: all 0.5s ease-in-out;
-
     align-items: center;
     justify-content: space-evenly;
   }
@@ -186,27 +191,25 @@ body {
     margin: auto;
     width: 70%;
   }
-
   .navbar .nav-list .active {
     color: black;
-
     /***************************/
     transition: all 0.5s ease-in;
     transition: all .9s ease;
   }
-  .navbar :checked ~ .nav-list {
+  .navbar :checked~.nav-list {
     bottom: 0;
   }
   .navbar .icon-burger {
     display: block;
   }
-  .navbar :checked ~ .icon-burger .line:nth-child(1) {
+  .navbar :checked~.icon-burger .line:nth-child(1) {
     transform: translateY(10px) rotate(225deg);
   }
-  .navbar :checked ~ .icon-burger .line:nth-child(3) {
+  .navbar :checked~.icon-burger .line:nth-child(3) {
     transform: translateY(-10px) rotate(-225deg);
   }
-  .navbar :checked ~ .icon-burger .line:nth-child(2) {
+  .navbar :checked~.icon-burger .line:nth-child(2) {
     opacity: 0;
   }
   .dropdown:hover .dropdown-content {

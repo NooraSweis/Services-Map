@@ -12,19 +12,31 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import BusinessIcon from '@material-ui/icons/Business';
 import PeopleIcon from '@material-ui/icons/People';
 import CallIcon from '@material-ui/icons/Call';
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
+import EditLocationRounded from '@material-ui/icons/EditLocationRounded';
 import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
+import { CustomDialog } from "react-st-modal";
+import MapDialog from './map/MapDialog';
+import UpdatePathDialog from './Profiles/UpdatePathDialog';
+import firebase from 'firebase/app';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import L from 'leaflet';
 
 var userID = "";
+const MySwal = withReactContent(Swal);
 
 export default class Favorite extends Component {
 
     state = {
-        items: []
+        items: [],
+        latitude: null,
+        longitude: null,
+        path: []
     }
 
     componentDidMount() {
+        this.getLocation();
         this.getData();
     }
 
@@ -34,6 +46,9 @@ export default class Favorite extends Component {
             firestore.collection("User").where("email", "==", user.email).get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     userID = doc.id;
+                    this.setState({
+                        path: doc.data().path
+                    })
                 })
             }).then(() => {
                 firestore.collection("Favorite").where("user_ID", "==", userID.toString()).get().then((querySnapshot) => {
@@ -41,9 +56,12 @@ export default class Favorite extends Component {
                         var docID = doc.id;
                         firestore.collection("services").doc(doc.data().service_ID).get().then((item) => {
                             var provider_name = "";
+                            var provLat = null, provLng = null;
                             firestore.collection("User").where("email", '==', item.data().email).get().then((providerSnapshot) => {
                                 providerSnapshot.forEach((provider) => {
                                     provider_name = provider.data().name;
+                                    provLat = provider.data().latitude;
+                                    provLng = provider.data().longitude;
                                 })
                             }).then(() => {
                                 this.setState({
@@ -64,7 +82,9 @@ export default class Favorite extends Component {
                                             serviceImg: item.data().serviceImg,
                                             expand: false,
                                             red: true,
-                                            anchortEl: null
+                                            anchortEl: null,
+                                            provLat: provLat,
+                                            provLng: provLng
                                         }
                                     ]
                                 })
@@ -76,15 +96,152 @@ export default class Favorite extends Component {
         }
     }
 
-    deleteOrAddToFavorites(red, sID, uID, docID) {
+    getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+
+    showPosition = (position) => {
+        this.setState({
+            ...this.state,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+        console.log("Latitude: " + position.coords.latitude +
+            " Longitude: " + position.coords.longitude);
+    }
+
+    deleteOrAddToFavorites(red, sID, docID) {
         if (red) {
-            firestore.collection("Favorite").doc(docID).set({
-                service_ID: sID,
-                user_ID: uID
+            (docID) ?
+                firestore.collection("Favorite").doc(docID).set({
+                    service_ID: sID,
+                    user_ID: userID
+                }).then(() => {
+                    return docID;
+                })
+                :
+                firestore.collection("Favorite").add({
+                    service_ID: sID,
+                    user_ID: userID
+                }).then((doc) => {
+                    return doc.id;
+                })
+        } else {
+            firestore.collection("Favorite").doc(docID).delete().then(() => {
+                return docID;
+            });
+        }
+    }
+
+    addToPath = (point) => {
+        console.log(point)
+        if (userID) {
+            var ref = firestore.collection("User").doc(userID + "");
+            ref.update({
+                path: firebase.firestore.FieldValue.arrayUnion(point)
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: [
+                        ...this.state.path,
+                        point
+                    ]
+                })
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 50,
+                    imageHeight: 50,
+                    text: 'Added',
+                    width: 400,
+                    showConfirmButton: false,
+                    timer: 1200
+                })
             })
         } else {
-            firestore.collection("Favorite").doc(docID).delete();
+            this.signAlert();
         }
+    }
+
+    updatePath() {
+        if (userID) {
+            const result = CustomDialog(<UpdatePathDialog
+                points={this.state.path}
+                userID={userID}
+            />, {
+                title: 'UPDATE PATH',
+                showCloseIcon: true,
+            })
+            if (result) {
+                this.setState({
+                    ...this.state,
+                    path: result
+                }, () => {
+                    this.forceUpdate();
+                });
+            }
+        } else {
+            this.signAlert();
+        }
+    }
+
+    clearPath() {
+        if (userID) {
+            firestore.collection("User").doc(userID).update({
+                path: []
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: []
+                })
+            }).then(() => {
+                MySwal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your path is EMPTY now!',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
+        } else {
+            this.signAlert();
+        }
+    }
+
+    showPath(item) {
+        let p = [];
+        for (let i = 0; i < this.state.path.length; i++) {
+            p[i] = L.latLng(this.state.path[i].lat, this.state.path[i].lng);
+        }
+        this.state.latitude ?
+            CustomDialog(<MapDialog
+                points={
+                    item ?
+                        [L.latLng(item.provLat, item.provLng)]
+                        :
+                        p
+                }
+                lat={this.state.latitude}
+                lng={this.state.longitude}
+            />, {
+                title: 'Routing',
+                showCloseIcon: true,
+            })
+            :
+            MySwal.fire({
+                position: 'center',
+                imageUrl: 'https://i.ibb.co/R06Zrjb/animation-200-ko7omjl5.gif',
+                imageWidth: 100,
+                imageHeight: 100,
+                title: 'Please allow to access your location!',
+                showConfirmButton: false,
+                timer: 3000
+            })
     }
 
     render() {
@@ -115,7 +272,12 @@ export default class Favorite extends Component {
                                             })
                                         }}
                                     >
-                                        <ControlPointIcon style={{ color: 'white' }} />
+                                        <EditLocationRounded
+                                            style={{
+                                                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                                borderRadius: '50%',
+                                                padding: '4px'
+                                            }} />
                                     </IconButton>
                                 </CardMedia>
 
@@ -130,10 +292,15 @@ export default class Favorite extends Component {
                                             open: false
                                         })
                                     }}>
-                                    <MenuItem > Add to path </MenuItem>
-                                    <MenuItem > View path </MenuItem>
-                                    <MenuItem > Update path </MenuItem>
-                                    <MenuItem > Clear path </MenuItem>
+                                    <MenuItem onClick={() => {
+                                        this.addToPath(
+                                            { lat: item.provLat, lng: item.provLng, name: item.name }
+                                        )
+                                    }}> Add to path </MenuItem>
+                                    <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
+                                    <MenuItem onClick={() => { this.updatePath() }}
+                                    > Update path </MenuItem>
+                                    <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
                                 </Menu>
                                 <div
                                     className="card-header"
@@ -146,12 +313,16 @@ export default class Favorite extends Component {
                                 >
                                     <IconButton aria-label="add to favorites"
                                         onClick={() => {
-                                            item.red = !item.red;
-                                            this.setState({ ...this.state });
-                                            this.deleteOrAddToFavorites(item.red, item.service_ID, item.user_ID, item.docID);
+                                            if (userID) {
+                                                item.red = !item.red;
+                                                this.setState({ ...this.state });
+                                                item.docID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.docID);
+                                            } else {
+                                                this.signAlert();
+                                            }
                                         }}
                                     >
-                                        <FavoriteIcon style={{ color: item.red ? 'red' : '#808080' }} />
+                                        <FavoriteIcon className="favIcon" style={{ color: item.red ? 'red' : '#808080' }} />
                                     </IconButton>
                                     <IconButton
                                         onClick={() => {
@@ -177,7 +348,7 @@ export default class Favorite extends Component {
                                         <div><BusinessIcon style={{ marginLeft: '5divx' }} />
                                             <div>{item.address} </div>
                                         </div>
-                                        <CardActions >
+                                        <CardActions onClick={() => { this.showPath(item) }}>
                                             <IconButton id='btn' className='button'>Show Path</IconButton>
                                         </CardActions>
                                     </CardContent>

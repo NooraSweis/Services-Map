@@ -40,6 +40,8 @@ class Signup_SP_Fields extends Component {
         const description = document.querySelector('#description').value;
         if (latitude === null || longitude === null) {
             this.alertError("Please choose your location in the map");
+            loading = false;
+            this.setState({ ...this.setState })
             return;
         }
         if (name.length < 2 || !(pass.match(/[0-9]/g)) || !(pass.match(/[a-z]/g)) || !(pass.match(/[A-Z]/g)) || pass.length < 8) {
@@ -47,12 +49,18 @@ class Signup_SP_Fields extends Component {
                 this.alertError('name field is required and must be 3 or more characters long!')
             else
                 this.alertError('password must be at least 8 characters , at least one capital and one small letter')
+            loading = false;
+            this.setState({ ...this.setState })
         }
         else if (phone.length < 1 || serviceType.length < 1 || description.length < 1) {
             this.alertError('please fill all fields');
+            loading = false;
+            this.setState({ ...this.setState })
         }
         else if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-            this.alertError('this email is invalid')
+            this.alertError('this email is invalid');
+            loading = false;
+            this.setState({ ...this.setState })
         }
         else if (pass === confirmPass) {
             fire.firestore().collection('AccountApproval').add({
@@ -84,6 +92,8 @@ class Signup_SP_Fields extends Component {
         }
         else {
             this.alertError("password does not match");
+            loading = false;
+            this.setState({ ...this.setState })
         }
     }
 
@@ -142,9 +152,15 @@ class Signup_SP_Fields extends Component {
                         </MapContainer>
 
                         {loading ?
-                            <div className="loading-sign" id="loading-sp-signup">LOADING!</div> : null
+                            <div style={{
+                                marginTop: '10px',
+                                marginBottom: '10px'
+                            }} className="loading-sign" id="loading-sp-signup">LOADING!</div> : null
                         }
-                        <button className="bt button" >Sign Up</button>
+                        <button style={{
+                            marginBottom: '10px'
+                        }}
+                            className="bt button" >Sign Up</button>
                     </form></div>
             </div>
         )

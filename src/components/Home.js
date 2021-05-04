@@ -10,7 +10,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import BusinessIcon from '@material-ui/icons/Business';
 import PeopleIcon from '@material-ui/icons/People';
 import CallIcon from '@material-ui/icons/Call';
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
+import EditLocationRounded from '@material-ui/icons/EditLocationRounded';
 import { firestore, auth } from './config';
 import { CardContent, Collapse, Menu, MenuItem } from '@material-ui/core';
 import { connect } from "react-redux";
@@ -21,26 +21,25 @@ import firebase from 'firebase/app';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import L from 'leaflet';
-import 'leaflet-routing-machine';
 import lottie from 'lottie-web';
 
 var userID = "";
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             items: [],
             search: '',
-            second:'',
+            second: '',
             latitude: null,
             longitude: null,
             path: [],
-            recommendation:[],
-            union:[]
+            recommendation: [],
+            union: []
         }
-        this.addToHistory=this.addToHistory.bind(this);
+        this.addToHistory = this.addToHistory.bind(this);
     }
 
     componentDidMount() {
@@ -96,72 +95,71 @@ class Home extends Component {
                         })
                     })
                 }).then(() => {
-                    console.log(this.state.path)
-                }).then(()=>{
                     firestore.collection('history')
-                    .where('userID','==',userID).get().then((snap)=>{
-                        snap.forEach((doc)=>{
-                            firestore.collection('services').get().then((serviceData)=>{
-                                serviceData.forEach((service)=>{
-                                    if(service.data().name.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())
-                                    ||service.data().description.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())){
-                                        var provider_name = "";
-                                        var provLat = null, provLng = null, distance = null;
-                                        firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
-                                            providerSnapshot.forEach((provider) => {
-                                                provider_name = provider.data().name;
-                                                provLat = provider.data().latitude;
-                                                provLng = provider.data().longitude;
+                        .where('userID', '==', userID).get().then((snap) => {
+                            snap.forEach((doc) => {
+                                firestore.collection('services').get().then((serviceData) => {
+                                    serviceData.forEach((service) => {
+                                        if (service.data().name.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())
+                                            || service.data().description.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())) {
+                                            var provider_name = "";
+                                            var provLat = null, provLng = null, distance = null;
+                                            firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
+                                                providerSnapshot.forEach((provider) => {
+                                                    provider_name = provider.data().name;
+                                                    provLat = provider.data().latitude;
+                                                    provLng = provider.data().longitude;
+                                                })
                                             })
-                                        })
-                                        .then(() => {
-                                            if (this.state.latitude) {
-                                                let y = provLat - this.state.latitude;
-                                                let x = provLng - this.state.longitude;
-                                                distance = Math.sqrt(x * x + y * y);
-                                            }
-                                        })
-                                        .then(() => {
-                                            var isFavorite = false;
-                                            var favDocID = '';
-                                            firestore.collection("Favorite")
-                                                .where("service_ID", '==', service.id)
-                                                .where("user_ID", '==', userID)
-                                                .get().then((favSnapshot) => {
-                                                    isFavorite = !favSnapshot.empty;
-                                                    favSnapshot.forEach((fav) => {
-                                                        favDocID = fav.id;
-                                                    })
-                                                }).then(()=>{
-                                                    
-                                                    this.setState({...this.state,
-                                                        recommendation:[...this.state.recommendation,{
-                                                            service_ID: service.id,
-                                                            name: service.data().name,
-                                                            prov_name: provider_name,
-                                                            description: service.data().description,
-                                                            address: service.data().address,
-                                                            phone: service.data().phone,
-                                                            email: service.data().email,
-                                                            status: service.data().status,
-                                                            serviceImg: service.data().serviceImg,
-                                                            expand: false,
-                                                            red: isFavorite,
-                                                            anchortEl: null,
-                                                            favDocID: favDocID,
-                                                            provLat: provLat,
-                                                            provLng: provLng,
-                                                            distance: distance
-                                                         }]
-                                                    })
-                                                    this.sortRecommendation();
-                                              })
-                                            })
-                                    }
+                                                .then(() => {
+                                                    if (this.state.latitude) {
+                                                        let y = provLat - this.state.latitude;
+                                                        let x = provLng - this.state.longitude;
+                                                        distance = Math.sqrt(x * x + y * y);
+                                                    }
+                                                })
+                                                .then(() => {
+                                                    var isFavorite = false;
+                                                    var favDocID = '';
+                                                    firestore.collection("Favorite")
+                                                        .where("service_ID", '==', service.id)
+                                                        .where("user_ID", '==', userID)
+                                                        .get().then((favSnapshot) => {
+                                                            isFavorite = !favSnapshot.empty;
+                                                            favSnapshot.forEach((fav) => {
+                                                                favDocID = fav.id;
+                                                            })
+                                                        }).then(() => {
+
+                                                            this.setState({
+                                                                ...this.state,
+                                                                recommendation: [...this.state.recommendation, {
+                                                                    service_ID: service.id,
+                                                                    name: service.data().name,
+                                                                    prov_name: provider_name,
+                                                                    description: service.data().description,
+                                                                    address: service.data().address,
+                                                                    phone: service.data().phone,
+                                                                    email: service.data().email,
+                                                                    status: service.data().status,
+                                                                    serviceImg: service.data().serviceImg,
+                                                                    expand: false,
+                                                                    red: isFavorite,
+                                                                    anchortEl: null,
+                                                                    favDocID: favDocID,
+                                                                    provLat: provLat,
+                                                                    provLng: provLng,
+                                                                    distance: distance
+                                                                }]
+                                                            })
+                                                            this.sortRecommendation();
+                                                        })
+                                                })
+                                        }
+                                    })
                                 })
                             })
                         })
-                    })
                 })
             }
             firestore.collection("services").get().then((querySnapshot) => {
@@ -195,7 +193,7 @@ class Home extends Component {
                                     })
                                 })
                                 .then(() => {
-                                    
+
                                     this.setState({
                                         ...this.state,
                                         items: [
@@ -220,7 +218,7 @@ class Home extends Component {
                                             }
                                         ]
                                     })
-                                   this.sortRecommendation();
+                                    this.sortRecommendation();
                                 })
                         })
                 })
@@ -235,24 +233,24 @@ class Home extends Component {
     }*/
     sortRecommendation = () => {
         //let recommendation=this.state.recommendation;
-        this.setState({...this.state,recommendation:this.state.recommendation.sort((a,b) =>(a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))})
-            console.log(this.state.recommendation)
-            this.setState({...this.state,items:this.state.items.sort((a,b) =>(a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))})    
-            console.log(this.state.items)
-            const merged=[...this.state.recommendation,...this.state.items];
-            let set = new Set();
-            let unionArray = merged.filter(item => {
-                if (!set.has(item.service_ID)) {
-                  set.add(item.service_ID);
-                  return true;
-                }
-                return false;
-              }, set);
-              console.log(unionArray)
-            this.setState({...this.state,union:unionArray})
-            console.log(this.state.union)
-        }
-        
+        this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
+        console.log(this.state.recommendation)
+        this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
+        console.log(this.state.items)
+        const merged = [...this.state.recommendation, ...this.state.items];
+        let set = new Set();
+        let unionArray = merged.filter(item => {
+            if (!set.has(item.service_ID)) {
+                set.add(item.service_ID);
+                return true;
+            }
+            return false;
+        }, set);
+        console.log(unionArray)
+        this.setState({ ...this.state, union: unionArray })
+        console.log(this.state.union)
+    }
+
 
     deleteOrAddToFavorites(red, sID, docID) {
         if (red) {
@@ -276,30 +274,30 @@ class Home extends Component {
             });
         }
     }
-    addToHistory=()=>{
-        var isAdd=true;
-        firestore.collection('history').where('userID','==',userID).get().then((snap)=>{
-            snap.forEach((doc)=>{
-                if(doc.data().search===this.state.search)
-                  {
-                      isAdd=false;
-                  }
+
+    addToHistory = () => {
+        var isAdd = true;
+        firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
+            snap.forEach((doc) => {
+                if (doc.data().search === this.state.search) {
+                    isAdd = false;
+                }
             })
-        }).then(()=>{
-            if(isAdd){
+        }).then(() => {
+            if (isAdd) {
                 firestore.collection('history').add({
-                    userID:userID,
-                    search:this.state.search
-                 }).then(()=>{
-                     console.log('added')
-                 })
+                    userID: userID,
+                    search: this.state.search
+                }).then(() => {
+                    console.log('added')
+                })
             }
         })
-            
+
     }
     componentWillUnmount() {
         // fix Warning: Can't perform a React state update on an unmounted component
-        this.setState = (state,callback)=>{
+        this.setState = (state, callback) => {
             return;
         };
     }
@@ -428,133 +426,139 @@ class Home extends Component {
                 <input type='search' placeholder='Search' className='search' id='home-search'
                     onChange={(e) => {
                         this.setState({
-                            ...this.state, search: e.target.value.toString(),second:0
+                            ...this.state, search: e.target.value.toString(), second: 0
                         })
                         this.myInterval = setInterval(() => {
-                            this.setState({...this.state, second:this.state.second+1});
-                            if(this.state.second===5 && this.props.isLoggedIn && this.state.search!=='')
-                            {this.addToHistory();
-                            console.log(this.state.search)}
-                        },1000)
-                         
+                            this.setState({ ...this.state, second: this.state.second + 1 });
+                            if (this.state.second === 5 && this.props.isLoggedIn && this.state.search !== '') {
+                                this.addToHistory();
+                                console.log(this.state.search)
+                            }
+                        }, 1000)
+
                     }} />
                 <div className="outerDiv-favorites" >
-                    { this.state.union.length !== 0 ?
-                            this.state.union.map((item, index) => (
-                                (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
-                                    <Card className="root" key={index}>
-                                        <CardMedia style={{ position: 'relative' }}
-                                            className='media'>
-                                            <img style={{ width: "100%", height: "150px", zIndex: '-1' }}
-                                                src={"https://firebasestorage.googleapis.com/v0/b/services-map-306613.appspot.com/o/" + item.serviceImg + "?alt=media&token=15d6d649-3451-415a-985a-994a33e7a620"}
-                                                alt="SERVICE"
-                                            />
-                                            <IconButton
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '0',
-                                                    right: '0'
-                                                }}
-                                                aria-owns={item.anchortEl ? 'simple-menu' : null}
-                                                aria-haspopup='true'
-                                                onClick={(event) => {
-                                                    item.anchortEl = event.currentTarget;
-                                                    this.setState({
-                                                        ...this.state
-                                                    })
-                                                }}
-                                            >
-                                                <ControlPointIcon style={{ color: 'white' }} />
-                                            </IconButton>
-                                        </CardMedia>
-
-                                        <Menu id='simple-menu'
-                                            keepMounted
-                                            anchorEl={item.anchortEl}
-                                            open={Boolean(item.anchortEl)}
-                                            onClick={() => {
-                                                item.anchortEl = null;
+                    {this.state.union.length !== 0 ?
+                        this.state.union.map((item, index) => (
+                            (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
+                                <Card className="root" key={index}>
+                                    <CardMedia style={{ position: 'relative' }}
+                                        className='media'>
+                                        <img style={{ width: "100%", height: "150px", zIndex: '-1' }}
+                                            src={"https://firebasestorage.googleapis.com/v0/b/services-map-306613.appspot.com/o/" + item.serviceImg + "?alt=media&token=15d6d649-3451-415a-985a-994a33e7a620"}
+                                            alt="SERVICE"
+                                        />
+                                        <IconButton
+                                            style={{
+                                                position: 'absolute',
+                                                top: '0',
+                                                right: '0'
+                                            }}
+                                            aria-owns={item.anchortEl ? 'simple-menu' : null}
+                                            aria-haspopup='true'
+                                            onClick={(event) => {
+                                                item.anchortEl = event.currentTarget;
                                                 this.setState({
-                                                    ...this.state,
-                                                    open: false
+                                                    ...this.state
+                                                })
+                                            }}
+                                        >
+                                            <EditLocationRounded
+                                                style={{
+                                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                                    borderRadius: '50%',
+                                                    padding: '4px'
+                                                }} />
+                                        </IconButton>
+                                    </CardMedia>
+
+                                    <Menu id='simple-menu'
+                                        keepMounted
+                                        anchorEl={item.anchortEl}
+                                        open={Boolean(item.anchortEl)}
+                                        onClick={() => {
+                                            item.anchortEl = null;
+                                            this.setState({
+                                                ...this.state,
+                                                open: false
+                                            })
+                                        }}>
+                                        <MenuItem onClick={() => {
+                                            this.addToPath(
+                                                { lat: item.provLat, lng: item.provLng, name: item.name }
+                                            )
+                                        }}> Add to path </MenuItem>
+                                        <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
+                                        <MenuItem onClick={() => { this.updatePath() }}
+                                        > Update path </MenuItem>
+                                        <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
+                                    </Menu>
+                                    <div
+                                        className="card-header"
+                                        style={{ fontSize: '1.2rem' }}
+                                    >{item.name}</div>
+
+                                    <CardActions
+                                        className="card-actions"
+                                        style={{ padding: '0 0 5px 0' }}
+                                    >
+                                        <IconButton aria-label="add to favorites"
+                                            onClick={() => {
+                                                if (userID) {
+                                                    item.red = !item.red;
+                                                    this.setState({ ...this.state });
+                                                    item.favDocID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
+                                                } else {
+                                                    this.signAlert();
+                                                }
+                                            }}
+                                        >
+                                            <FavoriteIcon className="favIcon" style={{ color: item.red ? 'red' : '#808080' }} />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={() => {
+                                                item.expand = !item.expand;
+                                                this.setState({
+                                                    ...this.state
                                                 })
                                             }}>
-                                            <MenuItem onClick={() => {
-                                                this.addToPath(
-                                                    { lat: item.provLat, lng: item.provLng, name: item.name }
-                                                )
-                                            }}> Add to path </MenuItem>
-                                            <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
-                                            <MenuItem onClick={() => { this.updatePath() }}
-                                            > Update path </MenuItem>
-                                            <MenuItem onClick={() => { this.clearPath() }}> Clear path </MenuItem>
-                                        </Menu>
-                                        <div
-                                            className="card-header"
-                                            style={{ fontSize: '1.2rem' }}
-                                        >{item.name}</div>
+                                            {item.expand ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                        </IconButton>
+                                    </CardActions>
 
-                                        <CardActions
-                                            className="card-actions"
-                                            style={{ padding: '0 0 5px 0' }}
-                                        >
-                                            <IconButton aria-label="add to favorites"
-                                                onClick={() => {
-                                                    if (userID) {
-                                                        item.red = !item.red;
-                                                        this.setState({ ...this.state });
-                                                        item.favDocID = this.deleteOrAddToFavorites(item.red, item.service_ID, item.favDocID);
-                                                    } else {
-                                                        this.signAlert();
-                                                    }
-                                                }}
-                                            >
-                                                <FavoriteIcon className="favIcon" style={{ color: item.red ? 'red' : '#808080' }} />
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={() => {
-                                                    item.expand = !item.expand;
-                                                    this.setState({
-                                                        ...this.state
-                                                    })
-                                                }}>
-                                                {item.expand ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                                            </IconButton>
-                                        </CardActions>
-
-                                        <Collapse in={item.expand} timeout="auto"
-                                            unmountOnExit>
-                                            <CardContent>
-                                                <div>{item.description}</div>
-                                                <div><PeopleIcon style={{ marginLeft: '5px' }} />
-                                                    <div>{item.prov_name} </div>
-                                                </div>
-                                                <div><CallIcon style={{ marginLeft: '5px' }} />
-                                                    <div>{item.phone} </div>
-                                                </div>
-                                                <div><BusinessIcon style={{ marginLeft: '5divx' }} />
-                                                    <div>{item.address} </div>
-                                                </div>
-                                                <CardActions onClick={() => { this.showPath(item) }}>
-                                                    <IconButton id='btn' className='button'>Show Path</IconButton>
-                                                </CardActions>
-                                            </CardContent>
-                                        </Collapse>
-                                    </Card>
-                                    : null
-                            ))
-                            :
-                            <div className="no-approval-data" id="no-home-data">
-                            </div>
-                      }
-                      </div>
+                                    <Collapse in={item.expand} timeout="auto"
+                                        unmountOnExit>
+                                        <CardContent>
+                                            <div>{item.description}</div>
+                                            <div><PeopleIcon style={{ marginLeft: '5px' }} />
+                                                <div>{item.prov_name} </div>
+                                            </div>
+                                            <div><CallIcon style={{ marginLeft: '5px' }} />
+                                                <div>{item.phone} </div>
+                                            </div>
+                                            <div><BusinessIcon style={{ marginLeft: '5divx' }} />
+                                                <div>{item.address} </div>
+                                            </div>
+                                            <CardActions onClick={() => { this.showPath(item) }}>
+                                                <IconButton id='btn' className='button'>Show Path</IconButton>
+                                            </CardActions>
+                                        </CardContent>
+                                    </Collapse>
+                                </Card>
+                                : null
+                        ))
+                        :
+                        <div className="no-approval-data" id="no-home-data">
+                        </div>
+                    }
+                </div>
             </div >
         );
     }
 }
 function mapStateToProps(state) {
-	return {
-		isLoggedIn: state.isLoggedIn,
-	};
+    return {
+        isLoggedIn: state.isLoggedIn,
+    };
 }
 export default connect(mapStateToProps)(Home);
