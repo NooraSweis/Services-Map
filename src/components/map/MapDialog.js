@@ -38,7 +38,8 @@ class MapDialog extends Component {
             }
             L.Routing.control({
                 createMarker: function () { return null; },
-                waypoints: this.props.points
+                waypoints: this.props.points,
+                router: L.Routing.mapbox('pk.eyJ1Ijoic3dlaXM5OSIsImEiOiJja285em1jaGsweHllMnBxazVycGhsb2NqIn0.tgnKmfZCUM-raQ2tyLE0TA')
             }).addTo(map);
         }
     }
