@@ -55,7 +55,7 @@ class Home extends Component {
                 elements[i].style.color = "#808080";
             }
         }
-        console.log(this.state.items)
+
         lottie.loadAnimation({
             container: document.querySelector("#no-home-data"),
             renderer: 'svg',
@@ -234,9 +234,7 @@ class Home extends Component {
     sortRecommendation = () => {
         //let recommendation=this.state.recommendation;
         this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
-        console.log(this.state.recommendation)
         this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
-        console.log(this.state.items)
         const merged = [...this.state.recommendation, ...this.state.items];
         let set = new Set();
         let unionArray = merged.filter(item => {
@@ -246,9 +244,7 @@ class Home extends Component {
             }
             return false;
         }, set);
-        console.log(unionArray)
         this.setState({ ...this.state, union: unionArray })
-        console.log(this.state.union)
     }
 
 
@@ -276,25 +272,34 @@ class Home extends Component {
     }
 
     addToHistory = () => {
-        var isAdd = true;
-        firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
-            snap.forEach((doc) => {
-                if (doc.data().search === this.state.search) {
-                    isAdd = false;
+        if (this.state.search !== "") {
+            let arr = this.state.search.split(" ");
+            firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
+                snap.forEach((doc) => {
+                    for (let i = 0; i < arr.length; i++) {
+                        if (doc.data().search.includes(arr[i])) {
+                            // remove element from arr
+                            arr.splice(i, 1);
+                            i--;
+                        }
+                    }
+                })
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    search: ''
+                })
+            }).then(() => {
+                for (let i = 0; i < arr.length; i++) {
+                    firestore.collection('history').add({
+                        userID: userID,
+                        search: arr[i]
+                    })
                 }
             })
-        }).then(() => {
-            if (isAdd) {
-                firestore.collection('history').add({
-                    userID: userID,
-                    search: this.state.search
-                }).then(() => {
-                    console.log('added')
-                })
-            }
-        })
-
+        }
     }
+
     componentWillUnmount() {
         // fix Warning: Can't perform a React state update on an unmounted component
         this.setState = (state, callback) => {
@@ -422,7 +427,7 @@ class Home extends Component {
 
     render() {
         return (
-            <div style={{paddingBottom:'60px',overflow:'hidden'}}>
+            <div style={{ paddingBottom: '60px', overflow: 'hidden' }}>
                 <input type='search' placeholder='Search' className='search' id='home-search'
                     onChange={(e) => {
                         this.setState({
@@ -432,11 +437,15 @@ class Home extends Component {
                             this.setState({ ...this.state, second: this.state.second + 1 });
                             if (this.state.second === 5 && this.props.isLoggedIn && this.state.search !== '') {
                                 this.addToHistory();
-                                console.log(this.state.search)
                             }
                         }, 1000)
-
-                    }} />
+                    }}
+                    onBlur={(e) => {
+                        if (this.props.isLoggedIn && this.state.search !== '') {
+                            this.addToHistory();
+                        }
+                    }}
+                />
                 <div className="outerDiv-favorites" >
                     {this.state.union.length !== 0 ?
                         this.state.union.map((item, index) => (

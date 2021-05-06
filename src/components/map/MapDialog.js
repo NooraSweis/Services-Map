@@ -58,7 +58,7 @@ class MapDialog extends Component {
                     :
                     <div>
                         <div>Looks like you didn't add services to your path?</div>
-                        <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" playing={true} />
+                        <img src="https://i.ibb.co/KstwmyG/no-path.gif" alt="No Path" />
                     </div>
                 }
             </center >
