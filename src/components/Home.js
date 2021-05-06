@@ -280,14 +280,8 @@ class Home extends Component {
                         if (doc.data().search.includes(arr[i])) {
                             // remove element from arr
                             arr.splice(i, 1);
-                            i--;
                         }
                     }
-                })
-            }).then(() => {
-                this.setState({
-                    ...this.state,
-                    search: ''
                 })
             }).then(() => {
                 for (let i = 0; i < arr.length; i++) {
