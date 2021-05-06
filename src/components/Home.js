@@ -271,7 +271,31 @@ class Home extends Component {
         }
     }
 
+    getSimilarWords(word) {
+        const request = require('request');
+        const URL = 'https://wordsapiv1.p.rapidapi.com/words/'.concat(word).concat('/similarTo');
+        console.log(URL)
+        const options = {
+            method: 'GET',
+            url: URL,
+            headers: {
+                'x-rapidapi-key': '3d51b81d31msh4408a38425c9cfdp1a2998jsn4b0e9e80c9a5',
+                'x-rapidapi-host': 'wordsapiv1.p.rapidapi.com',
+                useQueryString: true
+            }
+        };
+        request(options, function (error, response, body) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                console.log(body);
+            }
+        });
+    }
+
     addToHistory = () => {
+        this.getSimilarWords("human");
         if (this.state.search !== "") {
             let arr = this.state.search.split(" ");
             firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
