@@ -24,6 +24,7 @@ import L from 'leaflet';
 import lottie from 'lottie-web';
 
 var userID = "";
+var access = false;
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
@@ -295,29 +296,32 @@ class Home extends Component {
     }
 
     addToHistory = () => {
-        this.getSimilarWords("human");
-        if (this.state.search !== "") {
-            let arr = this.state.search.split(" ");
-            firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
-                snap.forEach((doc) => {
-                    for (let i = 0; i < arr.length; i++) {
-                        if (doc.data().search.includes(arr[i])) {
-                            // remove element from arr
-                            arr.splice(i, 1);
+        if (access === false) {
+            this.getSimilarWords("human");
+            access = true;
+            if (this.state.search !== "") {
+                let arr = this.state.search.split(" ");
+                firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
+                    snap.forEach((doc) => {
+                        for (let i = 0; i < arr.length; i++) {
+                            if (doc.data().search.toString().toLowerCase().includes(arr[i]).toString().toLowerCase()) {
+                                // remove element from arr
+                                arr.splice(i, 1);
+                            }
                         }
-                    }
-                })
-            }).then(() => {
-                for (let i = 0; i < arr.length; i++) {
-                    firestore.collection('history').add({
-                        userID: userID,
-                        search: arr[i]
                     })
-                }
-            })
+                }).then(() => {
+                    for (let i = 0; i < arr.length; i++) {
+                        firestore.collection('history').add({
+                            userID: userID,
+                            search: arr[i]
+                        })
+                    }
+                    access = false
+                })
+            }
         }
     }
-
     componentWillUnmount() {
         // fix Warning: Can't perform a React state update on an unmounted component
         this.setState = (state, callback) => {
