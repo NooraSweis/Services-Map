@@ -7,7 +7,6 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { withRouter } from "react-router-dom";
 
-var checked = false;
 var loading = false;
 
 class Login_Fields extends Component {
@@ -54,10 +53,6 @@ class Login_Fields extends Component {
             })
     }
 
-    handleInputChange(e) {
-        checked = !checked;
-        console.log(checked)
-    }
     ChangeEmail = (e) => {
         this.setState({ ...this.state, email: e.target.value });
         if (loading) document.querySelector("#loading-login").innerHTML = "";
@@ -76,9 +71,6 @@ class Login_Fields extends Component {
                     <input className='input' type="password" placeholder="Password" id='logPassword' onChange={this.ChangePass} />
 
                     <div className='forgot-remember-div' >
-                        <input className='input' type="checkbox" id="custom-control-input" onChange={this.handleInputChange} />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                        <br />
                         <div className='a' style={{ cursor: 'pointer' }} onClick={async () => {
                             await CustomDialog(<CustomDialogContent />, {
                                 title: 'Reset password',
