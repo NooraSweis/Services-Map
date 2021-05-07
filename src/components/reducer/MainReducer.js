@@ -30,6 +30,8 @@ const reducer = (state = initState, action) => {
       localStorage.setItem('position','ADMIN');
       return { isLoggedIn: localStorage.getItem('isLoggedIn'),
       userName:localStorage.getItem('user name'), position: localStorage.getItem('position')}
+   }else if(action.type==='editName'){
+      return {...state,userName:localStorage.getItem('user name')}
    }
    return state
 }

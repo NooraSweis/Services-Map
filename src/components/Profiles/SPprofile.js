@@ -8,6 +8,7 @@ import EditServiceDetails from './EditServiceDetails';
 import fire, { auth, firestore } from '../config';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { connect } from "react-redux";
 
 const MySwal = withReactContent(Swal);
 var urlser = '';
@@ -30,6 +31,10 @@ class SPprofile extends Component {
         this.save = this.save.bind(this);
         this.showData = this.showData.bind(this);
         this.searching = this.searching.bind(this);
+        this.updateServices=this.updateServices.bind(this);
+    }
+    updateServices=(e)=>{
+        this.getServicesData();
     }
     changeName = (e) => {
         this.setState({ ...this.state, newName: e.target.value })
@@ -146,6 +151,10 @@ class SPprofile extends Component {
                     fire.firestore().collection('User').doc(x).update({
                         name: newName, password: newpass, phone: newPhone,
                         serviceType: newType, description: newDesc
+                    }).then(()=>{
+                        localStorage.setItem('user name', newName);
+                        this.props.edit({type :'editName'});
+
                     });
                     var user = fire.auth().currentUser;
                     user.updatePassword(newpass);
@@ -262,7 +271,8 @@ class SPprofile extends Component {
                                     (this.state.search === '' || item.name.toString().toLowerCase().includes(this.state.search.toString().toLowerCase()) || item.description.toString().toLowerCase().includes(this.state.search.toString().toLowerCase())) ?
                                         (<div className='showServices' key={index}
                                             onClick={async () => {
-                                                await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices + 1} />, {
+                                                await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices + 1} 
+                                                    update={this.updateServices} />, {
                                                     title: 'Service Details',
                                                     showCloseIcon: true,
                                                 });
@@ -286,4 +296,9 @@ class SPprofile extends Component {
         );
     }
 }
-export default SPprofile;
+function mapDispatchToProps(dispatch) {
+	return {
+		edit: (item) => dispatch(item)
+	};
+}
+export default (connect(null, mapDispatchToProps)(SPprofile));

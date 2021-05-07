@@ -6,6 +6,7 @@ import { CustomDialog } from 'react-st-modal';
 import fire from '../config';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { connect } from "react-redux";
 
 const MySwal = withReactContent(Swal);
 
@@ -97,7 +98,11 @@ class MainComp extends Component {
             fire.firestore().collection("User").where('email', '==', this.state.email).get().then((snap) => {
                 snap.forEach((doc) => {
                     x = doc.id;
-                    fire.firestore().collection('User').doc(x).update({ name: newName });
+                    fire.firestore().collection('User').doc(x).update({ name: newName })
+                    .then(()=>{
+                        localStorage.setItem('user name', newName);
+                        this.props.edit({type :'editName'});
+                    })
                     this.alertUpdated('Your profile is updated');
                     this.setState({ ...this.state, read: true, newName: '', newpassword: '', newConf: '', enabled: '' })
                 })
@@ -196,4 +201,9 @@ class MainComp extends Component {
         );
     }
 }
-export default MainComp;
+function mapDispatchToProps(dispatch) {
+	return {
+		edit: (item) => dispatch(item)
+	};
+}
+export default (connect(null, mapDispatchToProps)(MainComp));
