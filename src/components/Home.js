@@ -272,10 +272,13 @@ class Home extends Component {
         }
     }
 
-    getSimilarWords(word) {
+    storeSimilars = (arr) => {
+        console.log(arr)
+    }
+
+    getSimilarWords = (word) => {
         const request = require('request');
-        const URL = 'https://wordsapiv1.p.rapidapi.com/words/'.concat(word).concat('/similarTo');
-        console.log(URL)
+        const URL = 'https://wordsapiv1.p.rapidapi.com/words/'.concat(word).concat('/synonyms');
         const options = {
             method: 'GET',
             url: URL,
@@ -290,31 +293,58 @@ class Home extends Component {
                 console.log(error);
             }
             else {
-                console.log(body);
+                console.log("synonyms collection")
+                var ref = firestore.collection("synonyms").doc(userID + "");
+                ref.get()
+                    .then((docSnapshot) => {
+                        console.log("docSnapshot?")
+                        if (docSnapshot.exists) {
+                            let sim = JSON.parse(body).synonyms;
+                            console.log("Updt")
+                            for (let i = 0; i < sim.length; i++) {
+                                ref.update({
+                                    synonyms: firebase.firestore.FieldValue.arrayUnion(sim[i])
+                                }).then(() => {
+                                    console.log(JSON.parse(body).synonyms)
+                                })
+                            }
+                        }
+                        else {
+                            console.log("add")
+                            ref.set({
+                                synonyms: JSON.parse(body).synonyms
+                            }).then(() => {
+                                console.log(JSON.parse(body).synonyms)
+                            })
+                        }
+                    })
             }
         });
     }
 
     addToHistory = () => {
         if (access === false) {
-            this.getSimilarWords("human");
             access = true;
             if (this.state.search !== "") {
                 let arr = this.state.search.split(" ");
                 firestore.collection('history').where('userID', '==', userID).get().then((snap) => {
                     snap.forEach((doc) => {
                         for (let i = 0; i < arr.length; i++) {
-                            if (doc.data().search.toString().toLowerCase().includes(arr[i]).toString().toLowerCase()) {
+                            if (doc.data().search.toString().toLowerCase() === (arr[i]).toString().toLowerCase()) {
                                 // remove element from arr
                                 arr.splice(i, 1);
+                                i--;
                             }
                         }
                     })
                 }).then(() => {
+                    console.log(arr)
                     for (let i = 0; i < arr.length; i++) {
                         firestore.collection('history').add({
                             userID: userID,
                             search: arr[i]
+                        }).then(() => {
+                            this.getSimilarWords(arr[i]);
                         })
                     }
                     access = false
@@ -322,6 +352,7 @@ class Home extends Component {
             }
         }
     }
+
     componentWillUnmount() {
         // fix Warning: Can't perform a React state update on an unmounted component
         this.setState = (state, callback) => {
