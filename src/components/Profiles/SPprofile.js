@@ -31,10 +31,6 @@ class SPprofile extends Component {
         this.save = this.save.bind(this);
         this.showData = this.showData.bind(this);
         this.searching = this.searching.bind(this);
-        this.updateServices=this.updateServices.bind(this);
-    }
-    updateServices=(e)=>{
-        this.getServicesData();
     }
     changeName = (e) => {
         this.setState({ ...this.state, newName: e.target.value })
@@ -272,7 +268,7 @@ class SPprofile extends Component {
                                         (<div className='showServices' key={index}
                                             onClick={async () => {
                                                 await CustomDialog(<EditServiceDetails item={item} userID={this.state.id} numberOfServices={this.state.numberOfServices + 1} 
-                                                    update={this.updateServices} />, {
+                                                     />, {
                                                     title: 'Service Details',
                                                     showCloseIcon: true,
                                                 });

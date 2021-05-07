@@ -22,7 +22,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import L from 'leaflet';
 import lottie from 'lottie-web';
-
 var userID = "";
 var access = false;
 const MySwal = withReactContent(Swal);
@@ -104,7 +103,7 @@ class Home extends Component {
                                         if (service.data().name.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())
                                             || service.data().description.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())) {
                                             var provider_name = "";
-                                            var provLat = null, provLng = null, distance = null;
+                                            var provLat = null, provLng = null, distance = null, synon=null;
                                             firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
                                                 providerSnapshot.forEach((provider) => {
                                                     provider_name = provider.data().name;
@@ -131,29 +130,38 @@ class Home extends Component {
                                                                 favDocID = fav.id;
                                                             })
                                                         }).then(() => {
-
-                                                            this.setState({
-                                                                ...this.state,
-                                                                recommendation: [...this.state.recommendation, {
-                                                                    service_ID: service.id,
-                                                                    name: service.data().name,
-                                                                    prov_name: provider_name,
-                                                                    description: service.data().description,
-                                                                    address: service.data().address,
-                                                                    phone: service.data().phone,
-                                                                    email: service.data().email,
-                                                                    status: service.data().status,
-                                                                    serviceImg: service.data().serviceImg,
-                                                                    expand: false,
-                                                                    red: isFavorite,
-                                                                    anchortEl: null,
-                                                                    favDocID: favDocID,
-                                                                    provLat: provLat,
-                                                                    provLng: provLng,
-                                                                    distance: distance
-                                                                }]
+                                                            firestore.collection('synonyms').doc(userID)
+                                                            .get().then((synonDoc)=>{
+                                                                
+                                                                     synon =synonDoc.data().synonyms
+                                                                    console.log(synon);
+                                                                
+                                                            }).then(()=>{
+                                                                this.setState({
+                                                                    ...this.state,
+                                                                    recommendation: [...this.state.recommendation, {
+                                                                        service_ID: service.id,
+                                                                        name: service.data().name,
+                                                                        prov_name: provider_name,
+                                                                        description: service.data().description,
+                                                                        address: service.data().address,
+                                                                        phone: service.data().phone,
+                                                                        email: service.data().email,
+                                                                        status: service.data().status,
+                                                                        serviceImg: service.data().serviceImg,
+                                                                        expand: false,
+                                                                        red: isFavorite,
+                                                                        anchortEl: null,
+                                                                        favDocID: favDocID,
+                                                                        provLat: provLat,
+                                                                        provLng: provLng,
+                                                                        distance: distance,
+                                                                        synonym:synon
+                                                                    }]
+                                                                })
+                                                                this.sortRecommendation();
                                                             })
-                                                            this.sortRecommendation();
+                                                            
                                                         })
                                                 })
                                         }

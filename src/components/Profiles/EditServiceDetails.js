@@ -46,6 +46,7 @@ function EditServiceDetails(props) {
                     address: address,
                     status: status
                 }).then(() => {
+                   
                     dialog.close();
                     alertDone("Changed successfully")
                 })
