@@ -22,8 +22,10 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import L from 'leaflet';
 import lottie from 'lottie-web';
+
 var userID = "";
 var access = false;
+var filled=[false,false,false];
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
@@ -83,7 +85,7 @@ class Home extends Component {
             " Longitude: " + position.coords.longitude);
     }
 
-    getData() {
+   getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
             if (user) {
@@ -103,7 +105,7 @@ class Home extends Component {
                                         if (service.data().name.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())
                                             || service.data().description.toString().toLowerCase().includes(doc.data().search.toString().toLowerCase())) {
                                             var provider_name = "";
-                                            var provLat = null, provLng = null, distance = null, synon=null;
+                                            var provLat = null, provLng = null, distance = null;
                                             firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
                                                 providerSnapshot.forEach((provider) => {
                                                     provider_name = provider.data().name;
@@ -129,14 +131,7 @@ class Home extends Component {
                                                             favSnapshot.forEach((fav) => {
                                                                 favDocID = fav.id;
                                                             })
-                                                        }).then(() => {
-                                                            firestore.collection('synonyms').doc(userID)
-                                                            .get().then((synonDoc)=>{
-                                                                
-                                                                     synon =synonDoc.data().synonyms
-                                                                    console.log(synon);
-                                                                
-                                                            }).then(()=>{
+                                                        }).then(()=>{
                                                                 this.setState({
                                                                     ...this.state,
                                                                     recommendation: [...this.state.recommendation, {
@@ -156,20 +151,90 @@ class Home extends Component {
                                                                         provLat: provLat,
                                                                         provLng: provLng,
                                                                         distance: distance,
-                                                                        synonym:synon
+                                                                        
                                                                     }]
                                                                 })
-                                                                this.sortRecommendation();
-                                                            })
+                                                               
+                                                            }).then(()=>{filled[0]=true;this.sortRecommendation()})
                                                             
-                                                        })
+                                                        
                                                 })
                                         }
                                     })
                                 })
                             })
                         })
-                })
+                }).then(()=>{
+                    var synon=null;
+                    firestore.collection('synonyms').doc(userID)
+                    .get().then((synonDoc)=>{
+                        if(synonDoc.exists)
+                        {synon =synonDoc.data().synonyms
+                        synon.forEach((x)=>{
+                            firestore.collection('services').get().then((serviceData) => {
+                                serviceData.forEach((service) => {
+                                    if (service.data().name.toString().toLowerCase().includes(x.toString().toLowerCase())
+                                        || service.data().description.toString().toLowerCase().includes(x.toString().toLowerCase())) {
+                                        var provider_name = "";
+                                        var provLat = null, provLng = null, distance = null;
+                                        firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
+                                            providerSnapshot.forEach((provider) => {
+                                                provider_name = provider.data().name;
+                                                provLat = provider.data().latitude;
+                                                provLng = provider.data().longitude;
+                                            })
+                                        })
+                                            .then(() => {
+                                                if (this.state.latitude) {
+                                                    let y = provLat - this.state.latitude;
+                                                    let x = provLng - this.state.longitude;
+                                                    distance = Math.sqrt(x * x + y * y);
+                                                }
+                                            })
+                                            .then(() => {
+                                                var isFavorite = false;
+                                                var favDocID = '';
+                                                firestore.collection("Favorite")
+                                                    .where("service_ID", '==', service.id)
+                                                    .where("user_ID", '==', userID)
+                                                    .get().then((favSnapshot) => {
+                                                        isFavorite = !favSnapshot.empty;
+                                                        favSnapshot.forEach((fav) => {
+                                                            favDocID = fav.id;
+                                                        })
+                                                    }).then(() => {
+
+                                                        this.setState({
+                                                            ...this.state,
+                                                            recommendation: [...this.state.recommendation, {
+                                                                service_ID: service.id,
+                                                                name: service.data().name,
+                                                                prov_name: provider_name,
+                                                                description: service.data().description,
+                                                                address: service.data().address,
+                                                                phone: service.data().phone,
+                                                                email: service.data().email,
+                                                                status: service.data().status,
+                                                                serviceImg: service.data().serviceImg,
+                                                                expand: false,
+                                                                red: isFavorite,
+                                                                anchortEl: null,
+                                                                favDocID: favDocID,
+                                                                provLat: provLat,
+                                                                provLng: provLng,
+                                                                distance: distance
+                                                            }]
+                                                        })
+                                                       // this.sortRecommendation();
+                                                    }).then(()=> {filled[1]=true;this.sortRecommendation()})
+                                            })
+                                    }
+                                })
+                            })
+                        })
+                   console.log(synon);
+                 } })
+              })
             }
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -227,8 +292,8 @@ class Home extends Component {
                                             }
                                         ]
                                     })
-                                    this.sortRecommendation();
-                                })
+                                    //this.sortRecommendation();
+                                }).then(()=>{filled[2]=true;this.sortRecommendation()})
                         })
                 })
             })
@@ -242,6 +307,7 @@ class Home extends Component {
     }*/
     sortRecommendation = () => {
         //let recommendation=this.state.recommendation;
+        if((userID&&(filled[0]===true&&filled[1]===true&&filled[2]===true))||!userID){
         this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
         this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
         const merged = [...this.state.recommendation, ...this.state.items];
@@ -253,7 +319,7 @@ class Home extends Component {
             }
             return false;
         }, set);
-        this.setState({ ...this.state, union: unionArray })
+        this.setState({ ...this.state, union: unionArray })}
     }
 
 
