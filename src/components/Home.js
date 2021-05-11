@@ -25,7 +25,7 @@ import lottie from 'lottie-web';
 
 var userID = "";
 var access = false;
-var filled=[false,false,false];
+var filled = [false, false, false];
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
@@ -85,7 +85,7 @@ class Home extends Component {
             " Longitude: " + position.coords.longitude);
     }
 
-   getData() {
+    getData() {
         if (this.state.items.length === 0) {
             var user = auth.currentUser;
             if (user) {
@@ -131,7 +131,79 @@ class Home extends Component {
                                                             favSnapshot.forEach((fav) => {
                                                                 favDocID = fav.id;
                                                             })
-                                                        }).then(()=>{
+                                                        }).then(() => {
+                                                            this.setState({
+                                                                ...this.state,
+                                                                recommendation: [...this.state.recommendation, {
+                                                                    service_ID: service.id,
+                                                                    name: service.data().name,
+                                                                    prov_name: provider_name,
+                                                                    description: service.data().description,
+                                                                    address: service.data().address,
+                                                                    phone: service.data().phone,
+                                                                    email: service.data().email,
+                                                                    status: service.data().status,
+                                                                    serviceImg: service.data().serviceImg,
+                                                                    expand: false,
+                                                                    red: isFavorite,
+                                                                    anchortEl: null,
+                                                                    favDocID: favDocID,
+                                                                    provLat: provLat,
+                                                                    provLng: provLng,
+                                                                    distance: distance,
+
+                                                                }]
+                                                            })
+
+                                                        }).then(() => { filled[0] = true; this.sortRecommendation() })
+
+
+                                                })
+                                        }
+                                    })
+                                })
+                            })
+                        })
+                }).then(() => {
+                    var synon = null;
+                    firestore.collection('synonyms').doc(userID)
+                        .get().then((synonDoc) => {
+                            if (synonDoc.exists) {
+                                synon = synonDoc.data().synonyms
+                                synon.forEach((x) => {
+                                    firestore.collection('services').get().then((serviceData) => {
+                                        serviceData.forEach((service) => {
+                                            if (service.data().name.toString().toLowerCase().includes(x.toString().toLowerCase())
+                                                || service.data().description.toString().toLowerCase().includes(x.toString().toLowerCase())) {
+                                                var provider_name = "";
+                                                var provLat = null, provLng = null, distance = null;
+                                                firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
+                                                    providerSnapshot.forEach((provider) => {
+                                                        provider_name = provider.data().name;
+                                                        provLat = provider.data().latitude;
+                                                        provLng = provider.data().longitude;
+                                                    })
+                                                })
+                                                    .then(() => {
+                                                        if (this.state.latitude) {
+                                                            let y = provLat - this.state.latitude;
+                                                            let x = provLng - this.state.longitude;
+                                                            distance = Math.sqrt(x * x + y * y);
+                                                        }
+                                                    })
+                                                    .then(() => {
+                                                        var isFavorite = false;
+                                                        var favDocID = '';
+                                                        firestore.collection("Favorite")
+                                                            .where("service_ID", '==', service.id)
+                                                            .where("user_ID", '==', userID)
+                                                            .get().then((favSnapshot) => {
+                                                                isFavorite = !favSnapshot.empty;
+                                                                favSnapshot.forEach((fav) => {
+                                                                    favDocID = fav.id;
+                                                                })
+                                                            }).then(() => {
+
                                                                 this.setState({
                                                                     ...this.state,
                                                                     recommendation: [...this.state.recommendation, {
@@ -150,91 +222,20 @@ class Home extends Component {
                                                                         favDocID: favDocID,
                                                                         provLat: provLat,
                                                                         provLng: provLng,
-                                                                        distance: distance,
-                                                                        
+                                                                        distance: distance
                                                                     }]
                                                                 })
-                                                               
-                                                            }).then(()=>{filled[0]=true;this.sortRecommendation()})
-                                                            
-                                                        
-                                                })
-                                        }
+                                                                // this.sortRecommendation();
+                                                            }).then(() => { filled[1] = true; this.sortRecommendation() })
+                                                    })
+                                            }
+                                        })
                                     })
                                 })
-                            })
+                                console.log(synon);
+                            }
                         })
-                }).then(()=>{
-                    var synon=null;
-                    firestore.collection('synonyms').doc(userID)
-                    .get().then((synonDoc)=>{
-                        if(synonDoc.exists)
-                        {synon =synonDoc.data().synonyms
-                        synon.forEach((x)=>{
-                            firestore.collection('services').get().then((serviceData) => {
-                                serviceData.forEach((service) => {
-                                    if (service.data().name.toString().toLowerCase().includes(x.toString().toLowerCase())
-                                        || service.data().description.toString().toLowerCase().includes(x.toString().toLowerCase())) {
-                                        var provider_name = "";
-                                        var provLat = null, provLng = null, distance = null;
-                                        firestore.collection("User").where("email", '==', service.data().email).get().then((providerSnapshot) => {
-                                            providerSnapshot.forEach((provider) => {
-                                                provider_name = provider.data().name;
-                                                provLat = provider.data().latitude;
-                                                provLng = provider.data().longitude;
-                                            })
-                                        })
-                                            .then(() => {
-                                                if (this.state.latitude) {
-                                                    let y = provLat - this.state.latitude;
-                                                    let x = provLng - this.state.longitude;
-                                                    distance = Math.sqrt(x * x + y * y);
-                                                }
-                                            })
-                                            .then(() => {
-                                                var isFavorite = false;
-                                                var favDocID = '';
-                                                firestore.collection("Favorite")
-                                                    .where("service_ID", '==', service.id)
-                                                    .where("user_ID", '==', userID)
-                                                    .get().then((favSnapshot) => {
-                                                        isFavorite = !favSnapshot.empty;
-                                                        favSnapshot.forEach((fav) => {
-                                                            favDocID = fav.id;
-                                                        })
-                                                    }).then(() => {
-
-                                                        this.setState({
-                                                            ...this.state,
-                                                            recommendation: [...this.state.recommendation, {
-                                                                service_ID: service.id,
-                                                                name: service.data().name,
-                                                                prov_name: provider_name,
-                                                                description: service.data().description,
-                                                                address: service.data().address,
-                                                                phone: service.data().phone,
-                                                                email: service.data().email,
-                                                                status: service.data().status,
-                                                                serviceImg: service.data().serviceImg,
-                                                                expand: false,
-                                                                red: isFavorite,
-                                                                anchortEl: null,
-                                                                favDocID: favDocID,
-                                                                provLat: provLat,
-                                                                provLng: provLng,
-                                                                distance: distance
-                                                            }]
-                                                        })
-                                                       // this.sortRecommendation();
-                                                    }).then(()=> {filled[1]=true;this.sortRecommendation()})
-                                            })
-                                    }
-                                })
-                            })
-                        })
-                   console.log(synon);
-                 } })
-              })
+                })
             }
             firestore.collection("services").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -293,7 +294,7 @@ class Home extends Component {
                                         ]
                                     })
                                     //this.sortRecommendation();
-                                }).then(()=>{filled[2]=true;this.sortRecommendation()})
+                                }).then(() => { filled[2] = true; this.sortRecommendation() })
                         })
                 })
             })
@@ -307,19 +308,20 @@ class Home extends Component {
     }*/
     sortRecommendation = () => {
         //let recommendation=this.state.recommendation;
-        if((userID&&(filled[0]===true&&filled[1]===true&&filled[2]===true))||!userID){
-        this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
-        this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
-        const merged = [...this.state.recommendation, ...this.state.items];
-        let set = new Set();
-        let unionArray = merged.filter(item => {
-            if (!set.has(item.service_ID)) {
-                set.add(item.service_ID);
-                return true;
-            }
-            return false;
-        }, set);
-        this.setState({ ...this.state, union: unionArray })}
+        if ((userID && (filled[0] === true && filled[1] === true && filled[2] === true)) || !userID) {
+            this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
+            this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
+            const merged = [...this.state.recommendation, ...this.state.items];
+            let set = new Set();
+            let unionArray = merged.filter(item => {
+                if (!set.has(item.service_ID)) {
+                    set.add(item.service_ID);
+                    return true;
+                }
+                return false;
+            }, set);
+            this.setState({ ...this.state, union: unionArray })
+        }
     }
 
 
@@ -437,15 +439,20 @@ class Home extends Component {
     addToPath = (point) => {
         if (userID) {
             var ref = firestore.collection("User").doc(userID + "");
+            let arr = this.state.path;
+            arr.push(point);
             ref.update({
                 path: firebase.firestore.FieldValue.arrayUnion(point)
             }).then(() => {
                 this.setState({
                     ...this.state,
-                    path: [
-                        ...this.state.path,
-                        point
-                    ]
+                    path: [...this.state.path,
+                        point]
+                })
+            }).then(() => {
+                this.setState({
+                    ...this.state,
+                    path: arr.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0))
                 })
             }).then(() => {
                 MySwal.fire({
@@ -498,8 +505,11 @@ class Home extends Component {
             }).then(() => {
                 MySwal.fire({
                     position: 'center',
-                    icon: 'success',
-                    title: 'Your path is EMPTY now!',
+                    imageUrl: 'https://i.ibb.co/8PMsjTS/check-circle.gif',
+                    imageWidth: 50,
+                    imageHeight: 50,
+                    text: 'Your path is EMPTY now!',
+                    width: 400,
                     showConfirmButton: false,
                     timer: 2000
                 })
@@ -621,7 +631,7 @@ class Home extends Component {
                                         }}>
                                         <MenuItem onClick={() => {
                                             this.addToPath(
-                                                { lat: item.provLat, lng: item.provLng, name: item.name }
+                                                { lat: item.provLat, lng: item.provLng, name: item.name, distance: item.distance }
                                             )
                                         }}> Add to path </MenuItem>
                                         <MenuItem onClick={() => { this.showPath() }} > View path </MenuItem>
