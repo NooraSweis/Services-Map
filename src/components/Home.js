@@ -25,7 +25,6 @@ import lottie from 'lottie-web';
 
 var userID = "";
 var access = false;
-var filled = [false, false, false];
 const MySwal = withReactContent(Swal);
 
 class Home extends Component {
@@ -155,7 +154,7 @@ class Home extends Component {
                                                                 }]
                                                             })
 
-                                                        }).then(() => { filled[0] = true; this.sortRecommendation() })
+                                                        }).then(() => { this.sortRecommendation() })
 
 
                                                 })
@@ -226,7 +225,7 @@ class Home extends Component {
                                                                     }]
                                                                 })
                                                                 // this.sortRecommendation();
-                                                            }).then(() => { filled[1] = true; this.sortRecommendation() })
+                                                            }).then(() => { this.sortRecommendation() })
                                                     })
                                             }
                                         })
@@ -294,7 +293,7 @@ class Home extends Component {
                                         ]
                                     })
                                     //this.sortRecommendation();
-                                }).then(() => { filled[2] = true; this.sortRecommendation() })
+                                }).then(() => { this.sortRecommendation() })
                         })
                 })
             })
@@ -308,7 +307,7 @@ class Home extends Component {
     }*/
     sortRecommendation = () => {
         //let recommendation=this.state.recommendation;
-        if ((userID && (filled[0] === true && filled[1] === true && filled[2] === true)) || !userID) {
+        
             this.setState({ ...this.state, recommendation: this.state.recommendation.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
             this.setState({ ...this.state, items: this.state.items.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)) })
             const merged = [...this.state.recommendation, ...this.state.items];
@@ -321,7 +320,7 @@ class Home extends Component {
                 return false;
             }, set);
             this.setState({ ...this.state, union: unionArray })
-        }
+        
     }
 
 
